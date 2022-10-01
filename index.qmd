@@ -1,0 +1,29 @@
+---
+title: "Estadistica espacial"
+subtitle: "Tutorial"
+date: "Octubre 2022"
+date-format: "MMMM, YYYY"
+author: 
+    - Pablo Paccioretti
+    - Mónica Balzarini
+    - Mariano Córdoba
+toc: false
+---
+
+
+
+
+
+## Introducción
+
+.
+
+## Contenidos
+
+1. Modelos Lineales
+    1. Modelos Lineales Mixtos
+    2. Modelos Bayesianos
+2. Ejemplos de aplicación
+    1. Predicción de rendimiento a partir de imágenes satelitales
+    2. COVID
+  

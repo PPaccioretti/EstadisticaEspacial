@@ -1,0 +1,324 @@
+[
+  {
+    "objectID": "Espacial_IG2022.html",
+    "href": "Espacial_IG2022.html",
+    "title": "Modelos Espaciales",
+    "section": "",
+    "text": "Show in new tab"
+  },
+  {
+    "objectID": "Ej01.html",
+    "href": "Ej01.html",
+    "title": "Ejemplo 1: Modelación del rendimiento de caña de azúcar a partir de información satelital",
+    "section": "",
+    "text": "La generación de datos a partir de imágenes satelitales, constituyen una fuente valiosa de información, pudiéndose construir incluso series históricas de imagen de un sitio. En bioestadística este tipo de datos se usa para monitorear ecosistemas, realizar pronósticos climáticos y predecir cosechas, entre otros.\nEn este caso mostramos la implementación de un análisis exploratorio de datos para caracterizar la variable toneladas de caña por hectárea. Luego estudiaremos el uso de modelos de regresión lineal para estimar rendimientos de caña de azúcar a partir de índices de vegetación elaborados con información proveniente de sensores remotos."
+  },
+  {
+    "objectID": "Ej01.html#running-code",
+    "href": "Ej01.html#running-code",
+    "title": "Ejemplo 1: Modelación del rendimiento de caña de azúcar a partir de información satelital",
+    "section": "Running Code",
+    "text": "Running Code\nWhen you click the Render button a document will be generated that includes both content and the output of embedded code. You can embed code like this:\n\n1 + 1\n\n## [1] 2\n\n\nYou can add options to executable code like this\n\n\n## [1] 4\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
+  },
+  {
+    "objectID": "slides.html",
+    "href": "slides.html",
+    "title": "Modelos Espaciales",
+    "section": "",
+    "text": "CONAE spring school 2022\nMarius Appel\nSept. 27, 2022\n\n\n\nData availability (e.g. Sentinel-2) in the cloud\nMethod availability (e.g. in R, > 18k CRAN packages)\nWho wants to download > 100 GB from data portals?\n\n\n\n\nObjective: Show how you can analyze satellite image collections in the cloud with R\n\nIntroduction:\n\nCloud computing\nSatellite imagery in the cloud\nCloud-native geospatial echnologies\nR ecosystem\n\nLive examples\n\nCreating composite images\nComplex time series analysis\nExtraction from data cubes\n\nDiscussion\n\nAll materials are available on GitHub: https://github.com/appelmar/CONAE_2022."
+  },
+  {
+    "objectID": "slides.html#in-the-cloud",
+    "href": "slides.html#in-the-cloud",
+    "title": "Modelos Espaciales",
+    "section": "“… in the cloud”",
+    "text": "“… in the cloud”\n\n\nServices:\n\nGoogle Earth Engine (GEE)\nSentinel Hub\nopenEO backends\n…\n\n\nInfrastructure providers:\n\nAmazon web services (AWS)\nGoogle Cloud Platform\nMicrosoft Azure\n…\n\n\n\nSomewhere in between: Microsoft Planetary Computer\n\n\nIn this tutorial, we will use a custom machine on AWS to analyze satellite image collections in the cloud."
+  },
+  {
+    "objectID": "slides.html#cloud-infrastructure-aws",
+    "href": "slides.html#cloud-infrastructure-aws",
+    "title": "Modelos Espaciales",
+    "section": "Cloud infrastructure (AWS)",
+    "text": "Cloud infrastructure (AWS)\n\nLots of separate data centers with large clusters\nIn total: > 25 regions and > 80 availability zones\nBasic service to run (virtual) machines: EC2 (Amazon Elastic Compute Cloud)"
+  },
+  {
+    "objectID": "slides.html#running-a-machine-in-the-cloud-aws",
+    "href": "slides.html#running-a-machine-in-the-cloud-aws",
+    "title": "Modelos Espaciales",
+    "section": "Running a machine in the cloud (AWS)",
+    "text": "Running a machine in the cloud (AWS)\n\nSelect a region and machine instance type, based on costs, hardware, and OS\nCreate a key pair for accessing the machine over SSH\nClick “Launch instance” and follow instructions\nConnect via SSH and install software (PROJ, GDAL, R, RStudioServer1, R packages, …)\n\nNotice that security considerations (e.g. by using IAM roles, multi-factor authorization) are NOT part of this tutorial.\nYou need to add a security rule to allow public / protected access to RStudioServer."
+  },
+  {
+    "objectID": "slides.html#aws-management-console",
+    "href": "slides.html#aws-management-console",
+    "title": "Modelos Espaciales",
+    "section": "AWS Management Console",
+    "text": "AWS Management Console"
+  },
+  {
+    "objectID": "slides.html#example-platforms-and-available-data",
+    "href": "slides.html#example-platforms-and-available-data",
+    "title": "Modelos Espaciales",
+    "section": "Example platforms and available data",
+    "text": "Example platforms and available data\n\n\n\n\nProvider\nData\n\n\n\n\nAmazon web services (AWS)\nSentinel, Landsat, ERA 5, OSM, CMIP 6, and more, see here\n\n\nGoogle Cloud Platform\nLandsat, Sentinel, access to GEE data\n\n\nCopernicus DIASes\nSentinel + more (see here)\n\n\nMicrosoft Planetary Computer\nSentinel, Landsat, MODIS and more, see here"
+  },
+  {
+    "objectID": "slides.html#object-storage-s3",
+    "href": "slides.html#object-storage-s3",
+    "title": "Modelos Espaciales",
+    "section": "Object Storage: S3",
+    "text": "Object Storage: S3\nEC2 machines have local storage (EBS) but big data archives use highly scalable object storage.\nS3 elements:\n\nBucket: container for objects that are stored in a specific AWS region\nObjects: Individual files and corresponding metadata within a bucket, identified by a unique key\nKey: Filenames / Path or similar; unique within a bucket\n\nPricing (storage, transfer, requests):\n\nBucket owner pays by default\nFor requester pays buckets, transfer and requests are paid by users"
+  },
+  {
+    "objectID": "slides.html#s3-examples",
+    "href": "slides.html#s3-examples",
+    "title": "Modelos Espaciales",
+    "section": "S3 examples",
+    "text": "S3 examples\n\nBuckets:\n\nhttps://registry.opendata.aws/sentinel-2\nhttps://registry.opendata.aws/usgs-landsat/\n\nObject:\n\nhttps://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/20/J/ML/2022/3/S2B_20JML_20220330_0_L2A/B04.tif"
+  },
+  {
+    "objectID": "slides.html#data-access",
+    "href": "slides.html#data-access",
+    "title": "Modelos Espaciales",
+    "section": "Data access",
+    "text": "Data access\n\nBuckets are not a drive on your machine\nData access over HTTP requests (PUT, GET, DELETE, …)\n\n\nChallenges\n\nHow to find images by location, time, and other criteria?\nHow to efficiently read image data from S3 without copying images to our machine storage first?"
+  },
+  {
+    "objectID": "slides.html#stac-overview",
+    "href": "slides.html#stac-overview",
+    "title": "Modelos Espaciales",
+    "section": "STAC overview",
+    "text": "STAC overview\n\nStandardized JSON-based language for describing catalogs of spatiotemporal data (imagery, point clouds, SAR)\nExtensible (available extensions include EO, Data Cubes, Point Clouds, and more)\n1.0.0 release available since May 2021\nGrowing ecosystem"
+  },
+  {
+    "objectID": "slides.html#stac-specification",
+    "href": "slides.html#stac-specification",
+    "title": "Modelos Espaciales",
+    "section": "STAC specification",
+    "text": "STAC specification\n\nItems are inseparable objects of data (assets) and metadata (e.g. a single satellite image)\nCatalogs can be nested\nCollections extend catalogs and can be used to group items and their metadata (e.g. license)"
+  },
+  {
+    "objectID": "slides.html#stac-api",
+    "href": "slides.html#stac-api",
+    "title": "Modelos Espaciales",
+    "section": "STAC API",
+    "text": "STAC API\nStatic STAC catalogs\n\nTypically set of linked JSON files, starting with a catalog.json\nCatalog JSON contains links to collections, nested catalogs, or items\nItems contain assets (links to files) and metadata\nProblem: All items must be processed for searching\nExample: https://meeo-s5p.s3.amazonaws.com/catalog.json\n\nSTAC API\n\nWeb-service for dynamic search of STAC items by area of interest, datetime, and other metadata\nCompliant with OGC API - Features standard\n\nSTAC Index\n\nA good starting point to find available STAC collections and API services: https://stacindex.org"
+  },
+  {
+    "objectID": "slides.html#cloud-optimized-geotiff-cog",
+    "href": "slides.html#cloud-optimized-geotiff-cog",
+    "title": "Modelos Espaciales",
+    "section": "Cloud-optimized GeoTIFF (COG)",
+    "text": "Cloud-optimized GeoTIFF (COG)\nImage file formats must be cloud-friendly to reduce transfer times and costs associated with transfer and requests\n\n\n\nCOG = Normal tiled GeoTIFF files whose content follows a specific order of data and metadata (see full spec here)\nsupport compression\nsupport efficient HTTP range requests, i.e. partial reading of images (blocks, and overviews) over cloud storage\nmay contain overview images (image pyramids)\n\n\n\n\n\nGDAL can efficiently read and write COGs, and access object storage in the cloud with virtual file systems"
+  },
+  {
+    "objectID": "slides.html#satellite-image-collections",
+    "href": "slides.html#satellite-image-collections",
+    "title": "Modelos Espaciales",
+    "section": "Satellite image collections",
+    "text": "Satellite image collections\nImages spatially overlap, have different coordinate reference systems, have different pixel sizes depending on spectral bands, yield irregular time series for larger areas"
+  },
+  {
+    "objectID": "slides.html#what-is-a-data-cube",
+    "href": "slides.html#what-is-a-data-cube",
+    "title": "Modelos Espaciales",
+    "section": "What is a data cube?",
+    "text": "What is a data cube?\nHere: A four-dimensional (space, time, variable / band) regular raster data cube\n\ncollect all observations in one object\n\\(b \\times t \\times y \\times x \\rightarrow\\) real value\nsingle CRS, cells have constant temporal duration, and spatial size"
+  },
+  {
+    "objectID": "slides.html#data-cube-creation-is-lossy",
+    "href": "slides.html#data-cube-creation-is-lossy",
+    "title": "Modelos Espaciales",
+    "section": "Data Cube creation is lossy",
+    "text": "Data Cube creation is lossy\nImportant: There is no single correct data cube!"
+  },
+  {
+    "objectID": "slides.html#r-packages",
+    "href": "slides.html#r-packages",
+    "title": "Modelos Espaciales",
+    "section": "R packages",
+    "text": "R packages\n\nraster / terrastarsgdalcubessitsothers\n\n\n\nGeneral packages for raster data analysis\nterra [@terra] is a newer (faster) package that replaces raster [@raster]\n\nSupport two- or three-dimensional rasters\nInclude lots of analysis tools\n\n\n\n\nFlexible package for spatiotemporal arrays / data cubes with arbitrary number of dimensions [@stars]\nSupports raster and vector data cubes\n\n\n\n\n\n\n\n\n\n\n\nImagery from https://r-spatial.github.io/stars\n\n\n\n\nCreation and processing of four-dimensional (space, time, variable) data cubes from irregular image collections [@gdalcubes]\nParallel chunk-wise processing\nDocumentation available at https://gdalcubes.github.io/\n\n\n\n\nGeneric package for satellite image time series analysis [@sits]\nBuilds on top of previous packages\nIncludes sophisticated methods with a focus on time series classification\nDocumentation: https://e-sensing.github.io/sitsbook/\n\n\n\n\n\n\n\nImagery from https://github.com/e-sensing/sits\n\n\n\n\nrstac [ @rstac]: Query images from STAC-API services\nsp [@sp]: replaced by sf and stars\nopeneo [@openeo]: Connect to and analyse data at openEO backends\n\n\n\n\n\nThis tutorial focuses on the packages rstac and gdalcubes."
+  },
+  {
+    "objectID": "slides.html#discussion-1",
+    "href": "slides.html#discussion-1",
+    "title": "Modelos Espaciales",
+    "section": "Discussion",
+    "text": "Discussion\n\n\n\nAdvantages\n\nAccess to huge data archives\nFlexibility: You can do whatever you can do on your local machine\nPowerful machines available\nOpen source software only\n\n\n\n\nDisadvantages\n\nNot free\nGEE and others can be easier to use (some are free)\nYour institution’s computing center might have more computing resources (for free)\nSetup and familiarization needed\nDepends on the existence of STAC-API services and imagery as COGs!\n\n\n\n\n→ Which tools / platforms / environments are most efficient to use highly depends on factors like data volume, computational effort, data & method availability, effort needed to familiarization and reimplementation, and others."
+  },
+  {
+    "objectID": "slides.html#summary",
+    "href": "slides.html#summary",
+    "title": "Modelos Espaciales",
+    "section": "Summary",
+    "text": "Summary\n\nCloud-computing platforms contain lots of satellite data\nCloud storage differs from local storage\nTechnology and tools:\n\nSTAC (and STAC API!) for efficient and standardized search of spatiotemporal EO data\nCOGs allow efficiently reading parts of imagery, potentially on lower resolution\nGDAL has everything for efficient data access on cloud storage\ngdalcubes makes the creation and processing of data cubes from satellite image collections in R easier"
+  },
+  {
+    "objectID": "slides.html#references",
+    "href": "slides.html#references",
+    "title": "Modelos Espaciales",
+    "section": "References",
+    "text": "References"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Estadistica espacial",
+    "section": "",
+    "text": "This tutorial demonstrates how to access and process satellite image collections on cloud computing platforms using R and modern cloud-native tools including SpatioTemporal Asset Catalogs, cloud optimized GeoTIFFs, and on-demand data cubes. After a quick introduction and overview of corresponding R packages, practical examples on image compositing, time series analysis, and the extraction of training data for machine learning models will be presented in a live demonstration. The tutorial will end with a discussion of limitations and future developments in R. Materials and further information will be published at https://github.com/appelmar/CONAE_2022."
+  },
+  {
+    "objectID": "index.html#contents",
+    "href": "index.html#contents",
+    "title": "Estadistica espacial",
+    "section": "Contents",
+    "text": "Contents\n\nIntroduction\n\nThe cloud\nSatellite imagery on cloud platforms\nCloud-native technologies: STAC, COGs, data cubes\nR ecosystem for analyzing satellite imagery\nThe gdalcubes R package\n\nHands-on examples\n\nImage compositing\nTime series analysis\nExtraction\n\nDiscussion"
+  },
+  {
+    "objectID": "index.html#contenidos",
+    "href": "index.html#contenidos",
+    "title": "Estadistica espacial",
+    "section": "Contenidos",
+    "text": "Contenidos\n\nIntroduction\n\nThe cloud\nSatellite imagery on cloud platforms\nCloud-native technologies: STAC, COGs, data cubes\nR ecosystem for analyzing satellite imagery\nThe gdalcubes R package\n\nHands-on examples\n\nImage compositing\nTime series analysis\nExtraction\n\nDiscussion"
+  },
+  {
+    "objectID": "slides.html#motivation",
+    "href": "slides.html#motivation",
+    "title": "Modelos Espaciales",
+    "section": "Motivation",
+    "text": "Motivation\n\nData availability (e.g. Sentinel-2) in the cloud\nMethod availability (e.g. in R, > 18k CRAN packages)\nWho wants to download > 100 GB from data portals?"
+  },
+  {
+    "objectID": "slides.html#tutorial-overview",
+    "href": "slides.html#tutorial-overview",
+    "title": "Modelos Espaciales",
+    "section": "Tutorial overview",
+    "text": "Tutorial overview\nObjective: Show how you can analyze satellite image collections in the cloud with R\n\nIntroduction:\n\nCloud computing\nSatellite imagery in the cloud\nCloud-native geospatial echnologies\nR ecosystem\n\nLive examples\n\nCreating composite images\nComplex time series analysis\nExtraction from data cubes\n\nDiscussion\n\nAll materials are available on GitHub: https://github.com/appelmar/CONAE_2022."
+  },
+  {
+    "objectID": "slides.html#análisis-de-datos.-paradigmas",
+    "href": "slides.html#análisis-de-datos.-paradigmas",
+    "title": "Modelos Espaciales",
+    "section": "Análisis de datos. Paradigmas",
+    "text": "Análisis de datos. Paradigmas\n\n\nAnalítico\n\nFundamentación matemática de los procedimientos estadísticos\nResultados muchas veces exactos\nExpresiones cerradas para medidas de incertidumbre, al menos asintóticas\nTeoremas de respaldo, necesidad de supuestos distribucionales\nModelos estadísticos\nClasificación y Predicción\n\n\n\n\nComputación intensiva\n\nSoluciones númericas\nResultados aproximados por procesos iterativos\nCapacidad de modelar situaciones más complejas con supuestos menos restrictivos\nAprendizajes automáticos\nMás exploratorios que inferenciales\nModelos o algoritmos explicativos\nClasificación y Predicción"
+  },
+  {
+    "objectID": "slides.html#análisis-de-datos.-paradigmas-1",
+    "href": "slides.html#análisis-de-datos.-paradigmas-1",
+    "title": "Modelos Espaciales",
+    "section": "Análisis de datos. Paradigmas",
+    "text": "Análisis de datos. Paradigmas\nSomewhere in between: Microsoft Planetary Computer\n\n\nIn this tutorial, we will use a custom machine on AWS to analyze satellite image collections in the cloud."
+  },
+  {
+    "objectID": "slides.html#sda",
+    "href": "slides.html#sda",
+    "title": "Modelos Espaciales",
+    "section": "sda",
+    "text": "sda\nObjective: Show how you can analyze satellite image collections in the cloud with R\n\nIntroduction:\n\nCloud computing\nSatellite imagery in the cloud\nCloud-native geospatial echnologies\nR ecosystem\n\nLive examples\n\nCreating composite images\nComplex time series analysis\nExtraction from data cubes\n\nDiscussion\n\nAll materials are available on GitHub: https://github.com/appelmar/CONAE_2022."
+  },
+  {
+    "objectID": "slides.html#modelo-lineal-general",
+    "href": "slides.html#modelo-lineal-general",
+    "title": "Modelos Espaciales",
+    "section": "Modelo Lineal General",
+    "text": "Modelo Lineal General\n\\(Y = Valor\\ Esperado + Error\\)\n\\(Y = Modelo\\ de\\ Media + Modelo\\ de\\ Varianza\\! - \\! Covarianza\\)\nEn el Modelo de Media, la respuesta se relaciona linealmente con regresoras y/o variables de clasificación (Modelos de Regresión, Modelos de ANAVA)\nEl Modelo de varianzas y covarianzas se determina con supuestos distribucionales para los términos de error:\n\ni.i.d Normales\nno correlacionados\n\nvarianza constante\n\nPero también podría ser con autocorrelacionados espacial.\n\nLos supuestos no son necesarios para la estimación pero sí para la inferencia (valor-p no real en caso de incumplimiento)."
+  },
+  {
+    "objectID": "slides.html#modelo-de-regresión-lineal",
+    "href": "slides.html#modelo-de-regresión-lineal",
+    "title": "Modelos Espaciales",
+    "section": "Modelo de Regresión Lineal",
+    "text": "Modelo de Regresión Lineal\n\\[Y_{ij} = \\beta_0 + \\beta_1 x_{ij}+\\varepsilon_{ij}\\]\n\\[\\varepsilon_{ij} \\sim N \\big(0, \\sigma^2 \\big) \\: \\: \\:\ncov(\\varepsilon_{ij}, \\varepsilon_{i'j'}) = 0 \\: \\forall ij \\neq i' j'\\]\nDonde: - \\(Y_{ij}\\) es la observación en la \\(j-ésima\\) repetición del \\(i-ésimo\\) tratamiento. - \\(\\beta_0\\) es la Constante - \\(\\beta_1\\) es el efecto de la variable regresora - \\(x_{ij}\\) valor de la covariable - \\(\\varepsilon_{ij}\\) es el efecto aleatorio de la \\(ij-ésima\\) unidad experimental\nAlternativamente la covarianza entre los términos de error puede ser distinta de cero, por ej. covarianza positiva expresada como función de la distancia entre observaciones"
+  },
+  {
+    "objectID": "slides.html#modelo-lineal-mixto",
+    "href": "slides.html#modelo-lineal-mixto",
+    "title": "Modelos Espaciales",
+    "section": "Modelo Lineal Mixto",
+    "text": "Modelo Lineal Mixto\nNo independencia y/o No homogeneidad de varianzas\nPermite trabajar correlaciones de dos formas:\n\nespecificando covarianzas para los errores\nincorporando efectos aleatorios correlacionados\n\nSe suponen errores normales y correlación entre errores se puede explicitar a través de distintas funciones que especifican la correlación entre cada par de datos según la distancia espacial entre ellos (por ejemplo correlación espacial exponencial, esférica, gausiana)"
+  },
+  {
+    "objectID": "slides.html#modelo-lineal-generalizado.-componentes",
+    "href": "slides.html#modelo-lineal-generalizado.-componentes",
+    "title": "Modelos Espaciales",
+    "section": "Modelo Lineal Generalizado. Componentes",
+    "text": "Modelo Lineal Generalizado. Componentes\n\nDistribución de las observaciones\n\nNo necesariamente normal, no-homogeneidad\n\nPredictor lineal\n\nCombinación lineal del efecto de las fuentes de variación más un intercepto\n\nFunción de enlace\n\nPermite ajustar un modelo lineal a la media de la respuesta. Cuando estimamos los parámetros del modelo lineal, lo hacemos en la escala de la función de enlace. Su inversa nos da el valor predicho en la escala de las observaciones"
+  },
+  {
+    "objectID": "slides.html#modelo-lineal-mixto.-efectos-fijos-y-aleatorios-1",
+    "href": "slides.html#modelo-lineal-mixto.-efectos-fijos-y-aleatorios-1",
+    "title": "Modelos Espaciales",
+    "section": "Modelo Lineal Mixto. Efectos Fijos y Aleatorios",
+    "text": "Modelo Lineal Mixto. Efectos Fijos y Aleatorios\n\\(Y\\) es función de covariables/factores de efectos fijos (constante) y aleatorios\nFijo vs. Aleatorio: - niveles arbitrariamente determinados vs. muestra aleatoria de niveles (asociado a una distribución de probabilidad)\nFijo vs. Aleatorio: - contexto; mecanismos de colección; espacio de inferencia; estrategia de modelación. Cantidad de niveles, calidad de la estimación de componentes de varianza. Cómputo de covarianzas."
+  },
+  {
+    "objectID": "slides.html#modelo-lineal-generalizado",
+    "href": "slides.html#modelo-lineal-generalizado",
+    "title": "Modelos Espaciales",
+    "section": "Modelo Lineal Generalizado",
+    "text": "Modelo Lineal Generalizado\n\nLineal\n\nUna transformación de la media (valor esperado de la respuesta) se relaciona linealmente con las fuentes de variación reconocidas a priori\nPredictor lineal de una función de la esperanza o media de \\(Y\\), \\(E(Y)\\)\n\nGeneralizado\n\nLa componente aleatoria puede ser no-normal (distribución miembro de la familia exponencial como es el caso de Bernouille, Binomial y Poisson para modelar presencia/ausencia, proporciones y conteos respectivamente y el caso de distribuciones continuas: Normal, Gamma, Inversa Gaussiana)"
+  },
+  {
+    "objectID": "slides.html#modelo-lineal-generalizado-mixto-glmm",
+    "href": "slides.html#modelo-lineal-generalizado-mixto-glmm",
+    "title": "Modelos Espaciales",
+    "section": "Modelo Lineal Generalizado Mixto (GLMM)",
+    "text": "Modelo Lineal Generalizado Mixto (GLMM)\nNo necesariamente normal, no-homogeneidad y no independencia\nMLGM permite trabajar datos no normales (por ejemplo variables binarias y conteos) y correlaciones, a través de la incorporación de efectos aleatorios. Es un modelo Jerárquico"
+  },
+  {
+    "objectID": "slides.html#modelo-bayesiano",
+    "href": "slides.html#modelo-bayesiano",
+    "title": "Modelos Espaciales",
+    "section": "Modelo Bayesiano",
+    "text": "Modelo Bayesiano\n\nRelacionan la variable dependiente con variables explicativas a través de parámetros desconocidos.\nLos parámetros se interpretan en término de probabilidades bayesianas; se supone una distribución “a priori” para cada parámetro y se deriva la distribución “a posteriori” de cada parámetro.\nLa media, moda o mediana de la distribución a posteriori se usa como proxy del parámetro.\nLas “a priori” son parte del modelo y una manera de expresar la distribución de probabilidad de los datos dados los parámetros.\nLos parámetros de las distribuciones “a priori” se llaman hiperparámetros.\n“a posteriori” = actualización de la “a priori” con los datos observados.\nPermite otorgar grado de creencia (intervalo de credibilidad)"
+  },
+  {
+    "objectID": "slides.html#por-qué-jerárquico",
+    "href": "slides.html#por-qué-jerárquico",
+    "title": "Modelos Espaciales",
+    "section": "¿Por qué Jerárquico?",
+    "text": "¿Por qué Jerárquico?\nLos datos \\(Z\\) tienen una distribución condicional dado el proceso latente que los ha generado \\(Y\\), que a su vez tiene una distribución condicional a ciertos parámetros \\(\\theta\\) y \\(\\theta\\) tiene a su vez una distribución “a priori”.\n\n\nModelo para los datos:\n\\[ \\left[ Z \\big\\vert Y, \\theta \\right]\\]\nModelo para el proceso:\n\\[ \\left[ Y \\big\\vert \\theta \\right]\\]\nModelo para los parámetros:\n\\[ \\left[ \\theta \\right]\\]"
+  },
+  {
+    "objectID": "slides.html#modelo-jerárquico-bayesiano",
+    "href": "slides.html#modelo-jerárquico-bayesiano",
+    "title": "Modelos Espaciales",
+    "section": "Modelo Jerárquico Bayesiano",
+    "text": "Modelo Jerárquico Bayesiano\nUn modelo jerárquico es un modelo especificado en etapas.\nEjemplo: Modelo lineal mixto con efectos aleatorios \\(u\\).\n$$y , u, ^2 N(x’ + z’u, ^2I) \\\nu N(0, D())$$\nEn un modelo bayesiano, los parámetros se consideran variables aleatorias y tienen distribuciones a priori. Continuando con el ejemplo anterior:\n\\[\\beta \\sim \\pi (\\beta)\\]\nEn el modelo jerárquico bayesiano, los parámetros de las distribuciones a priori de los parámetros (llamados hiperparámetros) también se consideran variables aleatorias, y también tienen ditribuciones a priori.\n\\[\\sigma^2 \\sim \\pi (\\sigma^2)\\]"
+  },
+  {
+    "objectID": "slides.html#modelo-gausiano-latente",
+    "href": "slides.html#modelo-gausiano-latente",
+    "title": "Modelos Espaciales",
+    "section": "Modelo Gausiano Latente",
+    "text": "Modelo Gausiano Latente\nEl predictor lineal contiene el intercepto, los efectos de las covariables y funciones desconocidas \\(f^{(k)}\\) que incluyen los efectos aleatorios:\n\\[\\eta_i = \\mu + \\sum_{j}{\\beta_j z_{ij}} + \\sum_{k}{f^{(k)}u_{ik}}\\]\nLos componentes del predictor lineal forman un campo latente \\(x=(\\eta, \\mu, \\beta, f)\\). Además de los parámetros de la verosimilitud, también habrá hiperparámetros \\(\\theta\\). En un MLG, todos los componentes del predictor lineal deben tener distribuciones a priori gausianas, pero \\(\\theta\\) puede tener distribuciones a priori no gausianas.\nEl MLG se puede escribir formalmente como:\n\\[y \\vert x, \\theta \\sim \\prod \\pi (y_i \\vert \\eta_i, \\theta) \\\\\nx \\vert \\theta \\sim N(0, Q^{-1}(\\theta)) \\\\\n\\theta \\sim \\pi(\\theta)\\]"
+  },
+  {
+    "objectID": "slides.html#por-qué-inla",
+    "href": "slides.html#por-qué-inla",
+    "title": "Modelos Espaciales",
+    "section": "¿Por qué INLA?",
+    "text": "¿Por qué INLA?\nLas distribuciones a posteriori de los modelos bayesianos no suelen estar disponibles analíticamente y usualmente se encuentran con métodos de simulación por cadenas de Markov Monte Carlo (MCMC) (Besag et al., 1995). Estos métodos han permitido resolver modelos complejos sin la necesidad de imponer estructuras que lo simplifiquen. Pero, el método MCMC conlleva alta demanda computacional. Rue et al (2009) propusieron una alternativa para aproximar la distribución a posteriori en contextos de datos espaciales. La simplificación se produce por el supuesto de existencia de un campo aleatorio gaussiano markoviano (las correlaciones espaciales sólo dependen de los sitios en el vecindario).\nINLA (Integrated Nested Laplace Approximations; Rue, Martino y Chopin, 2009) es un método que permite estimar la distribución marginal a posteriori de los parámetros. INLA permite la inferencia bayesiana de una clase de MJB, los Modelos Gaussianos Latentes (LGM).\nINLA es más rápido que MCMC porque el campo latente al que referencia es un campo aleatorio gaussiano de Markov (GMRF) y por tanto tiene matriz de precisión rala, lo que permite a INLA utilizar métodos numéricos para matrices ralas, que son más eficientes."
+  },
+  {
+    "objectID": "slides.html#pensando-en-términos-de-intervalos-de-credibilidad",
+    "href": "slides.html#pensando-en-términos-de-intervalos-de-credibilidad",
+    "title": "Modelos Espaciales",
+    "section": "Pensando en términos de Intervalos de credibilidad",
+    "text": "Pensando en términos de Intervalos de credibilidad\n\nLa información previa sobre los parámetros se resumen en distribuciones de probabilidad (distribuciones a priori) a partir de las cuales se estima la distribución de probabilidad a posteriori dadas las observaciones.\nLa estimaciones puntuales de los parámetros de interés se obtienen calculando medidas resumen de la distribución a posteriori.\nSe informan intervalos de credibilidad calculados desde percentiles de la distribución a posteriori.\nLa credibilidad se interpreta como la probabilidad de que el valor estimado para el parámetro pertenezca al intervalo reportado, dado los datos observados"
+  },
+  {
+    "objectID": "slides.html#modelo-lineal-mixto.-efectos-fijos-y-aleatorios",
+    "href": "slides.html#modelo-lineal-mixto.-efectos-fijos-y-aleatorios",
+    "title": "Modelos Espaciales",
+    "section": "Modelo Lineal Mixto. Efectos Fijos y Aleatorios",
+    "text": "Modelo Lineal Mixto. Efectos Fijos y Aleatorios\n\\(Y\\) es función de covariables/factores de efectos fijos (constante) y aleatorios\nFijo vs. Aleatorio: - niveles arbitrariamente determinados vs. muestra aleatoria de niveles (asociado a una distribución de probabilidad)\nFijo vs. Aleatorio: - contexto; mecanismos de colección; espacio de inferencia; estrategia de modelación. Cantidad de niveles, calidad de la estimación de componentes de varianza. Cómputo de covarianzas."
+  },
+  {
+    "objectID": "Ej01.html#datos",
+    "href": "Ej01.html#datos",
+    "title": "Ejemplo 1: Modelación del rendimiento de caña de azúcar a partir de información satelital",
+    "section": "Datos",
+    "text": "Datos\nTrabajamos con datos de imágenes del satélite Landsat 5 TM, seleccionadas desde: USGS (USA): http://earthexplorer.usgs.gov/ e INPE (Brasil): http://www.inpe.br/.\nSe utilizaron datos pertenecientes a lotes de producción de caña de azúcar del noroeste argentino, expresados en toneladas de caña por hectárea (TCH) por lote, correspondientes a la zafra de 2009. Se eligieron 79 lotes con fecha de cosecha posterior a la fecha de la imagen satelital y se registraron los valores de TCH y las bandas de la imagen que seria usadas para predecir esa TCH. Todas los lotes fueron cosechado en verde (i.e. no-quema). De cada lote se registró además la edad del cultivo ya que la caña de azúcar es una especie semiperenne y algunos lotes eran del primer año de plantación (caña planta), mientras que otros del segundo año o primer rebrote (soca1) y otros de rebrotes de 2 o más años desde la plantación (entre paréntesis figura el nombre de la variable en el archivo de datos)\n\nUnidad de análisis (UM)\nLongitud (X_coord)\n\nLatitud (Y_coord)\n\nBanda 1 de la imagen satelital (Banda1)\n\nBanda 2 de la imagen satelital (Banda2)\n\nBanda 3 de la imagen satelital (Banda3)\n\nBanda 4 de la imagen satelital (Banda4)\n\nBanda 5 de la imagen satelital (Banda5)\n\nBanda 7 de la imagen satelital (Banda7)\n\nEdad en dos categorías: “Planta o Soca1” y “Soca2 o más” (EDAD)\nToneladas de caña por ha (TCH)\n\n\nLectura\n\ndatos <- readxl::read_xls(\"data/No quemadas.XLS\")\n\n\n\nCálculos de índices a partir de las bandas\n\nÍndice de Vegetación de Diferencia Normalizada (Normalized Difference Vegetation Index,NDVI)\n\nEl cálculo del NDVI se basa en la combinación de las bandas 3 (R) y 4 (NIR) ya que las plantas absorben la luz correspondiente a dichas bandas diferencialmente según su estado vegetativo.\n\\[NDVI = \\frac{NIR - R}{NIR + R} =  \\frac{B4 - B3}{B4 + B3}\\]\n-NDVI verde (green NDVI, gNDVI). Permite capturar más específicamente la concentración de clorofila.\n\\[gNDVI = \\frac{NIR - G}{NIR + G} =  \\frac{B4 - B2}{B4 + B2}\\]\n\nÍndice de Agua de Diferencia Normalizada (Normalized Difference Water Index, NDWI), se relaciona con la cantidad de agua que posee la vegetación.\n\n\\[NDWI = \\frac{NIR - SWIR}{NIR + SWIR} =  \\frac{B4 - B7}{B4 + B7}\\]\n\nÍndice de Canopeo Normalizado (Normalized Canopy Index, NCI), relacionado con el área foliar. Mayores valores de NCI indican menor área foliar y mayor cantidad de suelo desnudo, es decir menor canopeo.\n\n\\[NCI = \\frac{SWIR - G}{SWIR + G} =  \\frac{B5 - B2}{B5 + B2}\\]\n\ndiferenciaNormalizada <- function(x, y) {\n  (x - y) / (x + y)\n}\n\n\ndatos <- datos |> \n  mutate(\n    ndvi = diferenciaNormalizada(Banda4, Banda3),\n    gndvi = diferenciaNormalizada(Banda4, Banda2),\n    ndwi = diferenciaNormalizada(Banda4, Banda7),\n    nci = diferenciaNormalizada(Banda5, Banda2)\n  )\n\n\n\nVisualización espacial de los datos\n\ndatos_sf <-\n  sf::st_as_sf(datos,\n               coords = c('X_coord', 'Y_coord'),\n               crs = 32720)\n\ntmap_mode('view')\n\ntm_shape(datos_sf) +\n  tm_dots(col = 'EDAD')\n\n\n\n\n\n\n\n\nEstadística descriptiva\n\nGráficos\nHistograma:\n\nggplot(datos, aes(TCH)) +\n  geom_histogram(aes(y = after_stat(count / sum(count))),\n                 bins = 15) +\n  labs(y = 'Frecuencia Relativa')\n\n\n\n\nGráfico de cajas:\n\nggplot(datos, aes(EDAD, TCH)) +\n  geom_boxplot(width = 0.25)\n\n\n\n\n\n\n\nAnálisis de regresión Lineal\n\nNDVI\n\nggplot(datos, aes(ndvi, TCH)) +\n  geom_point()\n\n\n\n\n\nmodelo_ndvi <- lm(TCH ~ ndvi, data = datos)\nsummary(modelo_ndvi)\n\n## \n## Call:\n## lm(formula = TCH ~ ndvi, data = datos)\n## \n## Residuals:\n##     Min      1Q  Median      3Q     Max \n## -30.500  -8.464  -0.093   8.570  40.765 \n## \n## Coefficients:\n##             Estimate Std. Error t value Pr(>|t|)    \n## (Intercept)  -116.35      33.56  -3.467 0.000863 ***\n## ndvi          315.10      51.57   6.110  3.8e-08 ***\n## ---\n## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n## \n## Residual standard error: 14.51 on 77 degrees of freedom\n## Multiple R-squared:  0.3265, Adjusted R-squared:  0.3178 \n## F-statistic: 37.33 on 1 and 77 DF,  p-value: 3.803e-08\n\n\n\nggplot(datos, aes(gndvi, TCH)) +\n  geom_point()\n\n\n\n\n\nmodelo_gndvi <- lm(TCH ~ gndvi, data = datos)\nsummary(modelo_gndvi)\n\n## \n## Call:\n## lm(formula = TCH ~ gndvi, data = datos)\n## \n## Residuals:\n##     Min      1Q  Median      3Q     Max \n## -30.355  -7.135  -0.015   7.870  40.866 \n## \n## Coefficients:\n##             Estimate Std. Error t value Pr(>|t|)    \n## (Intercept)  -166.81      40.97  -4.072 0.000112 ***\n## gndvi         450.70      72.29   6.235 2.24e-08 ***\n## ---\n## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n## \n## Residual standard error: 14.41 on 77 degrees of freedom\n## Multiple R-squared:  0.3355, Adjusted R-squared:  0.3269 \n## F-statistic: 38.87 on 1 and 77 DF,  p-value: 2.241e-08\n\n\n\nggplot(datos, aes(ndwi, TCH)) +\n  geom_point()\n\n\n\n\n\nmodelo_ndwi <- lm(TCH ~ ndwi, data = datos)\nsummary(modelo_ndwi)\n\n## \n## Call:\n## lm(formula = TCH ~ ndwi, data = datos)\n## \n## Residuals:\n##     Min      1Q  Median      3Q     Max \n## -28.177  -8.652  -0.801   8.402  38.314 \n## \n## Coefficients:\n##             Estimate Std. Error t value Pr(>|t|)    \n## (Intercept)  -166.42      34.61  -4.809 7.38e-06 ***\n## ndwi          353.24      47.92   7.371 1.64e-10 ***\n## ---\n## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n## \n## Residual standard error: 13.54 on 77 degrees of freedom\n## Multiple R-squared:  0.4137, Adjusted R-squared:  0.4061 \n## F-statistic: 54.33 on 1 and 77 DF,  p-value: 1.639e-10\n\n\n\nggplot(datos, aes(nci, TCH)) +\n  geom_point()\n\n\n\n\n\nmodelo_nci <- lm(TCH ~ nci, data = datos)\nsummary(modelo_nci)\n\n## \n## Call:\n## lm(formula = TCH ~ nci, data = datos)\n## \n## Residuals:\n##     Min      1Q  Median      3Q     Max \n## -35.198  -8.585  -0.175  10.124  33.660 \n## \n## Coefficients:\n##             Estimate Std. Error t value Pr(>|t|)    \n## (Intercept)   271.56      38.28   7.093 5.53e-10 ***\n## nci          -493.28     103.01  -4.789 7.97e-06 ***\n## ---\n## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n## \n## Residual standard error: 15.52 on 77 degrees of freedom\n## Multiple R-squared:  0.2295, Adjusted R-squared:  0.2195 \n## F-statistic: 22.93 on 1 and 77 DF,  p-value: 7.975e-06\n\n\n\nrbind(\n  resumir_modelo(modelo_ndvi),\n  resumir_modelo(modelo_gndvi),\n  resumir_modelo(modelo_ndwi),\n  resumir_modelo(modelo_nci)\n  )\n\n##   Indice        R²      AIC      BIC     RMSE\n## 1   ndvi 0.3177744 650.8016 657.9100 14.32612\n## 2  gndvi 0.3268582 649.7427 656.8510 14.23042\n## 3   ndwi 0.4060686 639.8525 646.9608 13.36696\n## 4    nci 0.2194522 661.4378 668.5462 15.32372"
+  }
+]

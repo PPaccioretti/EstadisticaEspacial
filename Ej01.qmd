@@ -1,0 +1,243 @@
+---
+title: "Ejemplo 1: Modelación del rendimiento de caña de azúcar a partir de información satelital"
+format: html
+---
+
+```{r}
+#| include: false
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(tmap)
+
+
+resumir_modelo <- function(modelo) {
+  
+  rmse <- function(modelo) {
+    sqrt(mean(modelo$residuals^2))
+  }
+
+  modelo_resumen <- summary(modelo)
+  r2 <- modelo_resumen$adj.r.squared
+  
+  aic <- AIC(modelo)
+  bic <- BIC(modelo)
+  my_rmse <- rmse(modelo)
+  regresora <- attr(modelo$terms,"term.labels")
+  
+  data.frame('Indice' = regresora,
+             'R²' = r2,
+             'AIC' = aic,
+             'BIC' = bic,
+             'RMSE' = my_rmse, 
+             check.names = FALSE)
+}
+
+
+tmap_options(basemaps = c(
+  'Satelital' = leaflet::providers$Esri.WorldImagery,
+  'Político' = leaflet::providers$Esri.WorldTopoMap))
+```
+
+
+## Motivación 
+
+La generación de datos a partir de imágenes satelitales, constituyen una fuente 
+valiosa de información, pudiéndose construir incluso series históricas de 
+imagen de un sitio. En bioestadística este tipo de datos se usa para monitorear 
+ecosistemas, realizar pronósticos climáticos y predecir  cosechas, entre otros.
+
+
+En este caso mostramos la implementación de un análisis exploratorio de datos 
+para caracterizar la variable toneladas de caña por hectárea. 
+Luego estudiaremos el uso de modelos de regresión lineal para estimar 
+rendimientos de caña de azúcar a partir de índices de vegetación elaborados 
+con información proveniente de sensores remotos.
+
+
+## Datos
+
+Trabajamos con datos de imágenes del satélite Landsat 5 TM, 
+seleccionadas desde: USGS (USA): <http://earthexplorer.usgs.gov/> e 
+INPE (Brasil): <http://www.inpe.br/>.
+
+Se utilizaron datos pertenecientes a lotes de producción de caña de azúcar 
+del noroeste argentino, expresados en toneladas de caña por hectárea (TCH) 
+por lote, correspondientes a la zafra de 2009. Se eligieron 79 lotes con fecha 
+de cosecha posterior a la fecha de la imagen satelital y se registraron los 
+valores de TCH y las bandas de la imagen que seria usadas para predecir esa 
+TCH. Todas los lotes fueron cosechado en verde (i.e. no-quema). De cada lote 
+se registró además la edad del cultivo ya que la caña de azúcar es una especie 
+semiperenne y algunos lotes eran del primer año de plantación (caña planta), 
+mientras que otros del segundo año o primer rebrote (soca1) y otros de 
+rebrotes de 2 o más años desde la plantación (entre paréntesis figura el nombre 
+de la variable en el archivo de datos)
+
+- Unidad de análisis (UM)
+- Longitud (X_coord)      
+- Latitud (Y_coord)      
+- Banda 1 de la imagen satelital (Banda1)      
+- Banda 2 de la imagen satelital (Banda2)        
+- Banda 3 de la imagen satelital (Banda3)      
+- Banda 4 de la imagen satelital (Banda4)         
+- Banda 5 de la imagen satelital (Banda5)      
+- Banda 7 de la imagen satelital (Banda7)      
+- Edad en dos categorías: "Planta o Soca1" y "Soca2 o más" (EDAD)
+- Toneladas de caña por ha (TCH)             
+
+### Lectura 
+
+```{r}
+datos <- readxl::read_xls("data/No quemadas.XLS")
+
+```
+
+### Cálculos de índices a partir de las bandas
+
+-  Índice de Vegetación de Diferencia Normalizada (Normalized Difference 
+Vegetation Index,NDVI)
+
+El cálculo del NDVI se basa en la combinación de las bandas 3 (R) y 4 (NIR) ya 
+que las plantas absorben la luz correspondiente a dichas bandas 
+diferencialmente según su estado vegetativo.
+
+
+$$NDVI = \frac{NIR - R}{NIR + R} =  \frac{B4 - B3}{B4 + B3}$$
+
+-NDVI verde (green NDVI, gNDVI). Permite capturar más específicamente la 
+concentración de clorofila. 
+
+$$gNDVI = \frac{NIR - G}{NIR + G} =  \frac{B4 - B2}{B4 + B2}$$
+
+- Índice de Agua de Diferencia Normalizada (Normalized Difference Water Index, 
+NDWI), se relaciona con la cantidad de agua que posee la vegetación.
+
+$$NDWI = \frac{NIR - SWIR}{NIR + SWIR} =  \frac{B4 - B7}{B4 + B7}$$
+
+- Índice de Canopeo Normalizado (Normalized Canopy Index, NCI), 
+relacionado con el área foliar. Mayores valores de NCI indican menor área foliar
+y mayor cantidad de suelo desnudo, es decir menor canopeo.
+
+
+$$NCI = \frac{SWIR - G}{SWIR + G} =  \frac{B5 - B2}{B5 + B2}$$
+
+```{r}
+diferenciaNormalizada <- function(x, y) {
+  (x - y) / (x + y)
+}
+```
+
+
+```{r}
+datos <- datos |> 
+  mutate(
+    ndvi = diferenciaNormalizada(Banda4, Banda3),
+    gndvi = diferenciaNormalizada(Banda4, Banda2),
+    ndwi = diferenciaNormalizada(Banda4, Banda7),
+    nci = diferenciaNormalizada(Banda5, Banda2)
+  )
+
+```
+
+### Visualización espacial de los datos
+
+```{r}
+datos_sf <-
+  sf::st_as_sf(datos,
+               coords = c('X_coord', 'Y_coord'),
+               crs = 32720)
+
+tmap_mode('view')
+
+tm_shape(datos_sf) +
+  tm_dots(col = 'EDAD')
+```
+
+
+### Estadística descriptiva
+
+#### Gráficos
+
+Histograma:
+
+```{r}
+ggplot(datos, aes(TCH)) +
+  geom_histogram(aes(y = after_stat(count / sum(count))),
+                 bins = 15) +
+  labs(y = 'Frecuencia Relativa')
+```
+
+Gráfico de cajas:
+
+```{r}
+ggplot(datos, aes(EDAD, TCH)) +
+  geom_boxplot(width = 0.25)
+```
+
+
+### Análisis de regresión Lineal
+
+#### NDVI
+
+```{r}
+ggplot(datos, aes(ndvi, TCH)) +
+  geom_point()
+
+```
+
+
+```{r}
+modelo_ndvi <- lm(TCH ~ ndvi, data = datos)
+summary(modelo_ndvi)
+```
+
+
+
+```{r}
+ggplot(datos, aes(gndvi, TCH)) +
+  geom_point()
+
+```
+
+```{r}
+modelo_gndvi <- lm(TCH ~ gndvi, data = datos)
+summary(modelo_gndvi)
+```
+
+
+
+```{r}
+ggplot(datos, aes(ndwi, TCH)) +
+  geom_point()
+
+```
+
+```{r}
+modelo_ndwi <- lm(TCH ~ ndwi, data = datos)
+summary(modelo_ndwi)
+```
+
+
+
+```{r}
+ggplot(datos, aes(nci, TCH)) +
+  geom_point()
+```
+
+```{r}
+modelo_nci <- lm(TCH ~ nci, data = datos)
+summary(modelo_nci)
+```
+
+
+
+```{r}
+rbind(
+  resumir_modelo(modelo_ndvi),
+  resumir_modelo(modelo_gndvi),
+  resumir_modelo(modelo_ndwi),
+  resumir_modelo(modelo_nci)
+  )
+
+```
+
