@@ -189,26 +189,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="introducción" class="level2">
 <h2 class="anchored" data-anchor-id="introducción">Introducción</h2>
-<p>This tutorial demonstrates how to access and process satellite image collections on cloud computing platforms using R and modern cloud-native tools including SpatioTemporal Asset Catalogs, cloud optimized GeoTIFFs, and on-demand data cubes. After a quick introduction and overview of corresponding R packages, practical examples on image compositing, time series analysis, and the extraction of training data for machine learning models will be presented in a live demonstration. The tutorial will end with a discussion of limitations and future developments in R. Materials and further information will be published at https://github.com/appelmar/CONAE_2022.</p>
+<p>.</p>
 </section>
 <section id="contenidos" class="level2">
 <h2 class="anchored" data-anchor-id="contenidos">Contenidos</h2>
 <ol type="1">
-<li>Introduction
+<li>Modelos Lineales
 <ol type="1">
-<li><em>The</em> cloud</li>
-<li>Satellite imagery on cloud platforms</li>
-<li>Cloud-native technologies: STAC, COGs, data cubes</li>
-<li>R ecosystem for analyzing satellite imagery</li>
-<li>The gdalcubes R package</li>
+<li>Modelos Lineales Mixtos</li>
+<li>Modelos Bayesianos</li>
 </ol></li>
-<li>Hands-on examples
+<li>Ejemplos de aplicación
 <ol type="1">
-<li>Image compositing</li>
-<li>Time series analysis</li>
-<li>Extraction</li>
+<li>Predicción de rendimiento a partir de imágenes satelitales</li>
+<li>COVID</li>
 </ol></li>
-<li>Discussion</li>
 </ol>
 
 
@@ -383,22 +378,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introducción</span></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>This tutorial demonstrates how to access and process satellite image collections on cloud computing platforms using R and modern cloud-native tools including SpatioTemporal Asset Catalogs, cloud optimized GeoTIFFs, and on-demand data cubes. After a quick introduction and overview of corresponding R packages, practical examples on image compositing, time series analysis, and the extraction of training data for machine learning models will be presented in a live demonstration. The tutorial will end with a discussion of limitations and future developments in R.  Materials and further information will be published at https://github.com/appelmar/CONAE_2022.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>.</span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Contenidos</span></span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Introduction</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">    1. </span>_The_ cloud</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">    2. </span>Satellite imagery on cloud platforms</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">    3. </span>Cloud-native technologies: STAC, COGs, data cubes</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">    4. </span>R ecosystem for analyzing satellite imagery</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">    5. </span>The gdalcubes R package</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Hands-on examples</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">    1. </span>Image compositing</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">    2. </span>Time series analysis</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">    3. </span>Extraction</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Discussion</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  </span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Modelos Lineales</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">    1. </span>Modelos Lineales Mixtos</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">    2. </span>Modelos Bayesianos</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Ejemplos de aplicación</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">    1. </span>Predicción de rendimiento a partir de imágenes satelitales</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">    2. </span>COVID</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  </span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
