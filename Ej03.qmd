@@ -1,0 +1,308 @@
+---
+title: "High Plains Wheat Mosaic Virus (HPWMoV) en cultivos de maíz y trigo"
+format: html
+---
+
+# Presentación de los Datos
+
+-   Se sistematizó información desde la primera detección en el pais del virus.
+
+-   Se generó un registro de presencia/ausencia georreferenciado según año y localidad de muestreo.
+
+-   Contamos con 169 observaciones para HPWMoV en maíz y 451 obsevaciones en trigo.
+
+-   Las observaciones no estan alineadas
+
+```{r, message=FALSE}
+suppressPackageStartupMessages({
+  library(sf)
+  library(dplyr)
+  library(tmap)
+  library(tidyr)
+  library(INLA)
+})
+source("src/spde-book-functions.R")
+tmap_mode("view")
+```
+
+```{r}
+trigo_maiz <- st_read("data/trigo_maiz_26_09_22.gpkg", quiet = TRUE)
+st_geometry(trigo_maiz) <- 'geometry'
+trigo_maiz$HPV <- as.factor(trigo_maiz$HPV)
+
+
+hpv_maiz <- trigo_maiz |>
+  filter(Especie == "Maíz" & !is.na(HPV))
+
+hpv_trigo <- trigo_maiz |>
+  filter(Especie == "Trigo" & !is.na(HPV)) 
+```
+
+```{r}
+tm_shape(hpv_maiz) +
+  tm_dots("HPV", title = "HPV en Maiz", pal = "Dark2") +
+  tm_shape(hpv_trigo) +
+  tm_dots("HPV", title = "HPV en Trgio", pal = "Set1")
+```
+
+Complementariamente, se obtuvieron 117 variables biometeorológicas, usando la 
+plataforma ERA5, en el periodo comprendido entre agosto del año en que se tomo 
+la muestra y agosto del año siguiente.
+
+# Selección de variables
+
+Se identificó la importancia de cada variable climática para cada patosistema 
+con el algoritmo boruta y la selección de variables stepwise.
+
+Las variables biometeorológicas que favorecieron la presencia de HPWMoV en
+Maíz fueron las precipitaciones elevedas en el mes de Enero y temperatura de
+punto de rocío alta en el mes de Mayo
+
+En trigo HPWMov se vio favorecido por precipitaciones elevadas en Enero y
+temperaturas bajas en Junio.
+
+# Modelación
+
+La distribución de la presencia de estos virus se modeló con una regresión
+bayesiana de efectos mixtos y estructura espacial conjunta de las muestras 
+sobre Trigo y Maíz estimada via SPDE considerando una malla común.
+
+$$
+\log{\left(\frac{p_{i.maíz}(S)}{1-p_{i.maiz}(S)}\right)} = \\
+\alpha_{maíz} + x_{i1}(S)\beta_{1.maíz} + x_{i2}(S)\beta_{2.maíz} + x_{i3}(S)\beta_{3.maíz} +
+Z_{maíz}(S) + e_{maíz}(S)
+$$
+
+$$
+\log{\left(\frac{p_{i.trigo}(S)}{1-p_{i.trigo}(S)}\right)} = \\
+\alpha_{trigo} + x_{i1}(S)\beta_{4.trigo} + x_{i5}(S)\beta_{5.trigo} + \lambda Z_{maíz}(S) +
+Z_{trigo} (S) + e_{trigo} (S)
+$$
+
+donde $\log{\left(\frac{p_ij}{1 - p_ij}\right)}$ es la funcion de enlace. 
+$x_1$ es el total de precipitaciones del mes de enero, $x_2$ es la temperatura
+punto rocío del mes de mayo y $x_3$ es el año en el que se tomo la muestra y 
+$x_4$ es la temperatura del mes de junio.
+
+## Armado del modelo
+
+### Cargamos la base de datos
+
+```{r}
+trigo_hpv_sf2 <- st_read("data/trigo_hpv.gpkg",quiet = TRUE)
+st_geometry(trigo_hpv_sf2) <- 'geometry'
+```
+
+### Cargamos los limites de la region donde hay datos
+
+```{r}
+limites2 <- st_read("data/limites2.gpkg", quiet = TRUE)
+st_geometry(limites2) <- 'geometry'
+```
+
+```{r}
+tm_shape(trigo_hpv_sf2) +
+  tm_dots() +
+  tm_shape(limites2) +
+  tm_polygons(alpha = 0)
+```
+
+### Boundary
+
+```{r}
+base_maiz <- trigo_hpv_sf2 |>
+  drop_na(HPV_maiz)
+
+loc.maiz <- base_maiz |>
+  st_coordinates()
+
+
+base_trigo <- trigo_hpv_sf2 |>
+  drop_na(HPV_trigo)
+
+loc.trigo <- base_trigo |>
+  st_coordinates()
+
+loc.obs <- st_coordinates(trigo_hpv_sf2)
+
+boundary <- list(inla.nonconvex.hull(loc.obs, 2),
+                 inla.nonconvex.hull(loc.obs, 4))
+```
+
+### Mesh
+
+```{r}
+mesh <- inla.mesh.2d(
+  boundary = boundary,
+  max.edge = c(0.4, 0.8),
+  min.angle = c(30, 21),
+  max.n = c(480, 160),
+  max.n.strict = c(128000, 128000),
+  cutoff = 0.03,
+  offset = c(2, 4)
+)
+
+plot(mesh)
+points(loc.obs, pch = 16, col = "#FF5300")
+```
+
+### SPDE - Modelo espacial
+
+```{r}
+spde <- inla.spde2.pcmatern(
+  mesh = mesh,
+  # P(range < rangemin) = 0.01
+  prior.range = c(1000, 0.01),
+  prior.sigma = c(10, 0.01)
+)
+```
+
+### Formula
+
+```{r}
+form <- y ~ -1 +
+  intercept_hpv_maiz+
+  intercept_hpv_trigo +
+  
+  Precipitacion_Jan_maiz + 
+  Punto.rocio_May_maiz + 
+  anio_maiz + 
+  
+  Precipitacion_Jan_trigo + 
+  Temperatura_Jun_trigo +
+  
+  f(s1, model = spde) + 
+  f(s2, model = spde) + 
+  f(s12, copy = "s1", fixed = FALSE)
+```
+
+### Matrices de Proyeccion
+
+```{r}
+Amaiz <- inla.spde.make.A(mesh,loc.maiz)
+
+Atrigo <- inla.spde.make.A(mesh, loc.trigo)
+```
+
+### Stacks
+
+```{r}
+stackMaiz <- inla.stack(
+  data = list(y = cbind(NA, base_maiz$HPV_maiz)),
+  A = list(Amaiz,1),
+  effects = list(
+    list(s1 = 1:spde$n.spde),
+    list(intercept_hpv_trigo = rep(1, nrow(base_maiz)),
+         
+         Precipitacion_Jan_maiz  = base_maiz$Precipitacion_Jan,
+         Punto.rocio_May_maiz = base_maiz$Punto.rocio_May,
+         anio_maiz = base_maiz$Año.de.Colecta,
+         
+         Precipitacion_Jan_trigo  = rep(NA, nrow(base_maiz)),
+         Temperatura_Jun_trigo = rep(NA, nrow(base_maiz))
+         )
+    
+  ),
+  tag = "WSMV_maiz")
+
+
+stackTrigo <- inla.stack(
+  data = list(y = cbind(base_trigo$HPV_trigo,NA)),
+  A = list(Atrigo,1),
+  effects = list(
+    list(s2 = 1:spde$n.spde, s12 = 1:spde$n.spde),
+    list(intercept_hpv_maiz = rep(1, nrow(base_trigo)),
+         
+         Precipitacion_Jan_maiz  = rep(NA, nrow(base_trigo)),
+         Punto.rocio_May_maiz = rep(NA, nrow(base_trigo)),
+         anio_maiz = rep(NA, nrow(base_trigo)),
+         
+         Precipitacion_Jan_trigo = base_trigo$Precipitacion_Jan,
+         Temperatura_Jun_trigo = base_trigo$Temperatura_Jun 
+           )
+  ),
+  tag = "WSMV_trigo")
+
+
+stack <- inla.stack(stackTrigo,stackMaiz)
+```
+
+### Resultados
+
+```{r ajuste-inla, cache=TRUE}
+set.seed(123)
+result <- inla(
+  form,
+  rep('binomial', 2),
+  data = inla.stack.data(stack),
+  control.predictor = list(
+    compute = TRUE,
+    A = inla.stack.A(stack),
+    link = 1
+  ),
+  
+  control.compute = list(
+    return.marginals = TRUE,
+    return.marginals.predictor = TRUE,
+    hyperpar = TRUE
+  )
+)
+
+result$summary.fixed
+
+result$summary.hyperpar
+
+
+```
+
+```{r}
+par(mfrow = n2mfrow(length(names(result$marginals.fixed)), asp = 1))
+invisible(
+  sapply(names(result$marginals.fixed), function(x) {
+    
+    plot(result$marginals.fixed[[x]], type = 'l', 
+         xlab = x, ylab = 'Density')
+    abline(v = 0)
+  })
+)
+```
+
+```{r}
+par(mfrow = n2mfrow(length(names(result$marginals.hyperpar)), asp = 1))
+for (j in names(result$marginals.hyperpar)) {
+  ii <- result$marginals.hyperpar[[j]][,2] > sqrt(.Machine$double.eps)
+  plot(result$marginals.hyperpar[[j]], 
+       type = 'l', 
+       xlim = range(result$marginals.hyperpar[[j]][ii, 1]), 
+       xlab = names(result$marginals.hyperpar)[j], 
+       ylab = 'Density',
+       main = j)
+}
+```
+
+Para validar el modelo se realizó un validación cruzada k-fold, con un k = 10, para cada cultivo.
+
+Los resultados indicaron que la modelación conjunta permitió aumentar la capacidad predictiva de la presencia de virus en el cultivo de trigo en relación al clima, respecto a la obtenida en el modelo marginal con las mismas regresoras.
+
+```{=html}
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;
+  padding:10px 5px;word-break:normal;}
+.tg th{border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-mqa1{border-color:#000000;font-weight:bold;text-align:center;vertical-align:top}
+.tg .tg-mcqj{border-color:#000000;font-weight:bold;text-align:left;vertical-align:top}
+</style>
+```
++-------+
+| HPV   |
++=======+
+|       |
++-------+
+|       |
++-------+
+| Maíz  |
++-------+
+| Trigo |
++-------+

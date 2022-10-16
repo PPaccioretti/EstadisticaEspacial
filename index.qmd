@@ -1,29 +1,38 @@
 ---
-title: "Estadistica espacial"
-subtitle: "Tutorial"
-date: "Octubre 2022"
+title: "Estadística para datos espaciales"
+subtitle: "Tutorial Modelos Lineales y Bayesianos"
+date: 'Octubre 2022'
 date-format: "MMMM, YYYY"
 author: 
     - Pablo Paccioretti
     - Mónica Balzarini
     - Mariano Córdoba
-toc: false
+    - Franco Suarez
+toc: true
+toc-title: 'Contenidos'
 ---
-
-
-
-
 
 ## Introducción
 
-.
+En la última década la obtención de datos georreferenciados fue en aumento y la 
+diversidad de información disponible es cada vez es más accesible. 
+La infraestructura de datos espaciales aumenta en tamaño y calidad. Para estudiar
+la variabilidad de los procesos espaciales es necesario utilizar técnicas estadísticas
+específicas que contemplan la correlación espacial de los datos.
+
+En este tutorial se muestran posibles alternativas de análisis para estudiar la
+variabilidad espacial y relación de variables. Para esto, a modo de ilustración,
+se utilizan diversas bases de datos espaciales provenientes de diferentes ámbitos
+de aplicación. 
+
 
 ## Contenidos
 
-1. Modelos Lineales
+1. Introducción a Modelos Lineales
     1. Modelos Lineales Mixtos
     2. Modelos Bayesianos
 2. Ejemplos de aplicación
     1. Predicción de rendimiento a partir de imágenes satelitales
-    2. COVID
+    2. Modelación de casos de COVID
+    3. Relación clima-virosis en cultivos agrícolas
   

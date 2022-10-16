@@ -15,9 +15,13 @@ website:
         aria-label: GitHub
     left:
       - text: "Slides"
-        href: Espacial_IG2022.qmd
+        href: slidespage.qmd
       - text: "Ejemplo 1"
         href: Ej01.qmd
+      - text: "Ejemplo 2"
+        href: Ej02.qmd
+      - text: "Ejemplo 3"
+        href: Ej03.qmd
   page-footer:
     background: "#546e7a"
     # center: 
@@ -29,11 +33,9 @@ website:
 execute:
   freeze: auto  # re-render only when source changes
   warning: false
+  messages: false
   
 lang: es
-language: 
-  toc-title-document: "Writer"
-  
 citations-hover: true
 knitr:
   opts_chunk: 
@@ -48,7 +50,7 @@ format:
     toc-location: left
     toc-title: Contents
     title-block-categories: false
-    
+    df-print: kable
     #monofont: "Roboto Mono"
     #mainfont: "Roboto"
     code-tools: true
@@ -60,7 +62,7 @@ format:
     code-block-background: true
     code-block-border-left: true
     #code-overflow: "wrap"
-    fontsize: 10pt
+    fontsize: 12pt
     code-overflow: "scroll"
     #code-line-numbers: true
 

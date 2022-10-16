@@ -1,16 +1,20 @@
 ---
+author: "Pablo Paccioretti"
 format: 
   revealjs:
     #transition: fade
     theme: styles/theme_slides.scss
 slide-number: "c/t"
-author: "Pablo Paccioretti"
 chalkboard:
-    theme: whiteboard
+    theme: chalkboard
+    chalk-effect: 0
 footnotes-hover: true
+multiplex: true
 footer: ""
+editor: 
+  markdown: 
+    wrap: 72
 ---
-
 
 # Modelos Estadísticos
 
@@ -20,72 +24,73 @@ Mónica Balzarini, Pablo Paccioretti
 
 Octubre, 2022
 
-
-
-
-
-
-
 ## Análisis de datos. Paradigmas
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="47%"}
+### Analítico
 
-### Analítico 
-  - Fundamentación matemática de los procedimientos estadísticos
-  - Resultados muchas veces exactos
-  - Expresiones cerradas para medidas de incertidumbre, al menos asintóticas
-  - Teoremas de respaldo, necesidad de supuestos distribucionales
-  - Modelos estadísticos 
-  - Clasificación y Predicción
-  
+-   Fundamentación matemática de los procedimientos estadísticos
+-   Resultados muchas veces exactos
+-   Expresiones cerradas para medidas de incertidumbre, al menos
+    asintóticas
+-   Teoremas de respaldo, necesidad de supuestos distribucionales
+-   Modelos estadísticos
+-   Clasificación y Predicción
 :::
 
 ::: {.column width="6%"}
-
 :::
 
 ::: {.column width="47%"}
+### Computación intensiva
 
-### Computación intensiva 
-  - Soluciones númericas
-  - Resultados aproximados por procesos iterativos
-  - Capacidad de modelar situaciones más complejas con supuestos menos restrictivos
-  - Aprendizajes automáticos
-  - Más exploratorios que inferenciales
-  - Modelos o algoritmos explicativos
-  - Clasificación y Predicción
-
+-   Soluciones númericas
+-   Resultados aproximados por procesos iterativos
+-   Capacidad de modelar situaciones más complejas con supuestos menos
+    restrictivos
+-   Aprendizajes automáticos
+-   Más exploratorios que inferenciales
+-   Modelos o algoritmos explicativos
+-   Clasificación y Predicción
 :::
-
-::::
-
-
-
+:::
 
 ## Modelo Lineal General
 
-$Y = Valor\ Esperado + Error$
+$$Y = Valor\ Esperado + Error$$
 
-$Y = Modelo\ de\ Media + Modelo\ de\ Varianza\! - \! Covarianza$
+$$Y = Modelo\ de\ Media + Modelo\ de\ Varianza\! - \! Covarianza$$
 
-En el Modelo de Media, la respuesta se relaciona linealmente con regresoras 
-y/o variables de clasificación (Modelos de Regresión, Modelos de ANAVA)
+En el Modelo de Media, la respuesta se relaciona linealmente con
+regresoras y/o variables de clasificación (Modelos de Regresión, Modelos
+de ANAVA)
 
-El Modelo de varianzas y covarianzas se determina con supuestos distribucionales 
-para los términos de error: 
+El Modelo de varianzas y covarianzas se determina con supuestos
+distribucionales para los términos de error:
 
-  - i.i.d Normales
-  - no correlacionados    
-  - varianza constante
-    
-*Pero* también podría ser con autocorrelacionados espacial.
+::: columns
+::: {.column width="30%"}
+-   i.i.d Normales
+-   no correlacionados
+-   varianza constante
+:::
 
-> Los supuestos no son necesarios para la estimación pero sí para la inferencia 
-(valor-p no real en caso de incumplimiento).
+::: {.column width="70%"}
+::: {.fragment .fade-in-then-out}
+::: {.callout-note appearance="simple"}
+Hay alternativas para corregir la falta de cumplimiento de algunos de
+estos supuestos.
+:::
 
-
+::: {.callout-caution appearance="simple"}
+El cumplimiento de los supuestos no son necesarios para la estimación
+pero sí para la inferencia, esto significa que el valor-p puede no ser
+real en caso de incumplimiento de estos.
+:::
+:::
+:::
+:::
 
 ## Modelo de Regresión Lineal
 
@@ -95,231 +100,203 @@ $$\varepsilon_{ij} \sim N \big(0, \sigma^2 \big) \: \: \:
 cov(\varepsilon_{ij}, \varepsilon_{i'j'}) = 0 \: \forall ij \neq i' j'$$
 
 Donde:
-- $Y_{ij}$ es la observación en la $j-ésima$ repetición del $i-ésimo$ tratamiento.
-- $\beta_0$ es la Constante
-- $\beta_1$ es el efecto de la variable regresora
-- $x_{ij}$ valor de la covariable 
-- $\varepsilon_{ij}$ es el efecto aleatorio de la $ij-ésima$ unidad experimental
 
+-   $Y_{ij}$ es la observación en la $j-ésima$ repetición del $i-ésimo$
+    tratamiento.
+-   $\beta_0$ es la Constante
+-   $\beta_1$ es el efecto de la variable regresora
+-   $x_{ij}$ valor de la covariable
+-   $\varepsilon_{ij}$ es el efecto aleatorio de la $ij-ésima$ unidad
+    experimental
 
-Alternativamente la covarianza entre los términos de error puede ser distinta 
-de cero, por ej. covarianza positiva expresada como función de la distancia entre observaciones
-
-
+Alternativamente la covarianza entre los términos de error puede ser
+distinta de cero, por ejemplo covarianza positiva expresada como función
+de la distancia entre observaciones
 
 # Desde ML a GLM {background-color="#546e7a"}
-
 
 ## Modelo Lineal Mixto
 
 ### No independencia y/o No homogeneidad de varianzas
 
+Permite trabajar correlaciones de dos formas:
 
-Permite trabajar correlaciones de dos formas: 
+-   especificando covarianzas para los errores
+-   incorporando efectos aleatorios correlacionados
 
-- especificando covarianzas para los errores 
-- incorporando efectos aleatorios correlacionados
+Se suponen errores normales y correlación entre errores. Se puede
+explicitar a través de distintas funciones que especifican la
+correlación entre cada par de datos según la distancia espacial entre
+ellos (por ejemplo correlación espacial exponencial, esférica, gausiana)
 
-Se suponen errores normales y correlación entre errores se puede explicitar 
-a través de distintas funciones que especifican la correlación entre cada par 
-de datos según la distancia espacial entre ellos 
-(por ejemplo correlación espacial exponencial, esférica, gausiana)
-
-
----
+------------------------------------------------------------------------
 
 ## Modelo Lineal Mixto. Efectos Fijos y Aleatorios
 
-$Y$ es función de covariables/factores de efectos fijos (constante) y aleatorios
+$Y$ es función de covariables/factores de efectos fijos (constante) y
+aleatorios
 
-Fijo vs. Aleatorio: 
- - niveles arbitrariamente determinados  vs. muestra aleatoria de niveles 
- (asociado a una distribución de probabilidad)
+Fijo vs. Aleatorio:
 
-Fijo vs. Aleatorio: 
- - contexto; mecanismos de colección; espacio de inferencia; estrategia 
- de modelación. Cantidad de niveles, calidad de la estimación de componentes 
- de varianza. Cómputo de covarianzas.
-
-
-
+-   Niveles arbitrariamente determinados vs. muestra aleatoria de
+    niveles (asociado a una distribución de probabilidad)
+-   Mecanismos de colección
+-   Espacio de inferencia
+-   Estrategia de modelación
+-   Cantidad de niveles
+-   Calidad de la estimación de componentes de varianza
+-   Cómputo de covarianzas
 
 ## Modelo Lineal Generalizado. Componentes
 
-
-1. Distribución de las observaciones
-    - No necesariamente normal, no-homogeneidad 
-
-1. Predictor lineal
-    - Combinación lineal del efecto de las fuentes de variación más un intercepto 
-
-1. Función de enlace
-    - Permite ajustar un modelo lineal a la media de la respuesta.
-    Cuando estimamos los parámetros del modelo lineal, lo hacemos en la 
-    escala de la función de enlace. Su inversa nos da el valor predicho en 
-    la escala de las observaciones
-
-
-
+1.  Distribución de las observaciones
+    -   No necesariamente normal, no-homogeneidad
+2.  Predictor lineal
+    -   Combinación lineal del efecto de las fuentes de variación más un
+        intercepto
+3.  Función de enlace
+    -   Permite ajustar un modelo lineal a la media de la respuesta.
+        Cuando estimamos los parámetros del modelo lineal, lo hacemos en
+        la escala de la función de enlace. Su inversa nos da el valor
+        predicho en la escala de las observaciones
 
 ## Modelo Lineal Generalizado
 
-
-- Lineal
-    - Una transformación de la media (valor esperado de la respuesta) se 
-    relaciona linealmente con las fuentes de variación reconocidas a priori
-    - Predictor lineal de una función de la esperanza o media de $Y$,  $E(Y)$
-
-
-- Generalizado
-    - La componente aleatoria puede ser no-normal (distribución miembro de la 
-    familia exponencial como es el caso de Bernouille, Binomial y Poisson 
-    para modelar presencia/ausencia, proporciones y conteos respectivamente y 
-    el caso de distribuciones continuas: Normal, Gamma, Inversa Gaussiana)
-
-
-
+-   Lineal
+    -   Una transformación de la media (valor esperado de la respuesta)
+        se relaciona linealmente con las fuentes de variación
+        reconocidas a priori
+    -   Predictor lineal de una función de la esperanza o media de $Y$,
+        $E(Y)$
+-   Generalizado
+    -   La componente aleatoria puede ser no-normal (distribución
+        miembro de la familia exponencial como es el caso de Bernouille,
+        Binomial y Poisson para modelar presencia/ausencia, proporciones
+        y conteos respectivamente y el caso de distribuciones continuas:
+        Normal, Gamma, Inversa Gaussiana)
 
 ## Modelo Lineal Generalizado Mixto (GLMM)
 
 No necesariamente normal, no-homogeneidad y no independencia
 
-MLGM permite trabajar datos no normales (por ejemplo variables binarias y 
-conteos) y correlaciones, a través de la incorporación de efectos aleatorios. 
-Es un modelo Jerárquico
-
+MLGM permite trabajar datos no normales (por ejemplo variables binarias
+y conteos) y correlaciones, a través de la incorporación de efectos
+aleatorios. Es un modelo Jerárquico
 
 # Paradigmas dentro del analítico
 
-
-
-
-:::: {.columns}
-
+::: columns
 ::: {.column width="50%"}
-**Frecuentista**: 
+**Frecuentista**:
 
-Relacionan la variable respuesta con variables explicativas a través de 
-parámetros desconocidos. Los parámetros son constantes que se estiman con 
-determinada confianza.
-
+Relacionan la variable respuesta con variables explicativas a través de
+parámetros desconocidos. Los parámetros son constantes que se estiman
+con determinada confianza.
 :::
 
 ::: {.column width="50%"}
 **Bayesiano**:
 
-Relacionan la variable dependiente con variables explicativas a través de 
-parámetros desconocidos. Los parámetros se interpretan en término de 
-probabilidades bayesianas; se supone una distribución "a priori" para cada 
-parámetro y se deriva la distribución "a posteriori" de cada parámetro y
-para la predicción de Y. 
-
+Relacionan la variable dependiente con variables explicativas a través
+de parámetros desconocidos. Los parámetros se interpretan en término de
+probabilidades bayesianas; se supone una distribución "a priori" para
+cada parámetro y se deriva la distribución "a posteriori" de cada
+parámetro y para la predicción de Y.
 :::
-
-::::
-
-
+:::
 
 # Modelos Jerárquicos Bayesianos y estimación por INLA {background-color="#546e7a"}
 
 ## Modelo Bayesiano
 
-- Relacionan la variable dependiente con variables explicativas a 
-través de parámetros desconocidos. 
-- Los parámetros se interpretan en término de probabilidades bayesianas; 
-se supone una distribución "a priori" para cada parámetro y se deriva la 
-distribución "a posteriori" de cada parámetro.
-- La media, moda o mediana de la distribución a posteriori se usa como proxy del parámetro. 
-- Las "a priori" son parte del modelo y una manera de expresar la distribución 
-de probabilidad de los datos dados los parámetros. 
-- Los parámetros de las distribuciones "a priori"  se llaman hiperparámetros. 
-- "a posteriori" = actualización de la "a priori" con los datos observados. 
-- Permite otorgar grado de creencia (intervalo de credibilidad)
-
-
-
+-   Relacionan la variable dependiente con variables explicativas a
+    través de parámetros desconocidos.
+-   Los parámetros se interpretan en término de probabilidades
+    bayesianas; se supone una distribución "a priori" para cada
+    parámetro y se deriva la distribución "a posteriori" de cada
+    parámetro.
+-   La media, moda o mediana de la distribución a posteriori se usa como
+    proxy del parámetro.
+-   Las "a priori" son parte del modelo y una manera de expresar la
+    distribución de probabilidad de los datos dados los parámetros.
+-   Los parámetros de las distribuciones "a priori" se llaman
+    hiperparámetros.
+-   "a posteriori" = actualización de la "a priori" con los datos
+    observados.
+-   Permite otorgar grado de creencia (intervalo de credibilidad)
 
 ## Pensando en términos de Intervalos de credibilidad
 
+-   La información previa sobre los parámetros se resumen en
+    distribuciones de probabilidad (distribuciones a priori) a partir de
+    las cuales se estima la distribución de probabilidad a posteriori
+    dadas las observaciones.
 
-- La información previa sobre los parámetros se resumen en distribuciones 
-de probabilidad (distribuciones a priori) a partir de las cuales se estima 
-la distribución de probabilidad a posteriori dadas las observaciones. 
+-   La estimaciones puntuales de los parámetros de interés se obtienen
+    calculando medidas resumen de la distribución a posteriori.
 
-- La estimaciones puntuales de los parámetros de interés se obtienen 
-calculando medidas resumen de la distribución a posteriori.
+-   Se informan intervalos de credibilidad calculados desde percentiles
+    de la distribución a posteriori.
 
-- Se informan intervalos de credibilidad calculados desde percentiles de 
-la distribución a posteriori. 
-
-- La credibilidad se interpreta como la probabilidad de que el valor 
-estimado para el parámetro pertenezca al intervalo reportado, dado los
-datos observados
-
-
+-   La credibilidad se interpreta como la probabilidad de que el valor
+    estimado para el parámetro pertenezca al intervalo reportado, dado
+    los datos observados
 
 ## ¿Por qué Jerárquico?
 
-Los datos $Z$ tienen una distribución condicional dado el proceso latente que 
-los ha generado $Y$, que a su vez tiene una distribución condicional a 
-ciertos parámetros $\theta$  y $\theta$ tiene a su vez una distribución "a priori".
+Los datos $Z$ tienen una distribución condicional dado el proceso
+latente que los ha generado $Y$, que a su vez tiene una distribución
+condicional a ciertos parámetros $\theta$ y $\theta$ tiene a su vez una
+distribución "a priori".
 
 
-:::: {.columns}
 
-::: {.column width="50%"}
++:---------------------------+:----------------------------------------+
+| Modelo para los datos      | $\left[ Z \big\vert Y, \theta \right]$  |
+|                            |                                         |
+| Modelo para el proceso     | $\left[ Y \big\vert \theta \right]$     |
+|                            |                                         |
+| Modelo para los parámetros | $\left[ \theta \right]$                 |
++----------------------------+-----------------------------------------+
 
-Modelo para los datos: 
-$$ \left[ Z \big\vert Y, \theta \right]$$
 
-Modelo para el proceso: 
-$$ \left[ Y \big\vert \theta \right]$$
-
-Modelo para los parámetros: 
-$$ \left[ \theta \right]$$
-
-:::
-
-::: {.column width="50%"}
-
-:::
-
-:::: 
 
 
 ## Modelo Jerárquico Bayesiano
 
-Un modelo jerárquico es un modelo especificado en etapas. 
+Un modelo jerárquico es un modelo especificado en etapas.
 
-_Ejemplo_: Modelo lineal mixto con efectos aleatorios $u$.
+*Ejemplo*: Modelo lineal mixto con efectos aleatorios $u$.
 
 $$y \vert \beta, u, \sigma^2 \sim N(x' \beta + z'u, \sigma^2I) \\
 u \sim N(0, D(\theta))$$
 
-En un modelo bayesiano, los parámetros se consideran variables aleatorias y
-tienen distribuciones a priori. Continuando con el ejemplo anterior:
+En un modelo bayesiano, los parámetros se consideran variables
+aleatorias y tienen distribuciones a priori. Continuando con el ejemplo
+anterior:
 
 $$\beta \sim \pi (\beta)$$
 
-En el modelo jerárquico bayesiano, los parámetros de las distribuciones a priori
-de los parámetros (llamados _hiperparámetros_) también se consideran variables 
-aleatorias, y también tienen ditribuciones a priori. 
+En el modelo jerárquico bayesiano, los parámetros de las distribuciones
+a priori de los parámetros (llamados *hiperparámetros*) también se
+consideran variables aleatorias, y también tienen ditribuciones a
+priori.
 
 $$\sigma^2 \sim \pi (\sigma^2)$$
 
-
 ## Modelo Gausiano Latente
 
-El predictor lineal contiene el intercepto, los efectos de las covariables y 
-funciones desconocidas $f^{(k)}$ que incluyen los efectos aleatorios:
+El predictor lineal contiene el intercepto, los efectos de las
+covariables y funciones desconocidas $f^{(k)}$ que incluyen los efectos
+aleatorios:
 
 $$\eta_i = \mu + \sum_{j}{\beta_j z_{ij}} + \sum_{k}{f^{(k)}u_{ik}}$$
 
-Los componentes del predictor lineal forman un campo latente 
-$x=(\eta, \mu, \beta, f)$. Además de los parámetros de la verosimilitud, también
-habrá hiperparámetros $\theta$. En un MLG, todos los componentes del predictor
-lineal deben tener distribuciones a priori gausianas, pero $\theta$ puede tener
-distribuciones a priori no gausianas. 
+Los componentes del predictor lineal forman un campo latente
+$x=(\eta, \mu, \beta, f)$. Además de los parámetros de la verosimilitud,
+también habrá hiperparámetros $\theta$. En un MLG, todos los componentes
+del predictor lineal deben tener distribuciones a priori gausianas, pero
+$\theta$ puede tener distribuciones a priori no gausianas.
 
 El MLG se puede escribir formalmente como:
 
@@ -329,49 +306,33 @@ x \vert \theta \sim N(0, Q^{-1}(\theta)) \\
 
 ## ¿Por qué INLA?
 
+Las distribuciones a posteriori de los modelos bayesianos no suelen
+estar disponibles analíticamente y usualmente se encuentran con métodos
+de simulación por cadenas de Markov Monte Carlo (MCMC) (Besag et al.,
+1995). Estos métodos han permitido resolver modelos complejos sin la
+necesidad de imponer estructuras que lo simplifiquen. Pero, el método
+MCMC conlleva alta demanda computacional. Rue et al (2009) propusieron
+una alternativa para aproximar la distribución a posteriori en contextos
+de datos espaciales. La simplificación se produce por el supuesto de
+existencia de un campo aleatorio gaussiano markoviano (las correlaciones
+espaciales sólo dependen de los sitios en el vecindario).
 
-Las distribuciones a posteriori de los modelos bayesianos no suelen estar 
-disponibles analíticamente y usualmente se encuentran con métodos de simulación
-por cadenas de Markov Monte Carlo (MCMC) (Besag et al., 1995). Estos métodos 
-han permitido resolver modelos complejos sin la necesidad de imponer 
-estructuras que lo simplifiquen. Pero, el método MCMC conlleva alta demanda
-computacional. Rue et al (2009) propusieron una alternativa para aproximar la
-distribución a posteriori en contextos de datos espaciales. La simplificación se
-produce por el supuesto de existencia de un campo aleatorio gaussiano 
-markoviano (las correlaciones espaciales sólo dependen de los sitios en 
-el vecindario).
+INLA (*Integrated Nested Laplace Approximations*; Rue, Martino y Chopin,
+2009) es un método que permite estimar la distribución marginal a
+posteriori de los parámetros. INLA permite la inferencia bayesiana de
+una clase de MJB, los Modelos Gaussianos Latentes (LGM).
 
-
-INLA (_Integrated Nested Laplace Approximations_; Rue, Martino y Chopin, 2009) 
-es un método que permite estimar la distribución marginal a posteriori de los
-parámetros. INLA permite la inferencia bayesiana de una clase de MJB, los 
-Modelos Gaussianos Latentes (LGM).
-
-INLA es más rápido que MCMC porque el campo latente al que referencia es un 
-campo aleatorio gaussiano de Markov (GMRF) y por tanto tiene matriz de 
-precisión rala, lo que permite a INLA utilizar métodos numéricos para 
+INLA es más rápido que MCMC porque el campo latente al que referencia es
+un campo aleatorio gaussiano de Markov (GMRF) y por tanto tiene matriz
+de precisión rala, lo que permite a INLA utilizar métodos numéricos para
 matrices ralas, que son más eficientes.
-
 
 # Ejemplos de aplicación {background-color="#546e7a"}
 
+[Ejemplo 1](./Ej01.html){preview-link="true"}
 
+[Ejemplo 2](/Ej02.html){preview-link="true"}
+
+[Ejemplo 3](Ej03.html){preview-link="true"}
 
 # Gracias!
-
-
-<!-- **Slides and notebooks:** -->
-
-<!-- https://github.com/appelmar/CONAE_2022 -->
-
-<!-- <br/> -->
-
-<!-- **Contact:** -->
-
-<!-- [&#64;appelmar](https://twitter.com/appelmar) -->
-
-<!-- [marius.appel@uni-muenster.de](mailto:marius.appel@uni-muenster.de) -->
-
-
-
-

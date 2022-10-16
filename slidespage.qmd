@@ -1,0 +1,10 @@
+:::{.column-page}
+## Slides
+```{=html}
+<iframe class="slide-deck", style="width:100%;height:600px; border:1px solid gray;" src="slides.html"></iframe>
+```
+
+[Mostrar en una nueva pestaña](slides.html){target="_blank"}
+:::
+
+

@@ -7,7 +7,7 @@
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.0.36">
+  <meta name="generator" content="quarto-1.1.189">
 
   <meta name="author" content="Pablo Paccioretti">
   <title>Modelos Espaciales – slides</title>
@@ -19,10 +19,15 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
   </style>
   <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -359,28 +364,57 @@
 </section>
 <section id="modelo-lineal-general" class="slide level2">
 <h2>Modelo Lineal General</h2>
-<p><span class="math inline">\(Y = Valor\ Esperado + Error\)</span></p>
-<p><span class="math inline">\(Y = Modelo\ de\ Media + Modelo\ de\ Varianza\! - \! Covarianza\)</span></p>
+<p><span class="math display">\[Y = Valor\ Esperado + Error\]</span></p>
+<p><span class="math display">\[Y = Modelo\ de\ Media + Modelo\ de\ Varianza\! - \! Covarianza\]</span></p>
 <p>En el Modelo de Media, la respuesta se relaciona linealmente con regresoras y/o variables de clasificación (Modelos de Regresión, Modelos de ANAVA)</p>
 <p>El Modelo de varianzas y covarianzas se determina con supuestos distribucionales para los términos de error:</p>
+<div class="columns">
+<div class="column" style="width:30%;">
 <ul>
 <li>i.i.d Normales</li>
-<li>no correlacionados<br>
-</li>
+<li>no correlacionados</li>
 <li>varianza constante</li>
 </ul>
-<p><em>Pero</em> también podría ser con autocorrelacionados espacial.</p>
-<blockquote>
-<p>Los supuestos no son necesarios para la estimación pero sí para la inferencia (valor-p no real en caso de incumplimiento).</p>
-</blockquote>
+</div><div class="column" style="width:70%;">
+<div class="fragment fade-in-then-out">
+<div class="callout callout-note callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>Hay alternativas para corregir la falta de cumplimiento de algunos de estos supuestos.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-caution callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>El cumplimiento de los supuestos no son necesarios para la estimación pero sí para la inferencia, esto significa que el valor-p puede no ser real en caso de incumplimiento de estos.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="modelo-de-regresión-lineal" class="slide level2">
 <h2>Modelo de Regresión Lineal</h2>
 <p><span class="math display">\[Y_{ij} = \beta_0 + \beta_1 x_{ij}+\varepsilon_{ij}\]</span></p>
 <p><span class="math display">\[\varepsilon_{ij} \sim N \big(0, \sigma^2 \big) \: \: \:
 cov(\varepsilon_{ij}, \varepsilon_{i'j'}) = 0 \: \forall ij \neq i' j'\]</span></p>
-<p>Donde: - <span class="math inline">\(Y_{ij}\)</span> es la observación en la <span class="math inline">\(j-ésima\)</span> repetición del <span class="math inline">\(i-ésimo\)</span> tratamiento. - <span class="math inline">\(\beta_0\)</span> es la Constante - <span class="math inline">\(\beta_1\)</span> es el efecto de la variable regresora - <span class="math inline">\(x_{ij}\)</span> valor de la covariable - <span class="math inline">\(\varepsilon_{ij}\)</span> es el efecto aleatorio de la <span class="math inline">\(ij-ésima\)</span> unidad experimental</p>
-<p>Alternativamente la covarianza entre los términos de error puede ser distinta de cero, por ej. covarianza positiva expresada como función de la distancia entre observaciones</p>
+<p>Donde:</p>
+<ul>
+<li><span class="math inline">\(Y_{ij}\)</span> es la observación en la <span class="math inline">\(j-ésima\)</span> repetición del <span class="math inline">\(i-ésimo\)</span> tratamiento.</li>
+<li><span class="math inline">\(\beta_0\)</span> es la Constante</li>
+<li><span class="math inline">\(\beta_1\)</span> es el efecto de la variable regresora</li>
+<li><span class="math inline">\(x_{ij}\)</span> valor de la covariable</li>
+<li><span class="math inline">\(\varepsilon_{ij}\)</span> es el efecto aleatorio de la <span class="math inline">\(ij-ésima\)</span> unidad experimental</li>
+</ul>
+<p>Alternativamente la covarianza entre los términos de error puede ser distinta de cero, por ejemplo covarianza positiva expresada como función de la distancia entre observaciones</p>
 </section></section>
 <section>
 <section id="desde-ml-a-glm" class="title-slide slide level1 center" data-background-color="#546e7a">
@@ -395,13 +429,21 @@ cov(\varepsilon_{ij}, \varepsilon_{i'j'}) = 0 \: \forall ij \neq i' j'\]</span><
 <li>especificando covarianzas para los errores</li>
 <li>incorporando efectos aleatorios correlacionados</li>
 </ul>
-<p>Se suponen errores normales y correlación entre errores se puede explicitar a través de distintas funciones que especifican la correlación entre cada par de datos según la distancia espacial entre ellos (por ejemplo correlación espacial exponencial, esférica, gausiana)</p>
+<p>Se suponen errores normales y correlación entre errores. Se puede explicitar a través de distintas funciones que especifican la correlación entre cada par de datos según la distancia espacial entre ellos (por ejemplo correlación espacial exponencial, esférica, gausiana)</p>
 </section>
 <section id="modelo-lineal-mixto.-efectos-fijos-y-aleatorios" class="slide level2">
 <h2>Modelo Lineal Mixto. Efectos Fijos y Aleatorios</h2>
 <p><span class="math inline">\(Y\)</span> es función de covariables/factores de efectos fijos (constante) y aleatorios</p>
-<p>Fijo vs.&nbsp;Aleatorio: - niveles arbitrariamente determinados vs.&nbsp;muestra aleatoria de niveles (asociado a una distribución de probabilidad)</p>
-<p>Fijo vs.&nbsp;Aleatorio: - contexto; mecanismos de colección; espacio de inferencia; estrategia de modelación. Cantidad de niveles, calidad de la estimación de componentes de varianza. Cómputo de covarianzas.</p>
+<p>Fijo vs.&nbsp;Aleatorio:</p>
+<ul>
+<li>Niveles arbitrariamente determinados vs.&nbsp;muestra aleatoria de niveles (asociado a una distribución de probabilidad)</li>
+<li>Mecanismos de colección</li>
+<li>Espacio de inferencia</li>
+<li>Estrategia de modelación</li>
+<li>Cantidad de niveles</li>
+<li>Calidad de la estimación de componentes de varianza</li>
+<li>Cómputo de covarianzas</li>
+</ul>
 </section>
 <section id="modelo-lineal-generalizado.-componentes" class="slide level2">
 <h2>Modelo Lineal Generalizado. Componentes</h2>
@@ -481,25 +523,29 @@ cov(\varepsilon_{ij}, \varepsilon_{i'j'}) = 0 \: \forall ij \neq i' j'\]</span><
 <section id="por-qué-jerárquico" class="slide level2">
 <h2>¿Por qué Jerárquico?</h2>
 <p>Los datos <span class="math inline">\(Z\)</span> tienen una distribución condicional dado el proceso latente que los ha generado <span class="math inline">\(Y\)</span>, que a su vez tiene una distribución condicional a ciertos parámetros <span class="math inline">\(\theta\)</span> y <span class="math inline">\(\theta\)</span> tiene a su vez una distribución “a priori”.</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Modelo para los datos:</p>
-<p><span class="math display">\[ \left[ Z \big\vert Y, \theta \right]\]</span></p>
-<p>Modelo para el proceso:</p>
-<p><span class="math display">\[ \left[ Y \big\vert \theta \right]\]</span></p>
-<p>Modelo para los parámetros:</p>
-<p><span class="math display">\[ \left[ \theta \right]\]</span></p>
-</div><div class="column" style="width:50%;">
-
-</div>
-</div>
+<table style="width:99%;">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 58%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p>Modelo para los datos</p>
+<p>Modelo para el proceso</p>
+<p>Modelo para los parámetros</p></td>
+<td style="text-align: left;"><p><span class="math inline">\(\left[ Z \big\vert Y, \theta \right]\)</span></p>
+<p><span class="math inline">\(\left[ Y \big\vert \theta \right]\)</span></p>
+<p><span class="math inline">\(\left[ \theta \right]\)</span></p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="modelo-jerárquico-bayesiano" class="slide level2">
 <h2>Modelo Jerárquico Bayesiano</h2>
 <p>Un modelo jerárquico es un modelo especificado en etapas.</p>
 <p><em>Ejemplo</em>: Modelo lineal mixto con efectos aleatorios <span class="math inline">\(u\)</span>.</p>
-<p>$$y , u, ^2 N(x’ + z’u, ^2I) \</p>
-<p>u N(0, D())$$</p>
+<p><span class="math display">\[y \vert \beta, u, \sigma^2 \sim N(x' \beta + z'u, \sigma^2I) \\
+u \sim N(0, D(\theta))\]</span></p>
 <p>En un modelo bayesiano, los parámetros se consideran variables aleatorias y tienen distribuciones a priori. Continuando con el ejemplo anterior:</p>
 <p><span class="math display">\[\beta \sim \pi (\beta)\]</span></p>
 <p>En el modelo jerárquico bayesiano, los parámetros de las distribuciones a priori de los parámetros (llamados <em>hiperparámetros</em>) también se consideran variables aleatorias, y también tienen ditribuciones a priori.</p>
@@ -523,17 +569,13 @@ x \vert \theta \sim N(0, Q^{-1}(\theta)) \\
 </section></section>
 <section id="ejemplos-de-aplicación" class="title-slide slide level1 center" data-background-color="#546e7a">
 <h1>Ejemplos de aplicación</h1>
-
+<p><a href="./Ej01.html" data-preview-link="true">Ejemplo 1</a></p>
+<p><a href="./Ej02.html" data-preview-link="true">Ejemplo 2</a></p>
+<p><a href="Ej03.html" data-preview-link="true">Ejemplo 3</a></p>
 </section>
 
 <section id="gracias" class="title-slide slide level1 center">
 <h1>Gracias!</h1>
-<!-- **Slides and notebooks:** -->
-<!-- https://github.com/appelmar/CONAE_2022 -->
-<!-- <br/> -->
-<!-- **Contact:** -->
-<!-- [&#64;appelmar](https://twitter.com/appelmar) -->
-<!-- [marius.appel@uni-muenster.de](mailto:marius.appel@uni-muenster.de) -->
 
 <div class="footer footer-default">
 
@@ -550,6 +592,8 @@ x \vert \theta \sim N(0, Q^{-1}(\theta)) \\
   <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
   <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/multiplex/socket.io.js"></script>
+  <script src="site_libs/revealjs/plugin/multiplex/multiplex.js"></script>
   <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -572,7 +616,8 @@ x \vert \theta \sim N(0, Q^{-1}(\theta)) \\
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":true,"theme":"whiteboard"},
+'chalkboard': {"buttons":true,"theme":"chalkboard","chalkEffect":0},
+'multiplex': {"secret":null,"id":"11e3d2a74f4a9e9c","url":"https://reveal-multiplex.glitch.me/"},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -746,7 +791,7 @@ x \vert \theta \sim N(0, Q^{-1}(\theta)) \\
         plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
           RevealMath,
-          RevealNotes,
+          
           RevealSearch,
           RevealZoom
         ]
@@ -820,7 +865,8 @@ x \vert \theta \sim N(0, Q^{-1}(\theta)) \\
       for (var i=0; i<noterefs.length; i++) {
         const ref = noterefs[i];
         tippyHover(ref, function() {
-          let href = ref.getAttribute('href');
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
