@@ -201,8 +201,8 @@ popup_vars <- c(
 
 
 ```{r}
-#| column: screen-inset
-#| fig-height: 600
+#| column: screen-inset-right
+#| fig-height: 6
 
 tmap_mode('view')
 mapas <-

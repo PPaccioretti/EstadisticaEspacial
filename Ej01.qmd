@@ -329,14 +329,17 @@ rbind(
 ```{r}
 #| label: modelo-corr-ndvi
 
-modelo_ndvi_conCorr <- gls(TCH ~ ndvi, 
-                   correlation = corExp(
-                     form =  ~ as.numeric(as.character(X_coord)) + as.numeric(as.character(Y_coord)),
-                     metric = "euclidean",
-                     nugget = FALSE
-                   ),
-                   data = datos,
-                   method = 'REML')
+modelo_ndvi_conCorr <- gls(
+  TCH ~ ndvi,
+  correlation = corExp(
+    form =  ~ as.numeric(as.character(X_coord)) + 
+      as.numeric(as.character(Y_coord)),
+    metric = "euclidean",
+    nugget = FALSE
+  ),
+  data = datos,
+  method = 'REML'
+)
 summary(modelo_ndvi_conCorr)
 
 ```
@@ -344,14 +347,17 @@ summary(modelo_ndvi_conCorr)
 
 ```{r}
 #| label: modelo-corr-gndvi
-modelo_gndvi_conCorr <- gls(TCH ~ gndvi, 
-                    correlation = corExp(
-                      form =  ~ as.numeric(as.character(X_coord)) + as.numeric(as.character(Y_coord)),
-                      metric = "euclidean",
-                      nugget = FALSE
-                    ),
-                    data = datos,
-                    method = 'REML')
+modelo_gndvi_conCorr <- gls(
+  TCH ~ gndvi,
+  correlation = corExp(
+    form =  ~ as.numeric(as.character(X_coord)) + 
+      as.numeric(as.character(Y_coord)),
+    metric = "euclidean",
+    nugget = FALSE
+  ),
+  data = datos,
+  method = 'REML'
+)
 summary(modelo_gndvi_conCorr)
 ```
 
@@ -359,28 +365,34 @@ summary(modelo_gndvi_conCorr)
 ```{r}
 #| label: modelo-corr-ndwi
 #| 
-modelo_ndwi_conCorr <- gls(TCH ~ ndwi, 
-                   correlation = corExp(
-                     form =  ~ as.numeric(as.character(X_coord)) + as.numeric(as.character(Y_coord)),
-                     metric = "euclidean",
-                     nugget = FALSE
-                   ),
-                   data = datos,
-                   method = 'REML')
+modelo_ndwi_conCorr <- gls(
+  TCH ~ ndwi,
+  correlation = corExp(
+    form =  ~ as.numeric(as.character(X_coord)) + 
+      as.numeric(as.character(Y_coord)),
+    metric = "euclidean",
+    nugget = FALSE
+  ),
+  data = datos,
+  method = 'REML'
+)
 summary(modelo_ndwi_conCorr)
 ```
 
 
 ```{r}
 #| label: modelo-corr-nci
-modelo_nci_conCorr <-  gls(TCH ~ nci, 
-                   correlation = corExp(
-                     form =  ~ as.numeric(as.character(X_coord)) + as.numeric(as.character(Y_coord)),
-                     metric = "euclidean",
-                     nugget = FALSE
-                   ),
-                   data = datos,
-                   method = 'REML')
+modelo_nci_conCorr <- gls(
+  TCH ~ nci,
+  correlation = corExp(
+    form =  ~ as.numeric(as.character(X_coord)) +
+      as.numeric(as.character(Y_coord)),
+    metric = "euclidean",
+    nugget = FALSE
+  ),
+  data = datos,
+  method = 'REML'
+)
 summary(modelo_nci_conCorr)
 
 ```
