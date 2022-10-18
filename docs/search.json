@@ -179,7 +179,7 @@
     "href": "index.html#contenidos",
     "title": "Estadística para datos espaciales",
     "section": "Contenidos",
-    "text": "Contenidos\n\nModelos Mixtos para datos con correlación espacial\n\nModelos Lineales Mixtos (MLM)\nModelos Jerárquicos Bayesianos (MJB)\n\nEjemplos de aplicación\n\nMLM-Regresión Lineal Simple para variable normal con errores correlacionados espacialmente: rendimiento en función de índices satelitales de cobertura de vegetación\nMJB-Regresión Lineal Múltiple para variable de conteo con efecto aleatorio espacial: Casos de COVID positivo en función de variables socioeconómicas en un territorio\nMJB-Relación Lineal múltiple de dos variables con covariabilidad espacial conjunta. Virosis en cultivos realizados el mismo año en función del clima."
+    "text": "Contenidos\n\nModelos Mixtos para datos con correlación espacial\n\nModelos Lineales Mixtos (MLM)\nModelos Jerárquicos Bayesianos (MJB)\n\nEjemplos de aplicación\n\nMLM-Regresión Lineal Simple para variable normal con errores correlacionados espacialmente: rendimiento en función de índices satelitales de cobertura de vegetación\nMJB-Regresión Lineal Múltiple para variable de conteo con efecto aleatorio espacial: Casos de COVID positivo en función de variables socioeconómicas en un territorio"
   },
   {
     "objectID": "slides.html#motivation",
