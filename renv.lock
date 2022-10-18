@@ -4,7 +4,11 @@
     "Repositories": [
       {
         "Name": "CRAN",
-        "URL": "https://cran.rstudio.com"
+        "URL": "https://cloud.r-project.org"
+      },
+      {
+        "Name": "INLA",
+        "URL": "https://inla.r-inla-download.org/R/testing"
       }
     ]
   },
@@ -20,7 +24,8 @@
     "INLA": {
       "Package": "INLA",
       "Version": "22.10.15-1",
-      "Source": "unknown",
+      "Source": "Repository",
+      "Repository": "INLA",
       "Hash": "33d0b8a2edffb8d63047fa1ae0ebee87",
       "Requirements": [
         "Matrix",
