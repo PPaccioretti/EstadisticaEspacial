@@ -1,6 +1,8 @@
 ---
 title: "High Plains Wheat Mosaic Virus (HPWMoV) en cultivos de maíz y trigo"
-format: html
+format: docx
+self-contained: true 
+editor: source
 ---
 
 # Presentación de los Datos
@@ -15,57 +17,60 @@ format: html
 
 ```{r, message=FALSE}
 suppressPackageStartupMessages({
-  library(sf)
-  library(dplyr)
-  library(tmap)
-  library(tidyr)
-  library(INLA)
+library(sf)
+library(dplyr)
+library(tmap) 
+library(tidyr)
+library(INLA)
+library(inlabru)
+library(ggplot2)
 })
 source("src/spde-book-functions.R")
 tmap_mode("view")
 ```
 
 ```{r}
-trigo_maiz <- st_read("data/trigo_maiz_26_09_22.gpkg", quiet = TRUE)
-st_geometry(trigo_maiz) <- 'geometry'
+trigo_maiz <- st_read("data/trigo_maiz_26_09_22.gpkg",quiet = TRUE)
+st_geometry(trigo_maiz) <- 'geometry' 
 trigo_maiz$HPV <- as.factor(trigo_maiz$HPV)
+  
 
-
-hpv_maiz <- trigo_maiz |>
+hpv_maiz <- trigo_maiz |> 
   filter(Especie == "Maíz" & !is.na(HPV))
+hpv_maiz <-
+  hpv_maiz[!hpv_maiz$Provincia %in%
+              c('Catamarca',
+               'Santa Fe',
+               'Tucumán',
+               'Chaco',
+               'Santiago del Estero',
+               'San Luis','Jujuy'),]
 
-hpv_trigo <- trigo_maiz |>
+
+hpv_trigo <- trigo_maiz |> 
   filter(Especie == "Trigo" & !is.na(HPV)) 
 ```
 
 ```{r}
-tm_shape(hpv_maiz) +
-  tm_dots("HPV", title = "HPV en Maiz", pal = "Dark2") +
-  tm_shape(hpv_trigo) +
+tm_shape(hpv_maiz)+
+  tm_dots("HPV", title = "HPV en Maiz", pal = "Dark2" )+
+  tm_shape(hpv_trigo)+
   tm_dots("HPV", title = "HPV en Trgio", pal = "Set1")
 ```
 
-Complementariamente, se obtuvieron 117 variables biometeorológicas, usando la 
-plataforma ERA5, en el periodo comprendido entre agosto del año en que se tomo 
-la muestra y agosto del año siguiente.
+Complementariamente, se obtuvieron 117 variables biometeorológicas, usando la plataforma ERA5, en el periodo comprendido entre agosto del año en que se tomo la muestra y agosto del año siguiente.
 
 # Selección de variables
 
-Se identificó la importancia de cada variable climática para cada patosistema 
-con el algoritmo boruta y la selección de variables stepwise.
+Se identificó la importancia de cada variable climática para cada patosistema con el algoritmo boruta y la selección de variables stepwise.
 
-Las variables biometeorológicas que favorecieron la presencia de HPWMoV en
-Maíz fueron las precipitaciones elevedas en el mes de Enero y temperatura de
-punto de rocío alta en el mes de Mayo
+Las variables biometeorológicas que favorecieron la presencia de HPWMoV en Maiz fueron las precipitaciones elevedas en el mes de Enero y temperatura de punto de rocio alta en el mes de Mayo
 
-En trigo HPWMov se vio favorecido por precipitaciones elevadas en Enero y
-temperaturas bajas en Junio.
+En trigo HPWMov se vio favorecido por precipitaciones elevadas en Enero y temperaturas bajas en Junio.
 
 # Modelación
 
-La distribución de la presencia de estos virus se modeló con una regresión
-bayesiana de efectos mixtos y estructura espacial conjunta de las muestras 
-sobre Trigo y Maíz estimada via SPDE considerando una malla común.
+La distribución de la presencia de estos virus se modeló con una regresión bayesiana de efectos mixtos y estructura espacial conjunta de las muestras sobre Trigo y Maíz estimada via SPDE considerando una malla común.
 
 $$
 \log{\left(\frac{p_{i.maíz}(S)}{1-p_{i.maiz}(S)}\right)} = \\
@@ -79,10 +84,7 @@ $$
 Z_{trigo} (S) + e_{trigo} (S)
 $$
 
-donde $\log{\left(\frac{p_ij}{1 - p_ij}\right)}$ es la funcion de enlace. 
-$x_1$ es el total de precipitaciones del mes de enero, $x_2$ es la temperatura
-punto rocío del mes de mayo y $x_3$ es el año en el que se tomo la muestra y 
-$x_4$ es la temperatura del mes de junio.
+donde $\log{\left(\frac{p_ij}{1 - p_ij}\right)}$ es la funcion de enlace. $x_1$ es el total de precipitaciones del mes de enero, $x_2$ es la temperatura punto rocío del mes de mayo y $x_3$ es el año en el que se tomo la muestra y $x_4$ es la temperatura del mes de junio. $Z$ es el efecto espacial
 
 ## Armado del modelo
 
@@ -100,50 +102,55 @@ limites2 <- st_read("data/limites2.gpkg", quiet = TRUE)
 st_geometry(limites2) <- 'geometry'
 ```
 
-```{r}
-tm_shape(trigo_hpv_sf2) +
-  tm_dots() +
-  tm_shape(limites2) +
-  tm_polygons(alpha = 0)
-```
-
 ### Boundary
 
 ```{r}
-base_maiz <- trigo_hpv_sf2 |>
+base_maiz <- trigo_hpv_sf2 |> 
   drop_na(HPV_maiz)
 
-loc.maiz <- base_maiz |>
+base_maiz <- base_maiz[!base_maiz$Provincia %in%
+              c('Catamarca',
+               'Santa Fe',
+               'Tucumán',
+               'Chaco',
+               'Santiago del Estero',
+               'San Luis','Jujuy'),]
+
+loc.maiz <- base_maiz |> 
   st_coordinates()
 
 
-base_trigo <- trigo_hpv_sf2 |>
-  drop_na(HPV_trigo)
+base_trigo <- trigo_hpv_sf2 |> 
+  drop_na(HPV_trigo) 
 
-loc.trigo <- base_trigo |>
+loc.trigo <- base_trigo |> 
   st_coordinates()
 
-loc.obs <- st_coordinates(trigo_hpv_sf2)
+loc.obs <- rbind(st_coordinates(base_trigo),st_coordinates(base_maiz))
 
-boundary <- list(inla.nonconvex.hull(loc.obs, 2),
-                 inla.nonconvex.hull(loc.obs, 4))
+boundary <- list(
+  inla.nonconvex.hull(loc.obs,2),
+  inla.nonconvex.hull(loc.obs, 4)
+)
 ```
 
 ### Mesh
 
 ```{r}
-mesh <- inla.mesh.2d(
-  boundary = boundary,
-  max.edge = c(0.4, 0.8),
-  min.angle = c(30, 21),
-  max.n = c(480, 160),
-  max.n.strict = c(128000, 128000),
-  cutoff = 0.03,
-  offset = c(2, 4)
-)
+mesh <- inla.mesh.2d(boundary=boundary,
+                     max.edge=c(0.4, 0.8),
+                     min.angle=c(30, 21),
+                     max.n=c(480, 160), 
+                     max.n.strict=c(128000, 128000),
+                     cutoff=0.03, 
+                     offset=c(2, 4))
 
 plot(mesh)
-points(loc.obs, pch = 16, col = "#FF5300")
+points(loc.obs, pch=16, col="#FF5300")
+```
+
+```{r}
+ggplot(rbind(base_maiz,base_trigo)) + gg(mesh) + geom_sf()
 ```
 
 ### SPDE - Modelo espacial
@@ -151,10 +158,8 @@ points(loc.obs, pch = 16, col = "#FF5300")
 ```{r}
 spde <- inla.spde2.pcmatern(
   mesh = mesh,
-  # P(range < rangemin) = 0.01
-  prior.range = c(1000, 0.01),
-  prior.sigma = c(10, 0.01)
-)
+  prior.range = c(1000, 0.01), # P(range < rangemin) = 0.01
+  prior.sigma = c(10, 0.01))
 ```
 
 ### Formula
@@ -207,7 +212,7 @@ stackMaiz <- inla.stack(
 
 
 stackTrigo <- inla.stack(
-  data = list(y = cbind(base_trigo$HPV_trigo,NA)),
+  data =list(y = cbind(base_trigo$HPV_trigo,NA)),
   A = list(Atrigo,1),
   effects = list(
     list(s2 = 1:spde$n.spde, s12 = 1:spde$n.spde),
@@ -229,23 +234,17 @@ stack <- inla.stack(stackTrigo,stackMaiz)
 
 ### Resultados
 
-```{r ajuste-inla, cache=TRUE}
+```{r}
 set.seed(123)
-result <- inla(
-  form,
-  rep('binomial', 2),
-  data = inla.stack.data(stack),
-  control.predictor = list(
-    compute = TRUE,
-    A = inla.stack.A(stack),
-    link = 1
-  ),
-  
-  control.compute = list(
-    return.marginals = TRUE,
-    return.marginals.predictor = TRUE,
-    hyperpar = TRUE
-  )
+result <- inla(form,rep('binomial',2),
+               data = inla.stack.data(stack),
+               control.predictor = list(compute = TRUE,
+                                        A = inla.stack.A(stack), link = 1),
+               
+               control.compute = list(return.marginals=TRUE,
+                                      return.marginals.predictor=TRUE,
+                                      hyperpar=TRUE
+               )
 )
 
 result$summary.fixed
@@ -280,7 +279,7 @@ for (j in names(result$marginals.hyperpar)) {
 }
 ```
 
-Para validar el modelo se realizó un validación cruzada k-fold, con un k = 10, para cada cultivo.
+Para validar el modelo se realizó un validacion cruzada k-fold, con un k = 10, para cada cultivo.
 
 Los resultados indicaron que la modelación conjunta permitió aumentar la capacidad predictiva de la presencia de virus en el cultivo de trigo en relación al clima, respecto a la obtenida en el modelo marginal con las mismas regresoras.
 
@@ -295,14 +294,9 @@ Los resultados indicaron que la modelación conjunta permitió aumentar la capac
 .tg .tg-mcqj{border-color:#000000;font-weight:bold;text-align:left;vertical-align:top}
 </style>
 ```
-+-------+
-| HPV   |
-+=======+
-|       |
-+-------+
-|       |
-+-------+
-| Maíz  |
-+-------+
-| Trigo |
-+-------+
+| HPWMoV |
+|--------|
+|        |
+|        |
+| Maíz   |
+| Trigo  |

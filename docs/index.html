@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pablo Paccioretti">
-<meta name="author" content="Mónica Balzarini">
 <meta name="author" content="Mariano Córdoba">
 <meta name="author" content="Franco Suarez">
+<meta name="author" content="Mónica Balzarini">
 
 <title>Modelos Espaciales - Estadística para datos espaciales</title>
 <style>
@@ -181,7 +181,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <div class="quarto-title-block"><div><h1 class="title">Estadística para datos espaciales</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
-<p class="subtitle lead">Tutorial Modelos Lineales y Bayesianos</p>
+<p class="subtitle lead">Tutorial Modelos Lineales Mixtos para datos espaciales: Estimación Frecuentista y Bayesiana</p>
 </div>
 
 
@@ -192,9 +192,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div class="quarto-title-meta-heading">Autores</div>
     <div class="quarto-title-meta-contents">
              <p>Pablo Paccioretti </p>
-             <p>Mónica Balzarini </p>
              <p>Mariano Córdoba </p>
              <p>Franco Suarez </p>
+             <p>Mónica Balzarini </p>
           </div>
   </div>
     
@@ -212,22 +212,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="introducción" class="level2">
 <h2 class="anchored" data-anchor-id="introducción">Introducción</h2>
-<p>En la última década la obtención de datos georreferenciados fue en aumento y la diversidad de información disponible es cada vez es más accesible. La infraestructura de datos espaciales aumenta en tamaño y calidad. Para estudiar la variabilidad de los procesos espaciales es necesario utilizar técnicas estadísticas específicas que contemplan la correlación espacial de los datos.</p>
-<p>En este tutorial se muestran posibles alternativas de análisis para estudiar la variabilidad espacial y relación de variables. Para esto, a modo de ilustración, se utilizan diversas bases de datos espaciales provenientes de diferentes ámbitos de aplicación.</p>
+<p>En la última década la obtención automática y disponibilidad de datos georreferenciados en dominios espaciales continuos fue en aumento. La infraestructura de datos espaciales aumenta en diversidad, tamaño y calidad. Para modelar la variabilidad de una variable de interés (ya sea continua o discreta) resultante de la observación de un proceso espacial es necesario contemplar la correlación espacial en los datos ya que al tratar los datos como independientes se producen malas estimaciones de errores estándares y por tanto errores en las conclusiones asociadas a las hipótesis de los parámetros de interés.</p>
+<p>En este tutorial se modelan datos geoestadísticos de una variable respuesta en función de otras covariables potencialmente explicativas desde dos enfoques metodológicos para al estimación y la inferencia: los modelos lineales mixtos con estimación frecuentistas y los modelos jerárquicos bayesianos.</p>
 </section>
 <section id="contenidos" class="level2">
 <h2 class="anchored" data-anchor-id="contenidos">Contenidos</h2>
 <ol type="1">
-<li>Introducción a Modelos Lineales
+<li>Modelos Mixtos para datos con correlación espacial
 <ol type="1">
-<li>Modelos Lineales Mixtos</li>
-<li>Modelos Bayesianos</li>
+<li>Modelos Lineales Mixtos (MLM)</li>
+<li>Modelos Jerárquicos Bayesianos (MJB)</li>
 </ol></li>
 <li>Ejemplos de aplicación
 <ol type="1">
-<li>Predicción de rendimiento a partir de imágenes satelitales</li>
-<li>Modelación de casos de COVID</li>
-<li>Relación clima-virosis en cultivos agrícolas</li>
+<li>MLM-Regresión Lineal Simple para variable normal con errores correlacionados espacialmente: rendimiento en función de índices satelitales de cobertura de vegetación</li>
+<li>MJB-Regresión Lineal Múltiple para variable de conteo con efecto aleatorio espacial: Casos de COVID positivo en función de variables socioeconómicas en un territorio</li>
+<li>MJB-Relación Lineal múltiple de dos variables con covariabilidad espacial conjunta. Virosis en cultivos realizados el mismo año en función del clima.</li>
 </ol></li>
 </ol>
 
@@ -388,42 +388,53 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Correr el código</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Estadística para datos espaciales"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Tutorial Modelos Lineales y Bayesianos"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Tutorial Modelos Lineales Mixtos para datos espaciales: Estimación Frecuentista y Bayesiana  "</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 'Octubre 2022'</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">date-format:</span><span class="co"> "MMMM, YYYY"</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> </span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    - Pablo Paccioretti</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">    - Mónica Balzarini</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    - Mariano Córdoba</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">    - Franco Suarez</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">    - Mariano Córdoba</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    - Franco Suarez</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">    - Mónica Balzarini</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="an">toc-title:</span><span class="co"> 'Contenidos'</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introducción</span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>En la última década la obtención de datos georreferenciados fue en aumento y la </span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>diversidad de información disponible es cada vez es más accesible. </span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>La infraestructura de datos espaciales aumenta en tamaño y calidad. Para estudiar</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>la variabilidad de los procesos espaciales es necesario utilizar técnicas estadísticas</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>específicas que contemplan la correlación espacial de los datos.</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>En este tutorial se muestran posibles alternativas de análisis para estudiar la</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>variabilidad espacial y relación de variables. Para esto, a modo de ilustración,</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>se utilizan diversas bases de datos espaciales provenientes de diferentes ámbitos</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>de aplicación. </span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Contenidos</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Introducción a Modelos Lineales</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">    1. </span>Modelos Lineales Mixtos</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">    2. </span>Modelos Bayesianos</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Ejemplos de aplicación</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="ss">    1. </span>Predicción de rendimiento a partir de imágenes satelitales</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="ss">    2. </span>Modelación de casos de COVID</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="ss">    3. </span>Relación clima-virosis en cultivos agrícolas</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  </span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>En la última década la obtención automática y disponibilidad de datos </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>georreferenciados en dominios espaciales continuos fue en aumento. La </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>infraestructura de datos espaciales aumenta en diversidad, tamaño y calidad. </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>Para modelar la variabilidad de una variable de interés (ya sea continua o </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>discreta) resultante de la observación de un proceso espacial es necesario </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>contemplar la correlación espacial en los datos ya que al tratar los datos </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>como independientes se producen malas estimaciones de errores estándares y </span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>por tanto errores en las conclusiones asociadas a las hipótesis de los </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>parámetros de interés.</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>En este tutorial se modelan datos geoestadísticos de una variable respuesta </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>en función de otras covariables potencialmente explicativas desde dos </span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>enfoques metodológicos para al estimación y la inferencia: los modelos </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>lineales mixtos con estimación frecuentistas y los modelos jerárquicos </span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>bayesianos. </span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">## Contenidos</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Modelos Mixtos para datos con correlación espacial</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="ss">    1. </span>Modelos Lineales Mixtos (MLM)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">    2. </span>Modelos Jerárquicos Bayesianos (MJB)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Ejemplos de aplicación</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="ss">    1. </span>MLM-Regresión Lineal Simple para variable normal con errores</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    correlacionados espacialmente: rendimiento en función de índices </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    satelitales de cobertura de vegetación</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">    2. </span>MJB-Regresión Lineal Múltiple para variable de conteo con efecto </span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    aleatorio espacial: Casos de COVID positivo en función de variables</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    socioeconómicas en un territorio</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="ss">    3. </span>MJB-Relación Lineal múltiple de dos variables con covariabilidad </span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    espacial conjunta. Virosis en cultivos realizados el mismo año en </span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    función del clima.</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

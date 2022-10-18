@@ -1,38 +1,50 @@
 ---
 title: "Estadística para datos espaciales"
-subtitle: "Tutorial Modelos Lineales y Bayesianos"
+subtitle: "Tutorial Modelos Lineales Mixtos para datos espaciales: Estimación Frecuentista y Bayesiana  "
 date: 'Octubre 2022'
 date-format: "MMMM, YYYY"
 author: 
     - Pablo Paccioretti
-    - Mónica Balzarini
     - Mariano Córdoba
     - Franco Suarez
+    - Mónica Balzarini
 toc: true
 toc-title: 'Contenidos'
 ---
 
 ## Introducción
 
-En la última década la obtención de datos georreferenciados fue en aumento y la 
-diversidad de información disponible es cada vez es más accesible. 
-La infraestructura de datos espaciales aumenta en tamaño y calidad. Para estudiar
-la variabilidad de los procesos espaciales es necesario utilizar técnicas estadísticas
-específicas que contemplan la correlación espacial de los datos.
+En la última década la obtención automática y disponibilidad de datos 
+georreferenciados en dominios espaciales continuos fue en aumento. La 
+infraestructura de datos espaciales aumenta en diversidad, tamaño y calidad. 
+Para modelar la variabilidad de una variable de interés (ya sea continua o 
+discreta) resultante de la observación de un proceso espacial es necesario 
+contemplar la correlación espacial en los datos ya que al tratar los datos 
+como independientes se producen malas estimaciones de errores estándares y 
+por tanto errores en las conclusiones asociadas a las hipótesis de los 
+parámetros de interés.
 
-En este tutorial se muestran posibles alternativas de análisis para estudiar la
-variabilidad espacial y relación de variables. Para esto, a modo de ilustración,
-se utilizan diversas bases de datos espaciales provenientes de diferentes ámbitos
-de aplicación. 
+En este tutorial se modelan datos espaciales de una variable respuesta 
+en función de otras covariables potencialmente explicativas desde dos 
+enfoques metodológicos para al estimación y la inferencia: los modelos 
+lineales mixtos con estimación frecuentistas y los modelos jerárquicos 
+bayesianos. 
 
 
 ## Contenidos
 
-1. Introducción a Modelos Lineales
-    1. Modelos Lineales Mixtos
-    2. Modelos Bayesianos
+1. Modelos Mixtos para datos con correlación espacial
+    1. Modelos Lineales Mixtos (MLM)
+    2. Modelos Jerárquicos Bayesianos (MJB)
 2. Ejemplos de aplicación
-    1. Predicción de rendimiento a partir de imágenes satelitales
-    2. Modelación de casos de COVID
-    3. Relación clima-virosis en cultivos agrícolas
-  
+    1. MLM-Regresión Lineal Simple para variable normal con errores
+    correlacionados espacialmente: rendimiento en función de índices 
+    satelitales de cobertura de vegetación
+    2. MJB-Regresión Lineal Múltiple para variable de conteo con efecto 
+    aleatorio espacial: Casos de COVID positivo en función de variables
+    socioeconómicas en un territorio
+    3. MJB-Relación Lineal múltiple de dos variables con covariabilidad 
+    espacial conjunta. Virosis en cultivos realizados el mismo año en 
+    función del clima.
+
+

@@ -98,13 +98,13 @@ datos <- read.table("data/No_quemadas.txt")
 
 
 -  Índice de Vegetación de Diferencia Normalizada (Normalized Difference 
-Vegetation Index,NDVI)
+Vegetation Index, NDVI)
 
 
 ::: {.callout-noet appearance="simple"}
 
-El cálculo del NDVI se basa en la combinación de las bandas 3 (R) y 4 (NIR) ya 
-que las plantas absorben la luz correspondiente a dichas bandas 
+El cálculo del NDVI se basa en la combinación de las bandas 3 (R) y 4 (NIR) de
+lansat ya que las plantas absorben la luz correspondiente a dichas bandas 
 diferencialmente según su estado vegetativo.
 
 :::
@@ -119,11 +119,6 @@ concentración de clorofila.
 
 
 $$gNDVI = \frac{NIR - G}{NIR + G} =  \frac{B4 - B2}{B4 + B2}$$
-- Índice de Agua de Diferencia Normalizada (Normalized Difference Water Index, 
-NDWI), se relaciona con la cantidad de agua que posee la vegetación.
-
-
-$$NDWI = \frac{NIR - SWIR}{NIR + SWIR} =  \frac{B4 - B7}{B4 + B7}$$
 
 - Índice de Canopeo Normalizado (Normalized Canopy Index, NCI), 
 relacionado con el área foliar. Mayores valores de NCI indican menor área foliar
@@ -138,7 +133,6 @@ datos <- datos |>
   mutate(
     ndvi = diferenciaNormalizada(Banda4, Banda3),
     gndvi = diferenciaNormalizada(Banda4, Banda2),
-    ndwi = diferenciaNormalizada(Banda4, Banda7),
     nci = diferenciaNormalizada(Banda5, Banda2)
   )
 
@@ -177,7 +171,7 @@ tm_shape(datos_sf) +
 
 ```{r}
 tm_shape(datos_sf) +
-  tm_dots(col = 'EDAD')
+  tm_dots(col = 'ndvi')
 ```
 
 
@@ -265,29 +259,6 @@ modelo_gndvi <- gls(TCH ~ gndvi,
 summary(modelo_gndvi)
 ```
 
-#### NDWI
-
-::: {.column-margin}
-
-```{r}
-#| label: fig-ndwi
-#| fig-cap: "TCH en función de NDWI"
-#| column: margin
-#| echo: true
-ggplot(datos, aes(ndwi, TCH)) +
-  geom_point()
-
-```
-
-:::
-
-```{r}
-modelo_ndwi <- gls(TCH ~ ndwi, 
-                   data = datos, 
-                   method = 'REML')
-summary(modelo_ndwi)
-```
-
 #### NCI 
 
 ::: {.column-margin}
@@ -317,7 +288,6 @@ summary(modelo_nci)
 rbind(
   resumir_modelo(modelo_ndvi),
   resumir_modelo(modelo_gndvi),
-  resumir_modelo(modelo_ndwi),
   resumir_modelo(modelo_nci)
   )
 
@@ -362,23 +332,6 @@ summary(modelo_gndvi_conCorr)
 ```
 
 
-```{r}
-#| label: modelo-corr-ndwi
-#| 
-modelo_ndwi_conCorr <- gls(
-  TCH ~ ndwi,
-  correlation = corExp(
-    form =  ~ as.numeric(as.character(X_coord)) + 
-      as.numeric(as.character(Y_coord)),
-    metric = "euclidean",
-    nugget = FALSE
-  ),
-  data = datos,
-  method = 'REML'
-)
-summary(modelo_ndwi_conCorr)
-```
-
 
 ```{r}
 #| label: modelo-corr-nci
@@ -405,8 +358,6 @@ rbind(
   resumir_modelo(modelo_ndvi_conCorr),
   resumir_modelo(modelo_gndvi),
   resumir_modelo(modelo_gndvi_conCorr),
-  resumir_modelo(modelo_ndwi),
-  resumir_modelo(modelo_ndwi_conCorr),
   resumir_modelo(modelo_nci),
   resumir_modelo(modelo_nci_conCorr)
   )
@@ -425,8 +376,8 @@ ef_fijos_ndvo_corr$tTable
 ```
 
 ```{r obs-pred-lm}
-#| fig-column: page
-#| layout-ncol: 2
+#| column: page
+#| layout-ncol: 3
 #| layout-nrow: 1
 
 predichos_lm <- datos
@@ -502,7 +453,9 @@ spde <- INLA::inla.spde2.pcmatern(
 
 
 ```{r, eval=FALSE}
-
+#| code-fold: true
+#| code-summary: "Ajuste MJB usando INLA sin funciones de inlabru"
+#| 
 proj_obs <- inla.mesh.projector(mesh, loc = loc)
 proj_pred <- inla.mesh.projector(mesh, loc = mesh$loc)
 
@@ -568,7 +521,10 @@ plot(datos_sf$TCH,
 ```
 
 
+## Ajuste de MJB con `inlabru`
 
+El paquete `inlabru` fue desarrollado para facilitar la modelación espacial 
+utilizando funciones del paquete `INLA`.
 
 ```{r ajuste-inlabru}
 #| column: page-right
@@ -590,17 +546,21 @@ summary(ndvi_bru_spde)
 #| layout-nrow: 1
 plot(ndvi_bru_spde, "Intercept")
 plot(ndvi_bru_spde, "ndvi")
-plot(ndvi_bru_spde, "site")
 ```
 
+- Distribución a posteriori de los hiperparámetros
 
 ```{r}
+#| fig-height: 12
+
+
 spde.posterior(ndvi_bru_spde, "site", what = "matern.covariance") -> covplot
 spde.posterior(ndvi_bru_spde, "site", what = "matern.correlation") -> corplot
 spde.posterior(ndvi_bru_spde, "site", what = "range") -> rngplot
 spde.posterior(ndvi_bru_spde, "site", what = "log.range") -> lgrngplot
 spde.posterior(ndvi_bru_spde, "site", what = "variance") -> varplot
 spde.posterior(ndvi_bru_spde, "site", what = "log.variance") -> lgvarplot
+
 multiplot(plot(covplot), plot(corplot),
           plot(rngplot), plot(lgrngplot),
           plot(varplot), plot(lgvarplot))
@@ -617,7 +577,13 @@ predichos <- st_as_sf(pred_mesh)
 ggplot(predichos, aes(mean, TCH)) +
   geom_point() +
   geom_abline(slope = 1, intercept = 0)
+```
 
+```{r}
+#| code-fold: true
+#| code-summary: "Predicción espacial de TCH"
+
+# No aplica para esta aplicación.
 # pred_mesh <-
 #   predict(ndvi_bru_spde, pixels(mesh), ~ Intercept + ndvi + site)
 # 
@@ -643,10 +609,14 @@ ggplot(predichos_lm, aes(pred_ndvi_esp, TCH)) +
   geom_abline(slope = 1, intercept = 0)
 
 ggplot() +
-  geom_point(data = predichos_lm, aes(TCH, pred_ndvi_iid, color = 'iid')) +
-  geom_point(data = predichos_lm, aes(TCH, pred_ndvi_esp, color = 'Corr')) +
-  geom_point(data = predichos_lm, aes(TCH, pred_ndvi_inla, color = 'INLA')) +
-  geom_abline(slope = 1, intercept = 0)
+  geom_point(data = predichos_lm, 
+             aes(pred_ndvi_iid, TCH, color = 'REML iid')) +
+  geom_point(data = predichos_lm, 
+             aes(pred_ndvi_esp, TCH, color = 'REML Corr')) +
+  geom_point(data = predichos_lm, 
+             aes(pred_ndvi_inla, TCH, color = 'INLA Corr')) +
+  geom_abline(slope = 1, intercept = 0) +
+  labs(x = 'TCH Predichos', y = 'TCH Observado', color = 'Estimación')
 
 ```
 

@@ -5,13 +5,12 @@ format: html
 
 ## Motivación 
 
-Debido a la pandemia producida por COVID-19, era de interés analizar posibles
-focos de infección y así poder tomar medidas para anticipar y evitar la 
-propagación del virus. 
+Al comenzar la pandemia producida por COVID-19, surgió el interés de analizar 
+la distribución espacial de los riesgos infección.
 
-En este caso mostraremos una posible alternativa de análisis para estimar
-riesgo de aparición del virus en diferentes radios censales de la Ciudad de
-Córdoba, Argentina. 
+Ajustamos un modelo lineal generalizado con efectos aleatorios espaciales con 
+`INLA` para estimar riesgo de aparición del virus en diferentes radios censales 
+de la Ciudad de Córdoba, Argentina.
 
 
 # Datos
@@ -47,18 +46,6 @@ library(spdep)
 library(tmap)
 library(INLA)
 
-# library(mapview)
-# library(leaflet)
-# library(leafem)
-# library(sp)
-#
-# 
-# library(ggplot2)
-# library(ggpubr)
-# library(knitr)
-
-
-
 ```
 
 
@@ -93,11 +80,11 @@ tm_shape(datos) +
 ```
 
 
-- Cálculo de valor de la tierra relativo al promedio
+<!-- - Cálculo de valor de la tierra relativo al promedio -->
 
-```{r}
-datos$ValorTierra <- datos$ValorTierra / mean(datos$ValorTierra)
-```
+<!-- ```{r} -->
+<!-- datos$ValorTierra <- datos$ValorTierra / mean(datos$ValorTierra) -->
+<!-- ``` -->
 
 
 - Referencia para el efecto aleatorio y el término del error
@@ -140,6 +127,16 @@ g <- inla.read.graph(filename = file_adj)
 
 ```
 
+```{r}
+#| include: false
+#| echo: false
+#| purl: false
+#| 
+# formula  <-
+#   Casos ~ Bancos + ValorTierra +  f(re_u, model = "besag", graph = g) + f(re_v, model = "iid")
+
+```
+
 
 ```{r}
 
@@ -157,8 +154,6 @@ formula  <-
   f(re_u, model = "besag", graph = g) + 
   f(re_v, model = "iid")
 
-# formula  <-
-#   Casos ~ Bancos + ValorTierra +  f(re_u, model = "besag", graph = g) + f(re_v, model = "iid")
 
 res_inflpoi <-
   inla(

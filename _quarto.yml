@@ -20,8 +20,6 @@ website:
         href: Ej01.qmd
       - text: "Ejemplo 2"
         href: Ej02.qmd
-      - text: "Ejemplo 3"
-        href: Ej03.qmd
   page-footer:
     background: "#546e7a"
     # center: 

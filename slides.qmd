@@ -16,51 +16,49 @@ editor:
     wrap: 72
 ---
 
-# Modelos Estadísticos
-
-**MAIE - IG - 2022**
+# Estimación frecuentista y bayesiana de modelos lineales para datos con correlación espacial
 
 Mónica Balzarini, Pablo Paccioretti
 
 Octubre, 2022
 
-## Análisis de datos. Paradigmas
+<!-- ## Análisis de datos. Paradigmas -->
 
-::: columns
-::: {.column width="47%"}
-### Analítico
+<!-- ::: columns -->
+<!-- ::: {.column width="47%"} -->
+<!-- ### Analítico -->
 
--   Fundamentación matemática de los procedimientos estadísticos
--   Resultados muchas veces exactos
--   Expresiones cerradas para medidas de incertidumbre, al menos
-    asintóticas
--   Teoremas de respaldo, necesidad de supuestos distribucionales
--   Modelos estadísticos
--   Clasificación y Predicción
-:::
+<!-- -   Fundamentación matemática de los procedimientos estadísticos -->
+<!-- -   Resultados muchas veces exactos -->
+<!-- -   Expresiones cerradas para medidas de incertidumbre, al menos -->
+<!--     asintóticas -->
+<!-- -   Teoremas de respaldo, necesidad de supuestos distribucionales -->
+<!-- -   Modelos estadísticos -->
+<!-- -   Clasificación y Predicción -->
+<!-- ::: -->
 
-::: {.column width="6%"}
-:::
+<!-- ::: {.column width="6%"} -->
+<!-- ::: -->
 
-::: {.column width="47%"}
-### Computación intensiva
+<!-- ::: {.column width="47%"} -->
+<!-- ### Computación intensiva -->
 
--   Soluciones númericas
--   Resultados aproximados por procesos iterativos
--   Capacidad de modelar situaciones más complejas con supuestos menos
-    restrictivos
--   Aprendizajes automáticos
--   Más exploratorios que inferenciales
--   Modelos o algoritmos explicativos
--   Clasificación y Predicción
-:::
-:::
+<!-- -   Soluciones númericas -->
+<!-- -   Resultados aproximados por procesos iterativos -->
+<!-- -   Capacidad de modelar situaciones más complejas con supuestos menos -->
+<!--     restrictivos -->
+<!-- -   Aprendizajes automáticos -->
+<!-- -   Más exploratorios que inferenciales -->
+<!-- -   Modelos o algoritmos explicativos -->
+<!-- -   Clasificación y Predicción -->
+<!-- ::: -->
+<!-- ::: -->
 
 ## Modelo Lineal General
 
 $$Y = Valor\ Esperado + Error$$
 
-$$Y = Modelo\ de\ Media + Modelo\ de\ Varianza\! - \! Covarianza$$
+$$Y = Modelo\ de\ Media + Modelo\ de\ Varianza\ y \ Covarianza$$
 
 En el Modelo de Media, la respuesta se relaciona linealmente con
 regresoras y/o variables de clasificación (Modelos de Regresión, Modelos
@@ -101,42 +99,51 @@ cov(\varepsilon_{ij}, \varepsilon_{i'j'}) = 0 \: \forall ij \neq i' j'$$
 
 Donde:
 
--   $Y_{ij}$ es la observación en la $j-ésima$ repetición del $i-ésimo$
-    tratamiento.
--   $\beta_0$ es la Constante
--   $\beta_1$ es el efecto de la variable regresora
--   $x_{ij}$ valor de la covariable
--   $\varepsilon_{ij}$ es el efecto aleatorio de la $ij-ésima$ unidad
-    experimental
+-   $Y_{ij}$ es la observación en la $j-ésima$ repetición de la $i-ésima$
+    variable explicativa.
+-   $\beta_0$ es un término constante o intercepto
+-   $\beta_1$ es el efecto de la variable explicativa
+-   $x_{ij}$ es el valor de la $j-ésima$ repetición de la $i-ésima$
+    variable explicativa.
+-   $\varepsilon_{ij}$ es un efecto aleatorio o término de error asociado a la
+observación $Y_{ij}$
+
+::: {.callout-note appearance="simple"}
 
 Alternativamente la covarianza entre los términos de error puede ser
 distinta de cero, por ejemplo covarianza positiva expresada como función
 de la distancia entre observaciones
 
-# Desde ML a GLM {background-color="#546e7a"}
+:::
+
+# Modelo Lineal Mixto {background-color="#546e7a"}
 
 ## Modelo Lineal Mixto
 
-### No independencia y/o No homogeneidad de varianzas
+### Permite estimar un modelo para respuestas normales sin que se cumpla el supuesto de independencia y/o de homogeneidad de varianzas
 
-Permite trabajar correlaciones de dos formas:
+La respuesta se modela como función de variables explicativas de efectos 
+fijos y de efectos aleatorios.
 
--   especificando covarianzas para los errores
--   incorporando efectos aleatorios correlacionados
+La correlación se puede abordar de dos formas:
 
-Se suponen errores normales y correlación entre errores. Se puede
-explicitar a través de distintas funciones que especifican la
-correlación entre cada par de datos según la distancia espacial entre
-ellos (por ejemplo correlación espacial exponencial, esférica, gausiana)
+1. Especificando correlaciones entre los términos de error
+2. Incorporando efectos aleatorios que inducen correlaciones entre los 
+datos que comparten el mismo nivel del efecto
+
+::: {.callout-note appearance="simple"}
+
+La correlación entre los errores se especifica como función de la distancia 
+espacial entre las observaciones (por ej. correlación espacial exponencial o 
+esférica como modelos para la caída de las correlaciones a medida que aumenta 
+la distancia entre observaciones)
+
+:::
+
 
 ------------------------------------------------------------------------
 
-## Modelo Lineal Mixto. Efectos Fijos y Aleatorios
-
-$Y$ es función de covariables/factores de efectos fijos (constante) y
-aleatorios
-
-Fijo vs. Aleatorio:
+## Modelo Lineal Mixto. Efectos Fijos vs. Aleatorios
 
 -   Niveles arbitrariamente determinados vs. muestra aleatoria de
     niveles (asociado a una distribución de probabilidad)
@@ -147,10 +154,25 @@ Fijo vs. Aleatorio:
 -   Calidad de la estimación de componentes de varianza
 -   Cómputo de covarianzas
 
+
+## Modelo Lineal Mixto = Modelo Jerárquico Normal
+
+Un modelo jerárquico es un modelo especificado en etapas.
+
+*Ejemplo*: Modelo lineal mixto con efectos aleatorios $u$.
+
+$$y \vert \beta, u, \sigma^2 \sim N(x' \beta + z'u, \sigma^2I) \\
+u \sim N(0, D(\theta))$$
+
+
+
+# Modelo Lineal Generalizado {background-color="#546e7a"}
+
+
 ## Modelo Lineal Generalizado. Componentes
 
 1.  Distribución de las observaciones
-    -   No necesariamente normal, no-homogeneidad
+    -   No necesariamente normal, no asume homogeneidad de varianzas
 2.  Predictor lineal
     -   Combinación lineal del efecto de las fuentes de variación más un
         intercepto
@@ -175,6 +197,8 @@ Fijo vs. Aleatorio:
         y conteos respectivamente y el caso de distribuciones continuas:
         Normal, Gamma, Inversa Gaussiana)
 
+# Modelo Lineal Generalizado Mixto {background-color="#546e7a"}
+
 ## Modelo Lineal Generalizado Mixto (GLMM)
 
 No necesariamente normal, no-homogeneidad y no independencia
@@ -183,34 +207,67 @@ MLGM permite trabajar datos no normales (por ejemplo variables binarias
 y conteos) y correlaciones, a través de la incorporación de efectos
 aleatorios. Es un modelo Jerárquico
 
-# Paradigmas dentro del analítico
+--- 
 
-::: columns
+
+# Paradigmas de estimación/predicción {background-color="#546e7a"}
+
+
+---
+
+
+:::: {.columns}
+
 ::: {.column width="50%"}
-**Frecuentista**:
+
+**Frecuentista**
 
 Relacionan la variable respuesta con variables explicativas a través de
 parámetros desconocidos. Los parámetros son constantes que se estiman
 con determinada confianza.
+
 :::
 
 ::: {.column width="50%"}
-**Bayesiano**:
+
+**Bayesiano**
 
 Relacionan la variable dependiente con variables explicativas a través
 de parámetros desconocidos. Los parámetros se interpretan en término de
 probabilidades bayesianas; se supone una distribución "a priori" para
 cada parámetro y se deriva la distribución "a posteriori" de cada
 parámetro y para la predicción de Y.
+
 :::
+
+::::
+
+# Modelos Mixtos (o Multinivel): estimación frecuentista {background-color="#546e7a"}
+
+
+## Modelo Jerárquico Normal
+
+Se utiliza Máxima Verosimilitud (ML) o Máxima Verosimilitud Restringida (REML).
+
+Se estiman los parámetros de la estructura de media (coeficientes de regresión)
+y los parámetros de varianza y covarianza asociados a los términos de error 
+(varianza nugget, varianza del proceso con datos independientes y rango). 
+
+::: {.callout-note appearance="simple"}
+
+Los errores estándares se ajustan por correlación espacial.
+
 :::
 
-# Modelos Jerárquicos Bayesianos y estimación por INLA {background-color="#546e7a"}
+::: {.callout-warning appearance="simple"}
 
-## Modelo Bayesiano
+Con muchos datos, la computación de distancias y de la verosimilitud es 
+costosa. Se deben usar otros métodos de estimación.
 
--   Relacionan la variable dependiente con variables explicativas a
-    través de parámetros desconocidos.
+:::
+
+## Modelo Jerárquico Bayesiano
+
 -   Los parámetros se interpretan en término de probabilidades
     bayesianas; se supone una distribución "a priori" para cada
     parámetro y se deriva la distribución "a posteriori" de cada
@@ -264,12 +321,6 @@ distribución "a priori".
 
 ## Modelo Jerárquico Bayesiano
 
-Un modelo jerárquico es un modelo especificado en etapas.
-
-*Ejemplo*: Modelo lineal mixto con efectos aleatorios $u$.
-
-$$y \vert \beta, u, \sigma^2 \sim N(x' \beta + z'u, \sigma^2I) \\
-u \sim N(0, D(\theta))$$
 
 En un modelo bayesiano, los parámetros se consideran variables
 aleatorias y tienen distribuciones a priori. Continuando con el ejemplo
@@ -284,7 +335,7 @@ priori.
 
 $$\sigma^2 \sim \pi (\sigma^2)$$
 
-## Modelo Gausiano Latente
+## Modelo Gausiano Latente (una clase de MJB)
 
 El predictor lineal contiene el intercepto, los efectos de las
 covariables y funciones desconocidas $f^{(k)}$ que incluyen los efectos
@@ -319,20 +370,430 @@ espaciales sólo dependen de los sitios en el vecindario).
 
 INLA (*Integrated Nested Laplace Approximations*; Rue, Martino y Chopin,
 2009) es un método que permite estimar la distribución marginal a
-posteriori de los parámetros. INLA permite la inferencia bayesiana de
-una clase de MJB, los Modelos Gaussianos Latentes (LGM).
+posteriori de los parámetros. INLA permite la inferencia bayesiana de los
+Modelos Gaussianos Latentes.
+
+--------------------------------------------------------------------------------
+
+## Estimación vía INLA
 
 INLA es más rápido que MCMC porque el campo latente al que referencia es
 un campo aleatorio gaussiano de Markov (GMRF) y por tanto tiene matriz
 de precisión rala, lo que permite a INLA utilizar métodos numéricos para
 matrices ralas, que son más eficientes.
 
+La estimación de INLA requiere la construcción de una grilla espacial (mesh). 
+La grilla es una colección de elementos geométricos (trángulos) que divide el
+espacio dimensional que contiene los sitios con observaciones a partir de la 
+cual se estima la dependencia espacial de la variable respuesta.
+
+La estimación de las covarianzas de los efectos de sitio se hacen a través de 
+funciones de suavizado impuestas sobre la grilla espacial. La aproximación 
+SPDE (*Stochastic Partial Differential Equation*), agiliza el cómputo ya que la
+solución se presenta como una matriz de covarianza de Mátern. 
+
+```{r}
+#| echo: false
+#| include: false
+#| message: false
+
+set.seed(1990)
+library(INLA)
+library(inlabru)
+library(ggplot2)
+
+loc <- matrix(runif(10 * 2), 10, 2)
+
+if (require("splancs")) {
+    boundary <- list(
+        inla.nonconvex.hull(loc, 0.1, 0.15),
+        inla.nonconvex.hull(loc, 0.2, 0.2)
+    )
+    offset <- NULL
+} else {
+    boundary <- NULL
+    offset <- c(0.1, 0.2)
+}
+mesh <- inla.mesh.2d(loc, 
+                     boundary = boundary, 
+                     offset = offset, 
+                     max.edge = c(0.05, 0.1))
+ggplot() +
+  gg(mesh)
+```
+
+::: {.callout-note appearance="simple"}
+
+INLA puede ser usado para estimar modelo jerárquicos para datos espaciales con
+variable de respuesta normal, binaria, binomial, conteos, es decir, en el 
+contexto de Modelos Lineales Generalizados Mixtos
+
+:::
+
+# Ilustración  {background-color="#546e7a"}
+
+## Modelo Lineal Mixto iid para látice estimado vía INLA
+
+Se tiene una respuesta continua ESPI (Ecosystem Services Provisioning Index) 
+observada en el territorio de la Cuenca del Carcarañá. El territorio está 
+dividido en 4676 unidades de área de 1400 Has. cada una. Se dispone además 
+de la covariable “Porcentaje de Pasturas Naturales Manejadas” en cada unidad
+de área. 
+
+:::: {.columns}
+::: {.column width="47%"}
+
+![Mapa de ESPI observado](img/01_espiobs.jpg)
+
+:::
+
+::: {.column width="3%"}
+:::
+
+::: {.column width="50%"}
+
+::: {style="font-size: 0.7em"}
+
+| Región | ESPI | %PasturaNaturalManejada |
+|--------|------|:-----------------------:|
+| 1      | 2.11 | 1.90                    |
+| 2      | 1.35 | 0.20                    |
+| 3      | 1.84 | 19.33                   |
+| 4      | 2.04 | 60.08                   |
+| ...    | ...  | ...                     |
+| 4676   | 2.13 | 62.57                   |
+
+:::
+
+
+:::: {.columns}
+
+::: {.column width="40%"}
+
+- Min: 0.088
+- Media: 1.84
+- DE: 0.287 
+- Max: 3
+
+:::
+
+::: {.column width="50%"}
+![](img/02_espiHist.png){fig-align="center"}
+:::
+
+::::
+
+:::
+::::
+
+
+
+
+
+## Modelo Lineal Mixto iid para látice estimado vía INLA
+
+Vamos a modelar el ESPI en función del porcentaje de pasturas en cada región $i$
+utilizando una regresión lineal bayesiana con efectos aleatorios de sitio _iid_
+
+$$y_i \sim N \big(\mu, \tau_{\varepsilon}^{-1} \big)$$
+
+$$E \left[ y_i \right] = \beta_0 + \beta_1 \times Porc.Pasturas_i + \mu_i$$
+
+
+$$u_i \sim i.i.d \ N \big(0, \tau_{u}^{-1} \big)$$
+
+
+En la regresión bayesiana, los parámetros $\beta_0$ y $\beta_1$ tienen 
+distribuciones a priori y en el jerárquico bayesiano, los hiperparámetros 
+$\tau_{\varepsilon}^{-1}$ y $\tau_{\mu}^{-1}$ también. 
+
+Por defecto, `INLA` asigna distribuciones a priori **no informativas** $N(0, 10e^5)$
+para $\beta_0$ y $\beta_1$, y $Gamma(0, 10e^5)$ para $\tau_{\varepsilon}^{-1}$ y $\tau_{u}^{-1}$
+
+
+::: {.callout-note appearance="simple"}
+
+Como sólo se tiene un nivel de observaciones y la respuesta es gaussiana,
+agregar efectos iid solo equivale a redistribuir la varianza entre el efecto
+aleatorio y el error de las observaciones.
+
+:::
+
+
+## Modelo Lineal Mixto iid para látice estimado vía INLA
+
+Corremos el modelo en `INLA`:
+
+```{r, eval = FALSE, echo=TRUE}
+#| code-line-numbers: false
+#| 
+m1 <- inla(
+  formula = ESPI ~ porcentaje_pasturas + f(id_region, model = 'iid'),
+  family = 'gaussian',
+  data = data,
+  control.compute = list(dic = TRUE, waic = TRUE),
+)
+
+```
+
+Al efecto aleatorio iid lo incluimos en la fórmula con `f(id_region, model = 'iid')`. 
+
+Con `control.compute` le pedimos a `INLA` que calcule los criterios de 
+información DIC y WAIC (menores = mejores).
+
+## Modelo Lineal Mixto iid para látice estimado vía INLA
+
+Distribuciones a posteriori de los coeficientes de regresión:
+
+![](img/03_distparam.png){fig-align="center"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](img/04_disInter.png){fig-align="center"}
+
+:::
+
+::: {.column width="50%"}
+![](img/05_DistPast.png){fig-align="center"}
+:::
+
+::::
+
+## Modelo Lineal Mixto iid para látice estimado vía INLA
+
+Distribuciones a posteriori para los hiperparámetros (escala de precisión $\tau$)
+
+![](img/06_disHiper.png)
+
+:::: {.columns}
+
+::: {.column width="30%"}
+
+Gráfico en la escala de la desviación estándar $\sigma$
+
+$$\sigma^2 = \frac{1}{\tau}$$
+
+:::
+
+::: {.column width="50%"}
+![](img/06_distribGrafHiper.png){fig-align="center"}
+:::
+
+::::
+
+## Modelo Lineal Mixto iid para látice estimado vía INLA
+
+Gráficos con los predichos y las observaciones, calculando el predicho 
+puntual como la moda de la distribución a posteriori de los predichos:
+
+
+::: {style="font-size: 0.7em; text-align: center"}
+
+DIC: 88  |   WAIC: -43
+
+:::
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![Predichos puntuales](img/07_predichos.jpg)
+:::
+
+::: {.column width="50%"}
+
+![Observaciones](img/08_observados.jpg)
+
+:::
+
+::::
+
+
+
+## Modelo Lineal Mixto ICAR para látice estimado vía INLA
+
+En vez de utilizar efectos aleatorios normales e idéndticamente distribuídos, 
+podríamos utilizar efectos aleatorios con estructura espacial explícita. 
+
+Un ejemplo clásico apra datos areales son los efectos con estructura
+_Intrinsic Conditional Autoregressive_ o ICAR (Besag, 1974):
+
+$$u_i \vert u_{-1} \sim N \Big( \frac{1}{N_1} \sum_{j=1}^{n} a_{ij} u_j, \frac{1}{\tau_u N_i} \Big)$$
+
+donde $a_{ij} \ne 0$ si y solo si las áreas $i$ y $j$ son vecinas, $N_i$ es la
+cantidad de áreas vecinas del área $i$, $u_{-1}$ se asume $\sum_{j=1}^{n} u_i = 0$
+
+Hay distintas maneras de definir cuándo dos áreas son vecinas y qué peso tomará 
+$a_{ij}$ cuando lo son. Por ejemplo, podríamos tomar que son vecinas cuando se 
+tocan al menos en un punto, y que $a_{ij} = 1$ cuando son vecinas. 
+
+
+## Modelo Lineal Mixto ICAR para látice estimado vía INLA
+
+
+
+Vamos a modelar el ESPI en función del porcentaje de pasturas en cada región $i$
+utilizando una regresión lineal bayesiana con efectos aleatorios espaciales ICAR:
+
+
+$$y_i \sim N \big(\mu, \sigma_{\varepsilon}^{-2} \big)$$
+
+$$E \left[ y_i \right] = \beta_0 + \beta_1 \times Porc.Pasturas_i + \mu_i$$
+
+$$u_i \vert u_{-1} \sim N \Big( \frac{1}{N_1} \sum_{j=1}^{n} a_{ij} u_j, \frac{1}{\tau_u N_i} \Big)$$
+
+
+## Modelo Lineal Mixto ICAR para látice estimado vía INLA
+
+Definimos un grafo con los vecindarios de cada región:
+
+```{r, eval = FALSE, echo=TRUE}
+#| code-line-numbers: false
+#| 
+adj <- poly2nb(data)
+vecindario <- nb2mat(adj, style = "W", zero.policy = TRUE) 
+
+```
+
+Corremos el modelo en `INLA`:
+
+```{r, eval = FALSE, echo=TRUE}
+#| code-line-numbers: false
+#| 
+m2 <- inla(
+  formula = ESPI ~ porcentaje_pasturas + f(id_region, model = 'icar',
+                                           graph = vecindario),
+  family = 'gaussian',
+  data = data,
+  control.compute = list(dic = TRUE, waic = TRUE),
+)
+
+
+```
+
+
+Le pasamos el grafo al modelo en `f(…, graph = vecindario)`.
+
+## Modelo Lineal Mixto ICAR para látice estimado vía INLA
+
+
+Distribuciones a posteriori de los coeficientes de regresión:
+
+![](img/09_DistrCoeficarTabla.png){fig-align="center"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](img/10_distribGrafHiper.png){fig-align="center"}
+
+:::
+
+::: {.column width="50%"}
+![](img/11_distribGrafHiper.png){fig-align="center"}
+:::
+
+::::
+
+
+
+## Modelo Lineal Mixto ICAR para látice estimado vía INLA
+
+
+
+Distribuciones a posteriori para los hiperparámetros (escala de precisión $\tau$)
+
+![](img/12_DistrCoeficarTabla.png){fig-align="center"}
+
+![](img/13_sdHiper.png){fig-align="center"}
+
+::: {.callout-note appearance="simple"}
+
+El desvio estandar del efecto aleatorio podría tener mayor magnitud que el
+desvío estándar del ESPI observado, que era 0.287.
+
+:::
+
+
+## Modelo Lineal Mixto ICAR para látice estimado vía INLA
+
+
+Gráficos con los predichos y las observaciones, calculando el predicho 
+puntual como la moda de la distribución a posteriori de los predichos:
+
+::: {style="font-size: 0.7em; text-align: center"}
+
+DIC: -3783  |   WAIC: -3862
+
+:::
+
+:::: {.columns}
+
+::: {.column width="49%"}
+
+![Predichos puntuales](img/14_predichosicar.jpg)
+:::
+
+::: {.column width="49%"}
+
+![Observaciones](img/08_observados.jpg)
+
+:::
+
+::::
+
+
+
+## Comentarios
+
+Entre estos ajustes, el modelo ICAR proporcionó menores DIC y WAIC. Ademas, 
+en los mapas de predichos se observa que el ICAR logra captar el detalle de 
+las regiones con ESPI bajo, algo que el iid no logró. 
+
+En un modelo con efecto aleatorio de sitio y efecto aleatorio residual 
+separables podrían usarse distintos modelos para los distintos efectos 
+aleatorios. Por ejemplo ICAR para el efecto sitio e i.i.d para el residual
+
+
+
+# Modelo Lineal Mixto para datos contínuos estimado vía REML e INLA  {background-color="#546e7a"}
+
+# Modelo Lineal Mixto para datos de conteo estimado vía INLA  {background-color="#546e7a"}
+
+
+## Ejemplo MJB datos de conteo
+
+$$Y_i \sim Poisson(\theta_i) \ \ \ \ i = 1, \dots, n$$
+
+$$log(\theta_i) = \beta_0 + \beta_1 \times x_i + \dots + u_i + \nu_i$$
+
+$$u_i \vert u_{-i} \sim N \Bigg( \bar{u}_{\delta_i}, \frac{\sigma_{u}^{2}}{\eta_{\delta_i}} \Bigg) $$
+
+$$\nu \sim N(0,\sigma_{\nu}^2)$$
+Tasa estandarizada de incidencia (SIR)
+$$SIR_i = \frac{Y_i}{E_i}$$
+
+
+
+:::{.callout-note}
+
+## Riesgo Relativo (RR) con datos espaciales
+
+Relación entre la probabilidad de que ocurra el evento en el sitio y la probabilidad
+de que el mismo evento ocurra en otro sitio.
+
+:::
+
+
+
 # Ejemplos de aplicación {background-color="#546e7a"}
 
-[Ejemplo 1](./Ej01.html){preview-link="true"}
+[Ejercicios 1](Ej01.html){preview-link="true"}
 
-[Ejemplo 2](/Ej02.html){preview-link="true"}
+[Ejercicios 2](Ej02.html){preview-link="true"}
 
-[Ejemplo 3](Ej03.html){preview-link="true"}
 
 # Gracias!
