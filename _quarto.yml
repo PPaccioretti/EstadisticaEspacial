@@ -1,5 +1,5 @@
 project:
-  type: website
+  type: site
   output-dir: docs
   
 website:
@@ -11,7 +11,7 @@ website:
     foreground: "#ffffff"
     right:
       - icon: github
-        href: https://github.com/PPaccioretti/Espacial_IG2022
+        href: https://github.com/PPaccioretti/EstadisticaEspacial
         aria-label: GitHub
     left:
       - text: "Slides"

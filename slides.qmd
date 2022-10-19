@@ -95,7 +95,7 @@ real en caso de incumplimiento de estos.
 $$Y_{ij} = \beta_0 + \beta_1 x_{ij}+\varepsilon_{ij}$$
 
 $$\varepsilon_{ij} \sim N \big(0, \sigma^2 \big) \: \: \:
-cov(\varepsilon_{ij}, \varepsilon_{i'j'}) = 0 \: \forall ij \neq i' j'$$
+cov(\varepsilon_{ij}, \varepsilon_{i^{\prime} j^{\prime}}) = 0 \: \forall ij \neq i^{\prime} j^{\prime}$$
 
 Donde:
 
@@ -161,7 +161,7 @@ Un modelo jerárquico es un modelo especificado en etapas.
 
 *Ejemplo*: Modelo lineal mixto con efectos aleatorios $u$.
 
-$$y \vert \beta, u, \sigma^2 \sim N(x' \beta + z'u, \sigma^2I) \\
+$$y \vert \beta, u, \sigma^2 \sim N(x^{\prime} \beta + z^{\prime}u, \sigma^2I) \\
 u \sim N(0, D(\theta))$$
 
 
@@ -206,8 +206,6 @@ No necesariamente normal, no-homogeneidad y no independencia
 MLGM permite trabajar datos no normales (por ejemplo variables binarias
 y conteos) y correlaciones, a través de la incorporación de efectos
 aleatorios. Es un modelo Jerárquico
-
---- 
 
 
 # Paradigmas de estimación/predicción {background-color="#546e7a"}
@@ -641,7 +639,7 @@ utilizando una regresión lineal bayesiana con efectos aleatorios espaciales ICA
 
 $$y_i \sim N \big(\mu, \sigma_{\varepsilon}^{-2} \big)$$
 
-$$E \left[ y_i \right] = \beta_0 + \beta_1 \times Porc.Pasturas_i + \mu_i$$
+$$E \left[ y_i \right] = \beta_0 + \beta_1 \times Porc.Pasturas_i + u_i$$
 
 $$u_i \vert u_{-1} \sim N \Big( \frac{1}{N_1} \sum_{j=1}^{n} a_{ij} u_j, \frac{1}{\tau_u N_i} \Big)$$
 

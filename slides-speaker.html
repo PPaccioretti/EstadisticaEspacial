@@ -7,7 +7,7 @@
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.189">
+  <meta name="generator" content="quarto-1.1.251">
 
   <meta name="author" content="Pablo Paccioretti">
   <title>Modelos Espaciales – slides</title>
@@ -465,7 +465,7 @@
 <h2>Modelo de Regresión Lineal</h2>
 <p><span class="math display">\[Y_{ij} = \beta_0 + \beta_1 x_{ij}+\varepsilon_{ij}\]</span></p>
 <p><span class="math display">\[\varepsilon_{ij} \sim N \big(0, \sigma^2 \big) \: \: \:
-cov(\varepsilon_{ij}, \varepsilon_{i'j'}) = 0 \: \forall ij \neq i' j'\]</span></p>
+cov(\varepsilon_{ij}, \varepsilon_{i^{\prime} j^{\prime}}) = 0 \: \forall ij \neq i^{\prime} j^{\prime}\]</span></p>
 <p>Donde:</p>
 <ul>
 <li><span class="math inline">\(Y_{ij}\)</span> es la observación en la <span class="math inline">\(j-ésima\)</span> repetición de la <span class="math inline">\(i-ésima\)</span> variable explicativa.</li>
@@ -526,7 +526,7 @@ cov(\varepsilon_{ij}, \varepsilon_{i'j'}) = 0 \: \forall ij \neq i' j'\]</span><
 <h2>Modelo Lineal Mixto = Modelo Jerárquico Normal</h2>
 <p>Un modelo jerárquico es un modelo especificado en etapas.</p>
 <p><em>Ejemplo</em>: Modelo lineal mixto con efectos aleatorios <span class="math inline">\(u\)</span>.</p>
-<p><span class="math display">\[y \vert \beta, u, \sigma^2 \sim N(x' \beta + z'u, \sigma^2I) \\
+<p><span class="math display">\[y \vert \beta, u, \sigma^2 \sim N(x^{\prime} \beta + z^{\prime}u, \sigma^2I) \\
 u \sim N(0, D(\theta))\]</span></p>
 </section></section>
 <section>
@@ -574,9 +574,6 @@ u \sim N(0, D(\theta))\]</span></p>
 <h2>Modelo Lineal Generalizado Mixto (GLMM)</h2>
 <p>No necesariamente normal, no-homogeneidad y no independencia</p>
 <p>MLGM permite trabajar datos no normales (por ejemplo variables binarias y conteos) y correlaciones, a través de la incorporación de efectos aleatorios. Es un modelo Jerárquico</p>
-</section>
-<section class="slide level2">
-
 </section></section>
 <section>
 <section id="paradigmas-de-estimaciónpredicción" class="title-slide slide level1 center" data-background-color="#546e7a">
