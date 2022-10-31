@@ -34,10 +34,10 @@ Octubre, 2022
 <!--     asintóticas -->
 <!-- -   Teoremas de respaldo, necesidad de supuestos distribucionales -->
 <!-- -   Modelos estadísticos -->
-<!-- -   Clasificación y Predicción -->
-<!-- ::: -->
+<!-- -   -->
 
 <!-- ::: {.column width="6%"} -->
+<!-- ::: Clasificación y Predicción -->
 <!-- ::: -->
 
 <!-- ::: {.column width="47%"} -->

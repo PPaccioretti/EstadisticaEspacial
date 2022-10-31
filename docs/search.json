@@ -235,7 +235,7 @@
     "href": "slides.html#modelo-lineal-mixto-icar-para-látice-estimado-vía-inla-1",
     "title": "Modelos Espaciales",
     "section": "Modelo Lineal Mixto ICAR para látice estimado vía INLA",
-    "text": "Modelo Lineal Mixto ICAR para látice estimado vía INLA\nVamos a modelar el ESPI en función del porcentaje de pasturas en cada región \\(i\\) utilizando una regresión lineal bayesiana con efectos aleatorios espaciales ICAR:\n\\[y_i \\sim N \\big(\\mu, \\sigma_{\\varepsilon}^{-2} \\big)\\]\n\\[E \\left[ y_i \\right] = \\beta_0 + \\beta_1 \\times Porc.Pasturas_i + \\mu_i\\]\n\\[u_i \\vert u_{-1} \\sim N \\Big( \\frac{1}{N_1} \\sum_{j=1}^{n} a_{ij} u_j, \\frac{1}{\\tau_u N_i} \\Big)\\]"
+    "text": "Modelo Lineal Mixto ICAR para látice estimado vía INLA\nVamos a modelar el ESPI en función del porcentaje de pasturas en cada región \\(i\\) utilizando una regresión lineal bayesiana con efectos aleatorios espaciales ICAR:\n\\[y_i \\sim N \\big(\\mu, \\sigma_{\\varepsilon}^{-2} \\big)\\]\n\\[E \\left[ y_i \\right] = \\beta_0 + \\beta_1 \\times Porc.Pasturas_i + u_i\\]\n\\[u_i \\vert u_{-1} \\sim N \\Big( \\frac{1}{N_1} \\sum_{j=1}^{n} a_{ij} u_j, \\frac{1}{\\tau_u N_i} \\Big)\\]"
   },
   {
     "objectID": "slides.html#modelo-lineal-mixto-icar-para-látice-estimado-vía-inla-2",
@@ -292,5 +292,12 @@
     "title": "Penguins",
     "section": "",
     "text": "viewof bill_length_min = Inputs.range(\n  [32, 50], \n  {value: 35, step: 1, label: \"Bill length (min):\"}\n)\nviewof islands = Inputs.checkbox(\n  [\"Torgersen\", \"Biscoe\", \"Dream\"], \n  { value: [\"Torgersen\", \"Biscoe\"], \n    label: \"Islands:\"\n  }\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPlotData\n\n\n\nPlot.rectY(filtered, \n  Plot.binX(\n    {y: \"count\"}, \n    {x: \"body_mass_g\", fill: \"species\", thresholds: 20}\n  ))\n  .plot({\n    facet: {\n      data: filtered,\n      x: \"sex\",\n      y: \"species\",\n      marginRight: 80\n    },\n    marks: [\n      Plot.frame(),\n    ]\n  }\n)\n\n\n\n\n\n\n\n\n\nInputs.table(filtered)\n\n\n\n\n\n\n\n\n\n\ndata = FileAttachment(\"palmer-penguins.csv\").csv({ typed: true })\n\n\n\n\n\n\n\nfiltered = data.filter(function(penguin) {\n  return bill_length_min < penguin.bill_length_mm &&\n         islands.includes(penguin.island);\n})"
+  },
+  {
+    "objectID": "slides.html",
+    "href": "slides.html",
+    "title": "Modelos Espaciales",
+    "section": "",
+    "text": "Mónica Balzarini, Pablo Paccioretti\nOctubre, 2022\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\\[Y = Valor\\ Esperado + Error\\]\n\\[Y = Modelo\\ de\\ Media + Modelo\\ de\\ Varianza\\ y \\ Covarianza\\]\nEn el Modelo de Media, la respuesta se relaciona linealmente con regresoras y/o variables de clasificación (Modelos de Regresión, Modelos de ANAVA)\nEl Modelo de varianzas y covarianzas se determina con supuestos distribucionales para los términos de error:\n\n\n\ni.i.d Normales\nno correlacionados\nvarianza constante\n\n\n\n\n\n\n\n\n\nHay alternativas para corregir la falta de cumplimiento de algunos de estos supuestos.\n\n\n\n\n\n\n\n\n\nEl cumplimiento de los supuestos no son necesarios para la estimación pero sí para la inferencia, esto significa que el valor-p puede no ser real en caso de incumplimiento de estos.\n\n\n\n\n\n\n\n\n\n\\[Y_{ij} = \\beta_0 + \\beta_1 x_{ij}+\\varepsilon_{ij}\\]\n\\[\\varepsilon_{ij} \\sim N \\big(0, \\sigma^2 \\big) \\: \\: \\:\ncov(\\varepsilon_{ij}, \\varepsilon_{i^{\\prime} j^{\\prime}}) = 0 \\: \\forall ij \\neq i^{\\prime} j^{\\prime}\\]\nDonde:\n\n\\(Y_{ij}\\) es la observación en la \\(j-ésima\\) repetición de la \\(i-ésima\\) variable explicativa.\n\\(\\beta_0\\) es un término constante o intercepto\n\\(\\beta_1\\) es el efecto de la variable explicativa\n\\(x_{ij}\\) es el valor de la \\(j-ésima\\) repetición de la \\(i-ésima\\) variable explicativa.\n\\(\\varepsilon_{ij}\\) es un efecto aleatorio o término de error asociado a la observación \\(Y_{ij}\\)\n\n\n\n\n\n\n\nAlternativamente la covarianza entre los términos de error puede ser distinta de cero, por ejemplo covarianza positiva expresada como función de la distancia entre observaciones"
   }
 ]

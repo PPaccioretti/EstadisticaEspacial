@@ -405,9 +405,9 @@
 <!--     asintóticas -->
 <!-- -   Teoremas de respaldo, necesidad de supuestos distribucionales -->
 <!-- -   Modelos estadísticos -->
-<!-- -   Clasificación y Predicción -->
-<!-- ::: -->
+<!-- -   -->
 <!-- ::: {.column width="6%"} -->
+<!-- ::: Clasificación y Predicción -->
 <!-- ::: -->
 <!-- ::: {.column width="47%"} -->
 <!-- ### Computación intensiva -->
@@ -891,7 +891,7 @@ x \vert \theta \sim N(0, Q^{-1}(\theta)) \\
 <h2>Modelo Lineal Mixto ICAR para látice estimado vía INLA</h2>
 <p>Vamos a modelar el ESPI en función del porcentaje de pasturas en cada región <span class="math inline">\(i\)</span> utilizando una regresión lineal bayesiana con efectos aleatorios espaciales ICAR:</p>
 <p><span class="math display">\[y_i \sim N \big(\mu, \sigma_{\varepsilon}^{-2} \big)\]</span></p>
-<p><span class="math display">\[E \left[ y_i \right] = \beta_0 + \beta_1 \times Porc.Pasturas_i + \mu_i\]</span></p>
+<p><span class="math display">\[E \left[ y_i \right] = \beta_0 + \beta_1 \times Porc.Pasturas_i + u_i\]</span></p>
 <p><span class="math display">\[u_i \vert u_{-1} \sim N \Big( \frac{1}{N_1} \sum_{j=1}^{n} a_{ij} u_j, \frac{1}{\tau_u N_i} \Big)\]</span></p>
 </section>
 <section id="modelo-lineal-mixto-icar-para-látice-estimado-vía-inla-2" class="slide level2">
@@ -1249,48 +1249,6 @@ x \vert \theta \sim N(0, Q^{-1}(\theta)) \\
         ]
       });
     </script>
-    
-    <script>
-      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-      // slide changes (different for each slide format).
-      (function () {
-        function fireSlideChanged(previousSlide, currentSlide) {
-
-          // dispatch for htmlwidgets
-          const event = window.document.createEvent("Event");
-          event.initEvent("slideenter", true, true);
-          window.document.dispatchEvent(event);
-
-          // dispatch for shiny
-          if (window.jQuery) {
-            if (previousSlide) {
-              window.jQuery(previousSlide).trigger("hidden");
-            }
-            if (currentSlide) {
-              window.jQuery(currentSlide).trigger("shown");
-            }
-          }
-        }
-
-        // hookup for reveal
-        if (window.Reveal) {
-          window.Reveal.addEventListener("slidechanged", function(event) {
-            fireSlideChanged(event.previousSlide, event.currentSlide);
-          });
-        }
-
-        // hookup for slidy
-        if (window.w3c_slidy) {
-          window.w3c_slidy.add_observer(function (slide_num) {
-            // slide_num starts at position 1
-            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-          });
-        }
-
-      })();
-    </script>
-
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
