@@ -83,9 +83,9 @@ diferenciaNormalizada <- function(x, y) {
   (x - y) / (x + y)
 }
 
-tmap_options(basemaps = c(
-  'Satelital' = leaflet::providers$Esri.WorldImagery,
-  'OSM' = leaflet::providers$OpenStreetMap))
+# tmap::tmap_options(basemap.server = c(
+#   'Satelital' = leaflet::providers$Esri.WorldImagery,
+#   'OSM' = leaflet::providers$OpenStreetMap))
 ```
 
 
@@ -157,7 +157,9 @@ tmap_mode('view')
 
 ```{r}
 tm_shape(datos_sf) +
-  tm_dots(col = 'TCH')
+  tm_dots(fill = 'TCH',
+          fill.scale = tm_scale_continuous(values = "carto.ag_grn_yl"),
+          size = 0.5)
 ```
 
 :::
@@ -171,7 +173,9 @@ tm_shape(datos_sf) +
 
 ```{r}
 tm_shape(datos_sf) +
-  tm_dots(col = 'ndvi')
+  tm_dots(fill = 'ndvi',
+          fill.scale = tm_scale_continuous(values = "tableau.classic_green"),
+          size = 0.5)
 ```
 
 

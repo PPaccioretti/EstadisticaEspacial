@@ -1,7 +1,7 @@
 ---
 title: "Estadística para datos espaciales"
 subtitle: "Tutorial Modelos Lineales Mixtos para datos espaciales: Estimación Frecuentista y Bayesiana  "
-date: 'Octubre 2022'
+date: 'Octubre 2023'
 date-format: "MMMM, YYYY"
 author: 
     - Pablo Paccioretti

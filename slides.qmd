@@ -20,7 +20,7 @@ editor:
 
 Mónica Balzarini, Pablo Paccioretti
 
-Octubre, 2022
+Octubre, 2023
 
 <!-- ## Análisis de datos. Paradigmas -->
 
