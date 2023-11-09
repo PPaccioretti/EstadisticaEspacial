@@ -72,17 +72,15 @@ En trigo HPWMov se vio favorecido por precipitaciones elevadas en Enero y temper
 
 La distribución de la presencia de estos virus se modeló con una regresión bayesiana de efectos mixtos y estructura espacial conjunta de las muestras sobre Trigo y Maíz estimada via SPDE considerando una malla común.
 
-$$
-\log{\left(\frac{p_{i.maíz}(S)}{1-p_{i.maiz}(S)}\right)} = \\
-\alpha_{maíz} + x_{i1}(S)\beta_{1.maíz} + x_{i2}(S)\beta_{2.maíz} + x_{i3}(S)\beta_{3.maíz} +
-Z_{maíz}(S) + e_{maíz}(S)
-$$
+<!-- $$ -->
+<!-- \\log{\left(\frac{p_{i.maíz}(S)}{1-p_{i.maiz}(S)}\right)} = \\ -->
+<!-- \alpha_{maíz} + x_{i1}(S)\beta_{1.maíz} + x_{i2}(S)\beta_{2.maíz} + x_{i3}(S)\beta_{3.maíz} + Z_{maíz}(S) + e_{maíz}(S) -->
+<!-- $$ -->
 
-$$
-\log{\left(\frac{p_{i.trigo}(S)}{1-p_{i.trigo}(S)}\right)} = \\
-\alpha_{trigo} + x_{i1}(S)\beta_{4.trigo} + x_{i5}(S)\beta_{5.trigo} + \lambda Z_{maíz}(S) +
-Z_{trigo} (S) + e_{trigo} (S)
-$$
+<!-- $$ -->
+<!-- \\log{\left(\frac{p_{i.trigo}(S)}{1-p_{i.trigo}(S)}\right)} = \\ -->
+<!-- \alpha_{trigo} + x_{i1}(S)\beta_{4.trigo} + x_{i5}(S)\beta_{5.trigo} + \lambda Z_{maíz}(S) + Z_{trigo} (S) + e_{trigo} (S) -->
+<!-- $$ -->
 
 donde $\log{\left(\frac{p_ij}{1 - p_ij}\right)}$ es la funcion de enlace. $x_1$ es el total de precipitaciones del mes de enero, $x_2$ es la temperatura punto rocío del mes de mayo y $x_3$ es el año en el que se tomo la muestra y $x_4$ es la temperatura del mes de junio. $Z$ es el efecto espacial
 
