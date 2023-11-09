@@ -1,6 +1,8 @@
 ---
 title: "Ejemplo 2: Modelación de casos de COVID"
 format: html
+editor_options: 
+  chunk_output_type: console
 ---
 
 ## Motivación 
@@ -27,7 +29,7 @@ Para cada radio censal se cuenta con información de
 - Porcentaje de hogares con Jefe/Jefa con al menos nivel de estudio 
 universitario (HogariesJefe.Univ.)
 - Porcentaje de hogares con computadoras (HogaresConComput.)
-- Cantidad de habitantes por km² (HabSup)
+- Cantidad de habitantes por $km^2$ (HabSup)
 - Cantidad de bancos dentro del radio censal (Bancos)
 - Cantidad de farmacias dentro del radio censal (Farmacias)
 - Cantidad de centros de salud dentro del radio censal (EstSaludInt)
@@ -63,7 +65,7 @@ datos$E <- datos$Poblacion * sum(datos$Casos) / sum(datos$Poblacion)
 
 ```{r}
 tm_shape(datos) +
-  tm_polygons(col = 'E')
+  tm_polygons(fill = 'E')
 ```
 
 
@@ -76,7 +78,7 @@ datos$SIR <- datos$Casos / datos$E
 
 ```{r}
 tm_shape(datos) +
-  tm_polygons(col = 'SIR')
+  tm_polygons(fill = 'SIR')
 ```
 
 
@@ -205,58 +207,57 @@ mapas <-
   tm_shape(datos,
            name = 'Casos')  +
   tm_polygons(
-    col = "Casos",
-    id = "Casos",
-    border.col = "gray50",
-    border.alpha = .5,
-    style = "fixed",
-    title = "Casos por Radio",
-    palette = "YlOrBr",
-    breaks = c(0, 1, 2, 3, 5, 10, 15, 25, 36),
-    popup.vars = popup_vars,
-    legend.format = list(
-      scientific = TRUE,
-      format = "f",
-      digits = 0
-    )
+    fill = 'Casos',
+    fill.scale = tm_scale_intervals(
+      style = "fixed",
+      breaks = c(0, 1, 2, 3, 5, 10, 15, 25, 36),
+      values = "brewer.yl_or_br"),
+    fill.legend = tm_legend(title =  "Casos por Radio",
+                            scientific = TRUE,
+                            format = "f",
+                            digits = 0
+    ),
+    col = "gray50",
+    col_alpha = .5,
+    popup.vars = popup_vars
   ) +
   
   tm_shape(datos,
            name = 'Tasa de Infección - SIR')  +
   tm_polygons(
-    col = "SIR",
-    id = "SIR",
-    border.col = "gray50",
-    border.alpha = .5,
-    style = "fixed",
-    palette = hcl.colors(7, "ag_GrnYl"),
-    breaks = c(0, 5, 10, 15, 20, 25, 30, 50, 60, 90),
-    popup.vars = popup_vars,
-    legend.format = list(
+    fill = "SIR",
+    fill.scale = tm_scale_intervals(
+      style = "fixed",
+      breaks = c(0, 5, 10, 15, 20, 25, 30, 50, 60, 90),
+      values = "brewer.yl_or_br"),
+    fill.legend = tm_legend( 
+      title = 'SIR',
       scientific = TRUE,
       format = "f",
       digits = 0
-    )
+    ),
+    col = "gray50",
+    col_alpha = .5,
+    popup.vars = popup_vars
   ) +
   
   tm_shape(datos,
            name = 'Riesgo Relativo')  +
   tm_polygons(
-    col = "RR",
-    id = "RR",
-    style = "fixed",
-    palette = "viridis",
-    alpha = 0.8,
-    title = "Riesgo Relativo",
-    breaks = c(0.4, 1, 2, 4, 8, 10, 15, 20, 30, 50, 85, 96),
-    popup.vars = popup_vars,
-    border.col = "gray50",
-    border.alpha = .5,
-    legend.format = list(
+    fill = "RR",
+    fill.scale = tm_scale_intervals(
+      style = "fixed",
+      breaks = c(0.4, 1, 2, 4, 8, 10, 15, 20, 30, 50, 85, 96),
+      values = "brewer.yl_or_br"),
+    fill.legend = tm_legend( 
+       title = "Riesgo Relativo",
       scientific = TRUE,
       format = "f",
       digits = 1
-    )
+    ),
+    col = "gray50",
+    col_alpha = .5,
+    popup.vars = popup_vars
   )
 mapas
 
@@ -287,75 +288,78 @@ map
 
 ## Visualización Estática
 
+
 ```{r}
+#| eval: false
+#| purl: false
 
 tmap_mode('plot')
 
-boundary_box <- matrix(c(4357000, 6508000, 4405900, 6560000))
-
 mapacasos <-
-  tm_shape(datos, bbox = boundary_box)  +
+  tm_shape(datos)  +
   tm_polygons(
-    col = "Casos",
-    id = "Casos",
-    border.col = "gray50",
-    border.alpha = .5,
-    style = "fixed",
-    title = "Casos por Radio",
-    palette = "YlOrBr",
-    breaks = c(0, 1, 2, 3, 5, 10, 15, 25, 36),
-    legend.format = list(
+    fill = "Casos",
+    fill.scale = tm_scale_intervals(
+      style = "fixed",
+      breaks = c(0, 1, 2, 3, 5, 10, 15, 25, 36),
+      values = "brewer.yl_or_br"),
+    fill.legend = tm_legend(title =  "Casos por Radio",
       scientific = TRUE,
       format = "f",
       digits = 0
-    )
-  ) + 
-  tm_scale_bar(position = c("right", "bottom")) +
+    ),
+    id = "Casos",
+    col = "gray50",
+    col_alpha = .5) + 
+  tm_scalebar(position = c("right", "bottom")) +
   tm_compass(type = "8star", position = c("left", "bottom"))
 
 mapacasos
 
 
 mapaSIR <-
-  tm_shape(datos, bbox = boundary_box)  +
+  tm_shape(datos)  +
   tm_polygons(
-    col = "SIR",
-    id = "SIR",
-    border.col = "gray50",
-    border.alpha = .5,
-    style = "fixed",
-    palette = "YlOrBr",
-    breaks = c(0, 5, 10, 15, 20, 25, 30, 50, 60, 90),
-    legend.format = list(
+    fill = "SIR",
+    fill.scale = tm_scale_intervals(
+      style = "fixed",
+      breaks = c(0, 5, 10, 15, 20, 25, 30, 50, 60, 90),
+      values = "brewer.yl_or_br"),
+    fill.legend = tm_legend( 
+      title = 'SIR',
       scientific = TRUE,
       format = "f",
       digits = 0
-    )
+    ),
+    id = "SIR",
+    col = "gray50",
+    col_alpha = .5,
   ) + 
-  tm_scale_bar(position = c("right", "bottom")) +
+  tm_scalebar (position = c("right", "bottom")) +
   tm_compass(type = "8star", position = c("left", "bottom"))
 
 mapaSIR
 
 
 mapaRR <-
-  tm_shape(datos, bbox = boundary_box)  +
+  tm_shape(datos)  +
   tm_polygons(
-    col = "RR",
-    id = "RR",
-    style = "fixed",
-    palette = "YlOrBr",
-    title = "Riesgo Relativo",
-    breaks = c(0.4, 1, 2, 4, 8, 10, 15, 20, 30, 50, 85, 96),
-    border.col = "gray50",
-    border.alpha = .5,
-    legend.format = list(
+    fill = "RR",
+    fill.scale = tm_scale_intervals(
+      style = "fixed",
+      breaks = c(0.4, 1, 2, 4, 8, 10, 15, 20, 30, 50, 85, 96),
+      values = "brewer.yl_or_br"),
+    fill.legend = tm_legend( 
+       title = "Riesgo Relativo",
       scientific = TRUE,
       format = "f",
       digits = 1
-    )
+    ),
+    id = "RR",
+    col = "gray50",
+    col_alpha = .5
   ) + 
-  tm_scale_bar(position = c("right", "bottom")) +
+  tm_scalebar(position = c("right", "bottom")) +
   tm_compass(type = "8star", position = c("left", "bottom"))
 
 mapaRR

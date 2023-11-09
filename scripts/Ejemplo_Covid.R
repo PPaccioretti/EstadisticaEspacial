@@ -1,4 +1,7 @@
-## -------------------------------------------------------------------------------------------------------------------------
+## -------------------------------------------------------------------------------------------------------------------------------------------------
+#| code-fold: true
+#| code-summary: "Carga paquetes"
+
 library(sf)
 library(spdep)
 library(tmap)
@@ -6,35 +9,35 @@ library(INLA)
 
 
 
-## -------------------------------------------------------------------------------------------------------------------------
+## -------------------------------------------------------------------------------------------------------------------------------------------------
 datos <- st_read("data/Base_07_07_radios.gpkg", quiet = TRUE)
 
 
-## -------------------------------------------------------------------------------------------------------------------------
+## -------------------------------------------------------------------------------------------------------------------------------------------------
 datos$E <- datos$Poblacion * sum(datos$Casos) / sum(datos$Poblacion)
 
 
-## -------------------------------------------------------------------------------------------------------------------------
+## -------------------------------------------------------------------------------------------------------------------------------------------------
 tm_shape(datos) +
-  tm_polygons(col = 'E')
+  tm_polygons(fill = 'E')
 
 
-## -------------------------------------------------------------------------------------------------------------------------
+## -------------------------------------------------------------------------------------------------------------------------------------------------
 datos$SIR <- datos$Casos / datos$E
 
 
-## -------------------------------------------------------------------------------------------------------------------------
+## -------------------------------------------------------------------------------------------------------------------------------------------------
 tm_shape(datos) +
-  tm_polygons(col = 'SIR')
+  tm_polygons(fill = 'SIR')
 
 
-## -------------------------------------------------------------------------------------------------------------------------
+## -------------------------------------------------------------------------------------------------------------------------------------------------
 datos$re_u <- 1:nrow(datos)
 datos$re_v <- 1:nrow(datos)
 
 
 
-## -------------------------------------------------------------------------------------------------------------------------
+## -------------------------------------------------------------------------------------------------------------------------------------------------
 # Generación de lista con vecindarios
 nb <- poly2nb(datos)
 
@@ -52,7 +55,7 @@ plot(
 
 
 
-## -------------------------------------------------------------------------------------------------------------------------
+## -------------------------------------------------------------------------------------------------------------------------------------------------
 # Generación de vecindarios para INLA
 file_adj <- tempfile("map.adj1")
 nb2INLA(file_adj, nb)
@@ -62,7 +65,7 @@ g <- inla.read.graph(filename = file_adj)
 
 
 
-## -------------------------------------------------------------------------------------------------------------------------
+## -------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Ajuste del Modelo inflado en ceros
 summary(datos)
@@ -91,7 +94,7 @@ summary(res_inflpoi)
 
 
 
-## -------------------------------------------------------------------------------------------------------------------------
+## -------------------------------------------------------------------------------------------------------------------------------------------------
 datos$RR <- res_inflpoi$summary.fitted.values[, "mean"]
 datos$RR_LI <- res_inflpoi$summary.fitted.values[, "0.025quant"]
 datos$RR_LS <- res_inflpoi$summary.fitted.values[, "0.975quant"]
@@ -114,71 +117,73 @@ popup_vars <- c(
 
 
 
-## -------------------------------------------------------------------------------------------------------------------------
+## -------------------------------------------------------------------------------------------------------------------------------------------------
+#| column: screen-inset-right
+#| fig-height: 6
+
 tmap_mode('view')
 mapas <-
   tm_basemap(c(Urbano = "OpenStreetMap", Satelite = "Esri.WorldImagery")) +
   tm_shape(datos,
            name = 'Casos')  +
   tm_polygons(
-    col = "Casos",
-    id = "Casos",
-    border.col = "gray50",
-    border.alpha = .5,
-    style = "fixed",
-    title = "Casos por Radio",
-    palette = "YlOrBr",
-    breaks = c(0, 1, 2, 3, 5, 10, 15, 25, 36),
-    popup.vars = popup_vars,
-    legend.format = list(
-      scientific = TRUE,
-      format = "f",
-      digits = 0
-    )
+    fill = 'Casos',
+    fill.scale = tm_scale_intervals(
+      style = "fixed",
+      breaks = c(0, 1, 2, 3, 5, 10, 15, 25, 36),
+      values = "brewer.yl_or_br"),
+    fill.legend = tm_legend(title =  "Casos por Radio",
+                            scientific = TRUE,
+                            format = "f",
+                            digits = 0
+    ),
+    col = "gray50",
+    col_alpha = .5,
+    popup.vars = popup_vars
   ) +
   
   tm_shape(datos,
            name = 'Tasa de Infección - SIR')  +
   tm_polygons(
-    col = "SIR",
-    id = "SIR",
-    border.col = "gray50",
-    border.alpha = .5,
-    style = "fixed",
-    palette = hcl.colors(7, "ag_GrnYl"),
-    breaks = c(0, 5, 10, 15, 20, 25, 30, 50, 60, 90),
-    popup.vars = popup_vars,
-    legend.format = list(
+    fill = "SIR",
+    fill.scale = tm_scale_intervals(
+      style = "fixed",
+      breaks = c(0, 5, 10, 15, 20, 25, 30, 50, 60, 90),
+      values = "brewer.yl_or_br"),
+    fill.legend = tm_legend( 
+      title = 'SIR',
       scientific = TRUE,
       format = "f",
       digits = 0
-    )
+    ),
+    col = "gray50",
+    col_alpha = .5,
+    popup.vars = popup_vars
   ) +
   
   tm_shape(datos,
            name = 'Riesgo Relativo')  +
   tm_polygons(
-    col = "RR",
-    id = "RR",
-    style = "fixed",
-    palette = "viridis",
-    alpha = 0.8,
-    title = "Riesgo Relativo",
-    breaks = c(0.4, 1, 2, 4, 8, 10, 15, 20, 30, 50, 85, 96),
-    popup.vars = popup_vars,
-    border.col = "gray50",
-    border.alpha = .5,
-    legend.format = list(
+    fill = "RR",
+    fill.scale = tm_scale_intervals(
+      style = "fixed",
+      breaks = c(0.4, 1, 2, 4, 8, 10, 15, 20, 30, 50, 85, 96),
+      values = "brewer.yl_or_br"),
+    fill.legend = tm_legend( 
+       title = "Riesgo Relativo",
       scientific = TRUE,
       format = "f",
       digits = 1
-    )
+    ),
+    col = "gray50",
+    col_alpha = .5,
+    popup.vars = popup_vars
   )
 mapas
 
 
 
-## -------------------------------------------------------------------------------------------------------------------------
+## -------------------------------------------------------------------------------------------------------------------------------------------------
 img <-
   "https://ig.conae.unc.edu.ar/wp-content/uploads/sites/68/2022/04/cropped-cromas-68-1.png"
 
@@ -194,78 +199,4 @@ map <-
 map
 
 # mapshot(map, paste0("Mapa_radios_", format(Sys.time(), "%d_%m_%Y"), ".html"))
-
-
-## -------------------------------------------------------------------------------------------------------------------------
-
-tmap_mode('plot')
-
-boundary_box <- matrix(c(4357000, 6508000, 4405900, 6560000))
-
-mapacasos <-
-  tm_shape(datos, bbox = boundary_box)  +
-  tm_polygons(
-    col = "Casos",
-    id = "Casos",
-    border.col = "gray50",
-    border.alpha = .5,
-    style = "fixed",
-    title = "Casos por Radio",
-    palette = "YlOrBr",
-    breaks = c(0, 1, 2, 3, 5, 10, 15, 25, 36),
-    legend.format = list(
-      scientific = TRUE,
-      format = "f",
-      digits = 0
-    )
-  ) + 
-  tm_scale_bar(position = c("right", "bottom")) +
-  tm_compass(type = "8star", position = c("left", "bottom"))
-
-mapacasos
-
-
-mapaSIR <-
-  tm_shape(datos, bbox = boundary_box)  +
-  tm_polygons(
-    col = "SIR",
-    id = "SIR",
-    border.col = "gray50",
-    border.alpha = .5,
-    style = "fixed",
-    palette = "YlOrBr",
-    breaks = c(0, 5, 10, 15, 20, 25, 30, 50, 60, 90),
-    legend.format = list(
-      scientific = TRUE,
-      format = "f",
-      digits = 0
-    )
-  ) + 
-  tm_scale_bar(position = c("right", "bottom")) +
-  tm_compass(type = "8star", position = c("left", "bottom"))
-
-mapaSIR
-
-
-mapaRR <-
-  tm_shape(datos, bbox = boundary_box)  +
-  tm_polygons(
-    col = "RR",
-    id = "RR",
-    style = "fixed",
-    palette = "YlOrBr",
-    title = "Riesgo Relativo",
-    breaks = c(0.4, 1, 2, 4, 8, 10, 15, 20, 30, 50, 85, 96),
-    border.col = "gray50",
-    border.alpha = .5,
-    legend.format = list(
-      scientific = TRUE,
-      format = "f",
-      digits = 1
-    )
-  ) + 
-  tm_scale_bar(position = c("right", "bottom")) +
-  tm_compass(type = "8star", position = c("left", "bottom"))
-
-mapaRR
 
