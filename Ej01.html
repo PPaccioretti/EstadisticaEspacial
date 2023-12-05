@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.489">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -93,9 +93,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
+      <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Modelos Espaciales</span>
     </a>
@@ -106,35 +106,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./slidespage.html"> 
-<span class="menu-text">Slides</span></a>
+    <a class="nav-link" href="./slidespage.html" rel="" target="">
+ <span class="menu-text">Slides</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./Ej01.html" aria-current="page"> 
-<span class="menu-text">Ejemplo 1</span></a>
+    <a class="nav-link active" href="./Ej01.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Ejemplo 1</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./Ej02.html"> 
-<span class="menu-text">Ejemplo 2</span></a>
+    <a class="nav-link" href="./Ej02.html" rel="" target="">
+ <span class="menu-text">Ejemplo 2</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/PPaccioretti/EstadisticaEspacial"> <i class="bi bi-github" role="img" aria-label="GitHub">
+    <a class="nav-link" href="https://github.com/PPaccioretti/EstadisticaEspacial" rel="" target=""><i class="bi bi-github" role="img" aria-label="GitHub">
 </i> 
-<span class="menu-text"></span></a>
+ <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
+          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Contents</h2>
    
@@ -158,7 +158,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul>
 </nav>
 </nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
@@ -180,9 +180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-
 </header>
-
 
 <section id="motivación" class="level2">
 <h2 class="anchored" data-anchor-id="motivación">Motivación</h2>
@@ -217,7 +215,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="lectura-base-de-datos" class="level3">
 <h3 class="anchored" data-anchor-id="lectura-base-de-datos">Lectura base de datos</h3>
 <div class="cell">
-<details class="code-fold">
+<details>
 <summary>Carga paquetes y funciones</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nlme)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -319,6 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="estadística-descriptiva">Estadística descriptiva</h3>
 <section id="gráficos" class="level4">
 <h4 class="anchored" data-anchor-id="gráficos">Gráficos</h4>
+<div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos, <span class="fu">aes</span>(TCH)) <span class="sc">+</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(count <span class="sc">/</span> <span class="fu">sum</span>(count))),</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">bins =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
@@ -326,19 +325,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos, <span class="fu">aes</span>(EDAD, TCH)) <span class="sc">+</span></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.25</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-layout-ncol="2">
+<div class="cell quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-figure quarto-figure-center quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="Ej01_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Histograma</figcaption>
+<figcaption class="figure-caption">Histograma</figcaption>
 </figure>
 </div>
-<div class="quarto-figure quarto-figure-center quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="Ej01_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Gráfico de cajas</figcaption>
+<figcaption class="figure-caption">Gráfico de cajas</figcaption>
 </figure>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -354,14 +358,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos, <span class="fu">aes</span>(ndvi, TCH)) <span class="sc">+</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="fig-ndvi" class="quarto-figure quarto-figure-center anchored" width="672">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-ndvi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="Ej01_files/figure-html/fig-ndvi-1.png" class="img-fluid figure-img" width="672">
-</div>
-<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-ndvi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;1: TCH en función de NDVI
-</figcaption>
+<div id="fig-ndvi" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Ej01_files/figure-html/fig-ndvi-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;1: TCH en función de NDVI</figcaption>
 </figure>
 </div>
 </div>
@@ -404,14 +404,10 @@ Figura&nbsp;1: TCH en función de NDVI
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos, <span class="fu">aes</span>(gndvi, TCH)) <span class="sc">+</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="fig-gndvi" class="quarto-figure quarto-figure-center anchored" width="672">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-gndvi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="Ej01_files/figure-html/fig-gndvi-1.png" class="img-fluid figure-img" width="672">
-</div>
-<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-gndvi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;2: TCH en función de gNDVI
-</figcaption>
+<div id="fig-gndvi" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Ej01_files/figure-html/fig-gndvi-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;2: TCH en función de gNDVI</figcaption>
 </figure>
 </div>
 </div>
@@ -454,14 +450,10 @@ Figura&nbsp;2: TCH en función de gNDVI
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos, <span class="fu">aes</span>(nci, TCH)) <span class="sc">+</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="fig-nci" class="quarto-figure quarto-figure-center anchored" width="672">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-nci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="Ej01_files/figure-html/fig-nci-1.png" class="img-fluid figure-img" width="672">
-</div>
-<figcaption class="figure quarto-float-caption quarto-float-fig" id="fig-nci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;3: TCH en función de NCI
-</figcaption>
+<div id="fig-nci" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Ej01_files/figure-html/fig-nci-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;3: TCH en función de NCI</figcaption>
 </figure>
 </div>
 </div>
@@ -764,6 +756,7 @@ Figura&nbsp;3: TCH en función de NCI
 ## ndvi        285.90429  54.01696  5.292862 1.128048e-06</code></pre>
 </div>
 </div>
+<div class="page-columns page-full">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>predichos_lm <span class="ot">&lt;-</span> datos</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>predichos_lm<span class="sc">$</span>pred_ndvi_iid <span class="ot">&lt;-</span> <span class="fu">predict</span>(modelo_ndvi)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>predichos_lm<span class="sc">$</span>pred_ndvi_esp <span class="ot">&lt;-</span> <span class="fu">predict</span>(modelo_ndvi_conCorr)</span>
@@ -778,16 +771,17 @@ Figura&nbsp;3: TCH en función de NCI
 <span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(predichos_lm, <span class="fu">aes</span>(pred_ndvi_esp, pred_ndvi_iid)) <span class="sc">+</span></span>
 <span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell column-page quarto-layout-panel" data-layout-ncol="3" data-layout-nrow="1">
+<div class="cell column-page quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
 <p><img src="Ej01_files/figure-html/obs-pred-lm-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
 <p><img src="Ej01_files/figure-html/obs-pred-lm-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
 <p><img src="Ej01_files/figure-html/obs-pred-lm-3.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 </div>
 </div>
@@ -837,7 +831,7 @@ Figura&nbsp;3: TCH en función de NCI
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<details class="code-fold">
+<details>
 <summary>Ajuste MJB usando INLA sin funciones de inlabru</summary>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>proj_obs <span class="ot">&lt;-</span> <span class="fu">inla.mesh.projector</span>(mesh, <span class="at">loc =</span> loc)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>proj_pred <span class="ot">&lt;-</span> <span class="fu">inla.mesh.projector</span>(mesh, <span class="at">loc =</span> mesh<span class="sc">$</span>loc)</span>
@@ -961,15 +955,17 @@ Figura&nbsp;3: TCH en función de NCI
 ## (Posterior marginals needs also 'control.compute=list(return.marginals.predictor=TRUE)')</code></pre>
 </div>
 </div>
+<div class="page-columns page-full">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ndvi_bru_spde, <span class="st">"Intercept"</span>)</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ndvi_bru_spde, <span class="st">"ndvi"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell column-screen-inset-shaded quarto-layout-panel" data-layout-nrow="1">
+<div class="cell column-screen-inset-shaded quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><img src="Ej01_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><img src="Ej01_files/figure-html/unnamed-chunk-25-2.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 </div>
 </div>
@@ -1006,7 +1002,7 @@ Figura&nbsp;3: TCH en función de NCI
 </div>
 </div>
 <div class="cell">
-<details class="code-fold">
+<details>
 <summary>Predicción espacial de TCH</summary>
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># No aplica para esta aplicación.</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pred_mesh &lt;-</span></span>
@@ -1049,7 +1045,6 @@ Figura&nbsp;3: TCH en función de NCI
 </div>
 </div>
 
-<p>:::</p>
 
 <!-- -->
 
@@ -1188,9 +1183,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1200,17 +1196,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1223,128 +1210,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    const typesetMath = (el) => {
-      if (window.MathJax) {
-        // MathJax Typeset
-        window.MathJax.typeset([el]);
-      } else if (window.katex) {
-        // KaTeX Render
-        var mathElements = el.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            window.katex.render(texText.data, mathElements[i], {
-              displayMode: mathElements[i].classList.contains('display'),
-              throwOnError: false,
-              macros: macros,
-              fleqn: false
-            });
-          }
-        }
-      }
-    }
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        for (let i = 0; i < 2; i++) {
-          container.appendChild(note.children[i].cloneNode(true));
-        }
-        typesetMath(container);
-        return container.innerHTML
-      } else {
-        typesetMath(note);
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      typesetMath(note);
-      return note.innerHTML;
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1388,7 +1253,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1414,32 +1278,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1735,8 +1573,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb44-252"><a href="#cb44-252" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb44-253"><a href="#cb44-253" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-254"><a href="#cb44-254" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, include=FALSE,purl=FALSE}</span></span>
-<span id="cb44-255"><a href="#cb44-255" aria-hidden="true" tabindex="-1"></a><span class="in"># modelo_ndvi_gls_ml &lt;- nlme::gls(TCH ~ ndvi, data = datos, method = "ML")</span></span>
-<span id="cb44-256"><a href="#cb44-256" aria-hidden="true" tabindex="-1"></a><span class="in"># modelo_ndvi_gls_reml &lt;- nlme::gls(TCH ~ ndvi, data = datos, method = "REML")</span></span>
+<span id="cb44-255"><a href="#cb44-255" aria-hidden="true" tabindex="-1"></a><span class="co"># modelo_ndvi_gls_ml &lt;- nlme::gls(TCH ~ ndvi, data = datos, method = "ML")</span></span>
+<span id="cb44-256"><a href="#cb44-256" aria-hidden="true" tabindex="-1"></a><span class="co"># modelo_ndvi_gls_reml &lt;- nlme::gls(TCH ~ ndvi, data = datos, method = "REML")</span></span>
 <span id="cb44-257"><a href="#cb44-257" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb44-258"><a href="#cb44-258" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-259"><a href="#cb44-259" aria-hidden="true" tabindex="-1"></a></span>
@@ -1879,26 +1717,26 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb44-418"><a href="#cb44-418" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb44-419"><a href="#cb44-419" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-420"><a href="#cb44-420" aria-hidden="true" tabindex="-1"></a><span class="in">```{r obs-pred-lm}</span></span>
-<span id="cb44-421"><a href="#cb44-421" aria-hidden="true" tabindex="-1"></a><span class="in">#| column: page</span></span>
-<span id="cb44-422"><a href="#cb44-422" aria-hidden="true" tabindex="-1"></a><span class="in">#| layout-ncol: 3</span></span>
-<span id="cb44-423"><a href="#cb44-423" aria-hidden="true" tabindex="-1"></a><span class="in">#| layout-nrow: 1</span></span>
+<span id="cb44-421"><a href="#cb44-421" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: page</span></span>
+<span id="cb44-422"><a href="#cb44-422" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 3</span></span>
+<span id="cb44-423"><a href="#cb44-423" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-nrow: 1</span></span>
 <span id="cb44-424"><a href="#cb44-424" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-425"><a href="#cb44-425" aria-hidden="true" tabindex="-1"></a><span class="in">predichos_lm &lt;- datos</span></span>
-<span id="cb44-426"><a href="#cb44-426" aria-hidden="true" tabindex="-1"></a><span class="in">predichos_lm$pred_ndvi_iid &lt;- predict(modelo_ndvi)</span></span>
-<span id="cb44-427"><a href="#cb44-427" aria-hidden="true" tabindex="-1"></a><span class="in">predichos_lm$pred_ndvi_esp &lt;- predict(modelo_ndvi_conCorr)</span></span>
+<span id="cb44-425"><a href="#cb44-425" aria-hidden="true" tabindex="-1"></a>predichos_lm <span class="ot">&lt;-</span> datos</span>
+<span id="cb44-426"><a href="#cb44-426" aria-hidden="true" tabindex="-1"></a>predichos_lm<span class="sc">$</span>pred_ndvi_iid <span class="ot">&lt;-</span> <span class="fu">predict</span>(modelo_ndvi)</span>
+<span id="cb44-427"><a href="#cb44-427" aria-hidden="true" tabindex="-1"></a>predichos_lm<span class="sc">$</span>pred_ndvi_esp <span class="ot">&lt;-</span> <span class="fu">predict</span>(modelo_ndvi_conCorr)</span>
 <span id="cb44-428"><a href="#cb44-428" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-429"><a href="#cb44-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-430"><a href="#cb44-430" aria-hidden="true" tabindex="-1"></a><span class="in">ggplot(predichos_lm, aes(pred_ndvi_iid, TCH)) +</span></span>
-<span id="cb44-431"><a href="#cb44-431" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point() +</span></span>
-<span id="cb44-432"><a href="#cb44-432" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_abline(slope = 1, intercept = 0)</span></span>
+<span id="cb44-430"><a href="#cb44-430" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(predichos_lm, <span class="fu">aes</span>(pred_ndvi_iid, TCH)) <span class="sc">+</span></span>
+<span id="cb44-431"><a href="#cb44-431" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb44-432"><a href="#cb44-432" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>)</span>
 <span id="cb44-433"><a href="#cb44-433" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-434"><a href="#cb44-434" aria-hidden="true" tabindex="-1"></a><span class="in">ggplot(predichos_lm, aes(pred_ndvi_esp, TCH)) +</span></span>
-<span id="cb44-435"><a href="#cb44-435" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point() +</span></span>
-<span id="cb44-436"><a href="#cb44-436" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_abline(slope = 1, intercept = 0)</span></span>
+<span id="cb44-434"><a href="#cb44-434" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(predichos_lm, <span class="fu">aes</span>(pred_ndvi_esp, TCH)) <span class="sc">+</span></span>
+<span id="cb44-435"><a href="#cb44-435" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb44-436"><a href="#cb44-436" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>)</span>
 <span id="cb44-437"><a href="#cb44-437" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-438"><a href="#cb44-438" aria-hidden="true" tabindex="-1"></a><span class="in">ggplot(predichos_lm, aes(pred_ndvi_esp, pred_ndvi_iid)) +</span></span>
-<span id="cb44-439"><a href="#cb44-439" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_point() +</span></span>
-<span id="cb44-440"><a href="#cb44-440" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_abline(slope = 1, intercept = 0)</span></span>
+<span id="cb44-438"><a href="#cb44-438" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(predichos_lm, <span class="fu">aes</span>(pred_ndvi_esp, pred_ndvi_iid)) <span class="sc">+</span></span>
+<span id="cb44-439"><a href="#cb44-439" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb44-440"><a href="#cb44-440" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>)</span>
 <span id="cb44-441"><a href="#cb44-441" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-442"><a href="#cb44-442" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb44-443"><a href="#cb44-443" aria-hidden="true" tabindex="-1"></a></span>
@@ -1930,97 +1768,97 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb44-473"><a href="#cb44-473" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-474"><a href="#cb44-474" aria-hidden="true" tabindex="-1"></a><span class="in">```{r generacion-grilla-inla}</span></span>
 <span id="cb44-475"><a href="#cb44-475" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-476"><a href="#cb44-476" aria-hidden="true" tabindex="-1"></a><span class="in">loc &lt;- st_coordinates(datos_sf)</span></span>
+<span id="cb44-476"><a href="#cb44-476" aria-hidden="true" tabindex="-1"></a>loc <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(datos_sf)</span>
 <span id="cb44-477"><a href="#cb44-477" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-478"><a href="#cb44-478" aria-hidden="true" tabindex="-1"></a><span class="in">mesh &lt;- INLA::inla.mesh.2d(</span></span>
-<span id="cb44-479"><a href="#cb44-479" aria-hidden="true" tabindex="-1"></a><span class="in">  loc = loc,</span></span>
-<span id="cb44-480"><a href="#cb44-480" aria-hidden="true" tabindex="-1"></a><span class="in">  offset = c(1000, 4000),</span></span>
-<span id="cb44-481"><a href="#cb44-481" aria-hidden="true" tabindex="-1"></a><span class="in">  cutoff = 800,</span></span>
-<span id="cb44-482"><a href="#cb44-482" aria-hidden="true" tabindex="-1"></a><span class="in">  max.edge = c(1000, 2000),</span></span>
-<span id="cb44-483"><a href="#cb44-483" aria-hidden="true" tabindex="-1"></a><span class="in">  max.n = 10000)</span></span>
+<span id="cb44-478"><a href="#cb44-478" aria-hidden="true" tabindex="-1"></a>mesh <span class="ot">&lt;-</span> INLA<span class="sc">::</span><span class="fu">inla.mesh.2d</span>(</span>
+<span id="cb44-479"><a href="#cb44-479" aria-hidden="true" tabindex="-1"></a>  <span class="at">loc =</span> loc,</span>
+<span id="cb44-480"><a href="#cb44-480" aria-hidden="true" tabindex="-1"></a>  <span class="at">offset =</span> <span class="fu">c</span>(<span class="dv">1000</span>, <span class="dv">4000</span>),</span>
+<span id="cb44-481"><a href="#cb44-481" aria-hidden="true" tabindex="-1"></a>  <span class="at">cutoff =</span> <span class="dv">800</span>,</span>
+<span id="cb44-482"><a href="#cb44-482" aria-hidden="true" tabindex="-1"></a>  <span class="at">max.edge =</span> <span class="fu">c</span>(<span class="dv">1000</span>, <span class="dv">2000</span>),</span>
+<span id="cb44-483"><a href="#cb44-483" aria-hidden="true" tabindex="-1"></a>  <span class="at">max.n =</span> <span class="dv">10000</span>)</span>
 <span id="cb44-484"><a href="#cb44-484" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-485"><a href="#cb44-485" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-486"><a href="#cb44-486" aria-hidden="true" tabindex="-1"></a><span class="in">ggplot(datos_sf) +</span></span>
-<span id="cb44-487"><a href="#cb44-487" aria-hidden="true" tabindex="-1"></a><span class="in">  gg(mesh) +</span></span>
-<span id="cb44-488"><a href="#cb44-488" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_sf()</span></span>
+<span id="cb44-486"><a href="#cb44-486" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos_sf) <span class="sc">+</span></span>
+<span id="cb44-487"><a href="#cb44-487" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gg</span>(mesh) <span class="sc">+</span></span>
+<span id="cb44-488"><a href="#cb44-488" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()</span>
 <span id="cb44-489"><a href="#cb44-489" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-490"><a href="#cb44-490" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-491"><a href="#cb44-491" aria-hidden="true" tabindex="-1"></a><span class="in">spde &lt;- INLA::inla.spde2.pcmatern(</span></span>
-<span id="cb44-492"><a href="#cb44-492" aria-hidden="true" tabindex="-1"></a><span class="in">  mesh = mesh,</span></span>
-<span id="cb44-493"><a href="#cb44-493" aria-hidden="true" tabindex="-1"></a><span class="in">  prior.range = c(2000, 0.05),</span></span>
-<span id="cb44-494"><a href="#cb44-494" aria-hidden="true" tabindex="-1"></a><span class="in">  prior.sigma = c(200, 0.01)</span></span>
-<span id="cb44-495"><a href="#cb44-495" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb44-491"><a href="#cb44-491" aria-hidden="true" tabindex="-1"></a>spde <span class="ot">&lt;-</span> INLA<span class="sc">::</span><span class="fu">inla.spde2.pcmatern</span>(</span>
+<span id="cb44-492"><a href="#cb44-492" aria-hidden="true" tabindex="-1"></a>  <span class="at">mesh =</span> mesh,</span>
+<span id="cb44-493"><a href="#cb44-493" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior.range =</span> <span class="fu">c</span>(<span class="dv">2000</span>, <span class="fl">0.05</span>),</span>
+<span id="cb44-494"><a href="#cb44-494" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior.sigma =</span> <span class="fu">c</span>(<span class="dv">200</span>, <span class="fl">0.01</span>)</span>
+<span id="cb44-495"><a href="#cb44-495" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb44-496"><a href="#cb44-496" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-497"><a href="#cb44-497" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb44-498"><a href="#cb44-498" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-499"><a href="#cb44-499" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-500"><a href="#cb44-500" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-501"><a href="#cb44-501" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
-<span id="cb44-502"><a href="#cb44-502" aria-hidden="true" tabindex="-1"></a><span class="in">#| code-fold: true</span></span>
-<span id="cb44-503"><a href="#cb44-503" aria-hidden="true" tabindex="-1"></a><span class="in">#| code-summary: "Ajuste MJB usando INLA sin funciones de inlabru"</span></span>
-<span id="cb44-504"><a href="#cb44-504" aria-hidden="true" tabindex="-1"></a><span class="in">#| </span></span>
-<span id="cb44-505"><a href="#cb44-505" aria-hidden="true" tabindex="-1"></a><span class="in">proj_obs &lt;- inla.mesh.projector(mesh, loc = loc)</span></span>
-<span id="cb44-506"><a href="#cb44-506" aria-hidden="true" tabindex="-1"></a><span class="in">proj_pred &lt;- inla.mesh.projector(mesh, loc = mesh$loc)</span></span>
+<span id="cb44-502"><a href="#cb44-502" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb44-503"><a href="#cb44-503" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Ajuste MJB usando INLA sin funciones de inlabru"</span></span>
+<span id="cb44-504"><a href="#cb44-504" aria-hidden="true" tabindex="-1"></a><span class="co">#| </span></span>
+<span id="cb44-505"><a href="#cb44-505" aria-hidden="true" tabindex="-1"></a>proj_obs <span class="ot">&lt;-</span> <span class="fu">inla.mesh.projector</span>(mesh, <span class="at">loc =</span> loc)</span>
+<span id="cb44-506"><a href="#cb44-506" aria-hidden="true" tabindex="-1"></a>proj_pred <span class="ot">&lt;-</span> <span class="fu">inla.mesh.projector</span>(mesh, <span class="at">loc =</span> mesh<span class="sc">$</span>loc)</span>
 <span id="cb44-507"><a href="#cb44-507" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-508"><a href="#cb44-508" aria-hidden="true" tabindex="-1"></a><span class="in">A_obs &lt;- inla.spde.make.A(mesh, loc = loc)</span></span>
-<span id="cb44-509"><a href="#cb44-509" aria-hidden="true" tabindex="-1"></a><span class="in">A_pred &lt;- inla.spde.make.A(mesh, loc = proj_pred$loc)</span></span>
-<span id="cb44-510"><a href="#cb44-510" aria-hidden="true" tabindex="-1"></a><span class="in">idx &lt;- 1:spde$n.spde</span></span>
+<span id="cb44-508"><a href="#cb44-508" aria-hidden="true" tabindex="-1"></a>A_obs <span class="ot">&lt;-</span> <span class="fu">inla.spde.make.A</span>(mesh, <span class="at">loc =</span> loc)</span>
+<span id="cb44-509"><a href="#cb44-509" aria-hidden="true" tabindex="-1"></a>A_pred <span class="ot">&lt;-</span> <span class="fu">inla.spde.make.A</span>(mesh, <span class="at">loc =</span> proj_pred<span class="sc">$</span>loc)</span>
+<span id="cb44-510"><a href="#cb44-510" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>spde<span class="sc">$</span>n.spde</span>
 <span id="cb44-511"><a href="#cb44-511" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-512"><a href="#cb44-512" aria-hidden="true" tabindex="-1"></a><span class="in">stack_obs &lt;-</span></span>
-<span id="cb44-513"><a href="#cb44-513" aria-hidden="true" tabindex="-1"></a><span class="in">  inla.stack(</span></span>
-<span id="cb44-514"><a href="#cb44-514" aria-hidden="true" tabindex="-1"></a><span class="in">    data = list(y = datos_sf$TCH),</span></span>
-<span id="cb44-515"><a href="#cb44-515" aria-hidden="true" tabindex="-1"></a><span class="in">    A = list(A_obs, 1),</span></span>
-<span id="cb44-516"><a href="#cb44-516" aria-hidden="true" tabindex="-1"></a><span class="in">    effects = list(c(</span></span>
-<span id="cb44-517"><a href="#cb44-517" aria-hidden="true" tabindex="-1"></a><span class="in">      list(Intercept = 1),</span></span>
-<span id="cb44-518"><a href="#cb44-518" aria-hidden="true" tabindex="-1"></a><span class="in">      inla.spde.make.index("spatial", spde$n.spde)</span></span>
-<span id="cb44-519"><a href="#cb44-519" aria-hidden="true" tabindex="-1"></a><span class="in">    ),</span></span>
-<span id="cb44-520"><a href="#cb44-520" aria-hidden="true" tabindex="-1"></a><span class="in">    covar = datos_sf$ndvi),</span></span>
-<span id="cb44-521"><a href="#cb44-521" aria-hidden="true" tabindex="-1"></a><span class="in">    tag = "obs"</span></span>
-<span id="cb44-522"><a href="#cb44-522" aria-hidden="true" tabindex="-1"></a><span class="in">  )</span></span>
-<span id="cb44-523"><a href="#cb44-523" aria-hidden="true" tabindex="-1"></a><span class="in">stack_pred &lt;-</span></span>
-<span id="cb44-524"><a href="#cb44-524" aria-hidden="true" tabindex="-1"></a><span class="in">  inla.stack(</span></span>
-<span id="cb44-525"><a href="#cb44-525" aria-hidden="true" tabindex="-1"></a><span class="in">    data = list(y = NA),</span></span>
-<span id="cb44-526"><a href="#cb44-526" aria-hidden="true" tabindex="-1"></a><span class="in">    A = list(A_pred),</span></span>
-<span id="cb44-527"><a href="#cb44-527" aria-hidden="true" tabindex="-1"></a><span class="in">    effects = list(c(</span></span>
-<span id="cb44-528"><a href="#cb44-528" aria-hidden="true" tabindex="-1"></a><span class="in">      list(Intercept = 1),</span></span>
-<span id="cb44-529"><a href="#cb44-529" aria-hidden="true" tabindex="-1"></a><span class="in">      inla.spde.make.index("spatial", mesh$n)</span></span>
-<span id="cb44-530"><a href="#cb44-530" aria-hidden="true" tabindex="-1"></a><span class="in">    )),</span></span>
-<span id="cb44-531"><a href="#cb44-531" aria-hidden="true" tabindex="-1"></a><span class="in">    tag = "pred"</span></span>
-<span id="cb44-532"><a href="#cb44-532" aria-hidden="true" tabindex="-1"></a><span class="in">  )</span></span>
-<span id="cb44-533"><a href="#cb44-533" aria-hidden="true" tabindex="-1"></a><span class="in">stack &lt;- inla.stack(stack_obs, stack_pred)</span></span>
+<span id="cb44-512"><a href="#cb44-512" aria-hidden="true" tabindex="-1"></a>stack_obs <span class="ot">&lt;-</span></span>
+<span id="cb44-513"><a href="#cb44-513" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inla.stack</span>(</span>
+<span id="cb44-514"><a href="#cb44-514" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> <span class="fu">list</span>(<span class="at">y =</span> datos_sf<span class="sc">$</span>TCH),</span>
+<span id="cb44-515"><a href="#cb44-515" aria-hidden="true" tabindex="-1"></a>    <span class="at">A =</span> <span class="fu">list</span>(A_obs, <span class="dv">1</span>),</span>
+<span id="cb44-516"><a href="#cb44-516" aria-hidden="true" tabindex="-1"></a>    <span class="at">effects =</span> <span class="fu">list</span>(<span class="fu">c</span>(</span>
+<span id="cb44-517"><a href="#cb44-517" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(<span class="at">Intercept =</span> <span class="dv">1</span>),</span>
+<span id="cb44-518"><a href="#cb44-518" aria-hidden="true" tabindex="-1"></a>      <span class="fu">inla.spde.make.index</span>(<span class="st">"spatial"</span>, spde<span class="sc">$</span>n.spde)</span>
+<span id="cb44-519"><a href="#cb44-519" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb44-520"><a href="#cb44-520" aria-hidden="true" tabindex="-1"></a>    <span class="at">covar =</span> datos_sf<span class="sc">$</span>ndvi),</span>
+<span id="cb44-521"><a href="#cb44-521" aria-hidden="true" tabindex="-1"></a>    <span class="at">tag =</span> <span class="st">"obs"</span></span>
+<span id="cb44-522"><a href="#cb44-522" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb44-523"><a href="#cb44-523" aria-hidden="true" tabindex="-1"></a>stack_pred <span class="ot">&lt;-</span></span>
+<span id="cb44-524"><a href="#cb44-524" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inla.stack</span>(</span>
+<span id="cb44-525"><a href="#cb44-525" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> <span class="fu">list</span>(<span class="at">y =</span> <span class="cn">NA</span>),</span>
+<span id="cb44-526"><a href="#cb44-526" aria-hidden="true" tabindex="-1"></a>    <span class="at">A =</span> <span class="fu">list</span>(A_pred),</span>
+<span id="cb44-527"><a href="#cb44-527" aria-hidden="true" tabindex="-1"></a>    <span class="at">effects =</span> <span class="fu">list</span>(<span class="fu">c</span>(</span>
+<span id="cb44-528"><a href="#cb44-528" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(<span class="at">Intercept =</span> <span class="dv">1</span>),</span>
+<span id="cb44-529"><a href="#cb44-529" aria-hidden="true" tabindex="-1"></a>      <span class="fu">inla.spde.make.index</span>(<span class="st">"spatial"</span>, mesh<span class="sc">$</span>n)</span>
+<span id="cb44-530"><a href="#cb44-530" aria-hidden="true" tabindex="-1"></a>    )),</span>
+<span id="cb44-531"><a href="#cb44-531" aria-hidden="true" tabindex="-1"></a>    <span class="at">tag =</span> <span class="st">"pred"</span></span>
+<span id="cb44-532"><a href="#cb44-532" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb44-533"><a href="#cb44-533" aria-hidden="true" tabindex="-1"></a>stack <span class="ot">&lt;-</span> <span class="fu">inla.stack</span>(stack_obs, stack_pred)</span>
 <span id="cb44-534"><a href="#cb44-534" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-535"><a href="#cb44-535" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-536"><a href="#cb44-536" aria-hidden="true" tabindex="-1"></a><span class="in">formula &lt;- y ~ -1 + Intercept + covar +</span></span>
-<span id="cb44-537"><a href="#cb44-537" aria-hidden="true" tabindex="-1"></a><span class="in">    f(spatial, model = spde)</span></span>
+<span id="cb44-536"><a href="#cb44-536" aria-hidden="true" tabindex="-1"></a>formula <span class="ot">&lt;-</span> y <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">+</span> Intercept <span class="sc">+</span> covar <span class="sc">+</span></span>
+<span id="cb44-537"><a href="#cb44-537" aria-hidden="true" tabindex="-1"></a>    <span class="fu">f</span>(spatial, <span class="at">model =</span> spde)</span>
 <span id="cb44-538"><a href="#cb44-538" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-539"><a href="#cb44-539" aria-hidden="true" tabindex="-1"></a><span class="in">result1 &lt;- inla(</span></span>
-<span id="cb44-540"><a href="#cb44-540" aria-hidden="true" tabindex="-1"></a><span class="in">  formula,</span></span>
-<span id="cb44-541"><a href="#cb44-541" aria-hidden="true" tabindex="-1"></a><span class="in">  data = inla.stack.data(stack_obs, spde = spde),</span></span>
-<span id="cb44-542"><a href="#cb44-542" aria-hidden="true" tabindex="-1"></a><span class="in">  family = "gaussian",</span></span>
-<span id="cb44-543"><a href="#cb44-543" aria-hidden="true" tabindex="-1"></a><span class="in">  control.predictor = list(A = inla.stack.A(stack_obs),</span></span>
-<span id="cb44-544"><a href="#cb44-544" aria-hidden="true" tabindex="-1"></a><span class="in">                           compute = TRUE)</span></span>
-<span id="cb44-545"><a href="#cb44-545" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb44-546"><a href="#cb44-546" aria-hidden="true" tabindex="-1"></a><span class="in">summary(result1)</span></span>
+<span id="cb44-539"><a href="#cb44-539" aria-hidden="true" tabindex="-1"></a>result1 <span class="ot">&lt;-</span> <span class="fu">inla</span>(</span>
+<span id="cb44-540"><a href="#cb44-540" aria-hidden="true" tabindex="-1"></a>  formula,</span>
+<span id="cb44-541"><a href="#cb44-541" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">inla.stack.data</span>(stack_obs, <span class="at">spde =</span> spde),</span>
+<span id="cb44-542"><a href="#cb44-542" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">"gaussian"</span>,</span>
+<span id="cb44-543"><a href="#cb44-543" aria-hidden="true" tabindex="-1"></a>  <span class="at">control.predictor =</span> <span class="fu">list</span>(<span class="at">A =</span> <span class="fu">inla.stack.A</span>(stack_obs),</span>
+<span id="cb44-544"><a href="#cb44-544" aria-hidden="true" tabindex="-1"></a>                           <span class="at">compute =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb44-545"><a href="#cb44-545" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb44-546"><a href="#cb44-546" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(result1)</span>
 <span id="cb44-547"><a href="#cb44-547" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-548"><a href="#cb44-548" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-549"><a href="#cb44-549" aria-hidden="true" tabindex="-1"></a><span class="in">plot(datos_sf$TCH, </span></span>
-<span id="cb44-550"><a href="#cb44-550" aria-hidden="true" tabindex="-1"></a><span class="in">     result1$summary.fitted.values[inla.stack.index(stack_obs, "obs")$data, "mean"],</span></span>
-<span id="cb44-551"><a href="#cb44-551" aria-hidden="true" tabindex="-1"></a><span class="in">     main = "Observations vs posterior predicted values at the data locations")</span></span>
+<span id="cb44-549"><a href="#cb44-549" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(datos_sf<span class="sc">$</span>TCH, </span>
+<span id="cb44-550"><a href="#cb44-550" aria-hidden="true" tabindex="-1"></a>     result1<span class="sc">$</span>summary.fitted.values[<span class="fu">inla.stack.index</span>(stack_obs, <span class="st">"obs"</span>)<span class="sc">$</span>data, <span class="st">"mean"</span>],</span>
+<span id="cb44-551"><a href="#cb44-551" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Observations vs posterior predicted values at the data locations"</span>)</span>
 <span id="cb44-552"><a href="#cb44-552" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-553"><a href="#cb44-553" aria-hidden="true" tabindex="-1"></a><span class="in"># </span></span>
-<span id="cb44-554"><a href="#cb44-554" aria-hidden="true" tabindex="-1"></a><span class="in"># field_pred &lt;- inla.mesh.project(proj_pred,</span></span>
-<span id="cb44-555"><a href="#cb44-555" aria-hidden="true" tabindex="-1"></a><span class="in">#                                 result1$summary.fitted.values[inla.stack.index(stack, "pred")$data, "mean"])</span></span>
-<span id="cb44-556"><a href="#cb44-556" aria-hidden="true" tabindex="-1"></a><span class="in"># field_pred_sd &lt;- inla.mesh.project(proj_pred,</span></span>
-<span id="cb44-557"><a href="#cb44-557" aria-hidden="true" tabindex="-1"></a><span class="in">#                                    result1$summary.fitted.values[inla.stack.index(stack, "pred")$data, "sd"])</span></span>
-<span id="cb44-558"><a href="#cb44-558" aria-hidden="true" tabindex="-1"></a><span class="in"># </span></span>
-<span id="cb44-559"><a href="#cb44-559" aria-hidden="true" tabindex="-1"></a><span class="in"># image(inla.mesh.project(mesh,</span></span>
-<span id="cb44-560"><a href="#cb44-560" aria-hidden="true" tabindex="-1"></a><span class="in">#                         field = field_pred,</span></span>
-<span id="cb44-561"><a href="#cb44-561" aria-hidden="true" tabindex="-1"></a><span class="in">#                         dims = c(200, 200)),</span></span>
-<span id="cb44-562"><a href="#cb44-562" aria-hidden="true" tabindex="-1"></a><span class="in">#       main = "Posterior field mean")</span></span>
-<span id="cb44-563"><a href="#cb44-563" aria-hidden="true" tabindex="-1"></a><span class="in"># image(inla.mesh.project(mesh,</span></span>
-<span id="cb44-564"><a href="#cb44-564" aria-hidden="true" tabindex="-1"></a><span class="in">#                         field = field_pred_sd,</span></span>
-<span id="cb44-565"><a href="#cb44-565" aria-hidden="true" tabindex="-1"></a><span class="in">#                         dims = c(200, 200)),</span></span>
-<span id="cb44-566"><a href="#cb44-566" aria-hidden="true" tabindex="-1"></a><span class="in">#       main = "Prediction standard deviation")</span></span>
+<span id="cb44-553"><a href="#cb44-553" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb44-554"><a href="#cb44-554" aria-hidden="true" tabindex="-1"></a><span class="co"># field_pred &lt;- inla.mesh.project(proj_pred,</span></span>
+<span id="cb44-555"><a href="#cb44-555" aria-hidden="true" tabindex="-1"></a><span class="co">#                                 result1$summary.fitted.values[inla.stack.index(stack, "pred")$data, "mean"])</span></span>
+<span id="cb44-556"><a href="#cb44-556" aria-hidden="true" tabindex="-1"></a><span class="co"># field_pred_sd &lt;- inla.mesh.project(proj_pred,</span></span>
+<span id="cb44-557"><a href="#cb44-557" aria-hidden="true" tabindex="-1"></a><span class="co">#                                    result1$summary.fitted.values[inla.stack.index(stack, "pred")$data, "sd"])</span></span>
+<span id="cb44-558"><a href="#cb44-558" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb44-559"><a href="#cb44-559" aria-hidden="true" tabindex="-1"></a><span class="co"># image(inla.mesh.project(mesh,</span></span>
+<span id="cb44-560"><a href="#cb44-560" aria-hidden="true" tabindex="-1"></a><span class="co">#                         field = field_pred,</span></span>
+<span id="cb44-561"><a href="#cb44-561" aria-hidden="true" tabindex="-1"></a><span class="co">#                         dims = c(200, 200)),</span></span>
+<span id="cb44-562"><a href="#cb44-562" aria-hidden="true" tabindex="-1"></a><span class="co">#       main = "Posterior field mean")</span></span>
+<span id="cb44-563"><a href="#cb44-563" aria-hidden="true" tabindex="-1"></a><span class="co"># image(inla.mesh.project(mesh,</span></span>
+<span id="cb44-564"><a href="#cb44-564" aria-hidden="true" tabindex="-1"></a><span class="co">#                         field = field_pred_sd,</span></span>
+<span id="cb44-565"><a href="#cb44-565" aria-hidden="true" tabindex="-1"></a><span class="co">#                         dims = c(200, 200)),</span></span>
+<span id="cb44-566"><a href="#cb44-566" aria-hidden="true" tabindex="-1"></a><span class="co">#       main = "Prediction standard deviation")</span></span>
 <span id="cb44-567"><a href="#cb44-567" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb44-568"><a href="#cb44-568" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-569"><a href="#cb44-569" aria-hidden="true" tabindex="-1"></a></span>
@@ -2030,17 +1868,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb44-573"><a href="#cb44-573" aria-hidden="true" tabindex="-1"></a>utilizando funciones del paquete <span class="in">`INLA`</span>.</span>
 <span id="cb44-574"><a href="#cb44-574" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-575"><a href="#cb44-575" aria-hidden="true" tabindex="-1"></a><span class="in">```{r ajuste-inlabru}</span></span>
-<span id="cb44-576"><a href="#cb44-576" aria-hidden="true" tabindex="-1"></a><span class="in">#| column: page-right</span></span>
-<span id="cb44-577"><a href="#cb44-577" aria-hidden="true" tabindex="-1"></a><span class="in">#| layout-align: center</span></span>
-<span id="cb44-578"><a href="#cb44-578" aria-hidden="true" tabindex="-1"></a><span class="in">#| </span></span>
-<span id="cb44-579"><a href="#cb44-579" aria-hidden="true" tabindex="-1"></a><span class="in">ndvi_bru_spde &lt;-</span></span>
-<span id="cb44-580"><a href="#cb44-580" aria-hidden="true" tabindex="-1"></a><span class="in">  bru(</span></span>
-<span id="cb44-581"><a href="#cb44-581" aria-hidden="true" tabindex="-1"></a><span class="in">    TCH ~ Intercept(1) + ndvi + site(main = coordinates, model = spde),</span></span>
-<span id="cb44-582"><a href="#cb44-582" aria-hidden="true" tabindex="-1"></a><span class="in">    family = "gaussian",</span></span>
-<span id="cb44-583"><a href="#cb44-583" aria-hidden="true" tabindex="-1"></a><span class="in">    data = as_Spatial(datos_sf)</span></span>
-<span id="cb44-584"><a href="#cb44-584" aria-hidden="true" tabindex="-1"></a><span class="in">  )</span></span>
+<span id="cb44-576"><a href="#cb44-576" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: page-right</span></span>
+<span id="cb44-577"><a href="#cb44-577" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-align: center</span></span>
+<span id="cb44-578"><a href="#cb44-578" aria-hidden="true" tabindex="-1"></a><span class="co">#| </span></span>
+<span id="cb44-579"><a href="#cb44-579" aria-hidden="true" tabindex="-1"></a>ndvi_bru_spde <span class="ot">&lt;-</span></span>
+<span id="cb44-580"><a href="#cb44-580" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bru</span>(</span>
+<span id="cb44-581"><a href="#cb44-581" aria-hidden="true" tabindex="-1"></a>    TCH <span class="sc">~</span> <span class="fu">Intercept</span>(<span class="dv">1</span>) <span class="sc">+</span> ndvi <span class="sc">+</span> <span class="fu">site</span>(<span class="at">main =</span> coordinates, <span class="at">model =</span> spde),</span>
+<span id="cb44-582"><a href="#cb44-582" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="st">"gaussian"</span>,</span>
+<span id="cb44-583"><a href="#cb44-583" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> <span class="fu">as_Spatial</span>(datos_sf)</span>
+<span id="cb44-584"><a href="#cb44-584" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb44-585"><a href="#cb44-585" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-586"><a href="#cb44-586" aria-hidden="true" tabindex="-1"></a><span class="in">summary(ndvi_bru_spde)</span></span>
+<span id="cb44-586"><a href="#cb44-586" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ndvi_bru_spde)</span>
 <span id="cb44-587"><a href="#cb44-587" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb44-588"><a href="#cb44-588" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-589"><a href="#cb44-589" aria-hidden="true" tabindex="-1"></a></span>
@@ -2142,7 +1980,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-
 
 
 
